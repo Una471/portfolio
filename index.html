@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unaswi Leonard | Data Analyst & Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #e2e8f0;
+            background: #0f172a;
+        }
+        
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15,23,42,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid #1e293b;
+        }
+        nav .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav h1 { font-size: 1rem; font-weight: 700; color: #f1f5f9; letter-spacing: -0.01em; }
+        nav ul { list-style: none; display: flex; gap: 2rem; }
+        nav a { color: #94a3b8; text-decoration: none; font-size: 0.8rem; font-weight: 500; transition: color 0.2s; }
+        nav a:hover { color: #f1f5f9; }
+        
+        .landing {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(160deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .landing::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(37,99,235,0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 30%, rgba(16,185,129,0.05) 0%, transparent 60%);
+            animation: float 20s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0,0); }
+            50% { transform: translate(-2%, 2%); }
+        }
+        .landing-content {
+            position: relative;
+            z-index: 1;
+            max-width: 650px;
+        }
+        .landing .greeting {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #64748b;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        .landing h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            color: #f1f5f9;
+        }
+        .landing h1 span { color: #3b82f6; }
+        .landing p {
+            font-size: 1.05rem;
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+        .landing .cta-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 0.7rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.88rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); }
+        .btn-outline { border: 1.5px solid #475569; color: #f1f5f9; background: transparent; }
+        .btn-outline:hover { border-color: #f1f5f9; }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        .scroll-indicator svg { width: 24px; height: 24px; stroke: #475569; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) translateX(-50%); }
+            50% { transform: translateY(8px) translateX(-50%); }
+        }
+        
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #3b82f6;
+            margin-bottom: 0.75rem;
+        }
+        .section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            color: #f1f5f9;
+        }
+        .section .subtitle {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            max-width: 550px;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: #1e293b;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card .num { font-size: 2rem; font-weight: 700; color: #3b82f6; }
+        .stat-card .lbl { color: #94a3b8; font-size: 0.78rem; margin-top: 0.25rem; }
+        
+        .about-text {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            text-align: center;
+            line-height: 1.8;
+            font-size: 0.9rem;
+            max-width: 750px;
+            margin: 0 auto;
+            color: #cbd5e1;
+        }
+        
+        .skills-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .skill-tag {
+            background: #1e3a5f;
+            color: #93c5fd;
+            padding: 0.45rem 1rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+        
+        .projects-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .industry-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+        .filter-btn {
+            padding: 0.5rem 1.1rem;
+            border: 1.5px solid #334155;
+            background: #1e293b;
+            color: #94a3b8;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover { border-color: #3b82f6; color: #93c5fd; }
+        .filter-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        
+        .projects-feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 1.2rem;
+        }
+        .project-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .project-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+        .project-card .card-img {
+            height: 160px;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #475569;
+            font-size: 0.75rem;
+            overflow: hidden;
+        }
+        .project-card .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .project-card .card-body { padding: 1.2rem; }
+        .project-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; color: #f1f5f9; }
+        .project-card .type { color: #64748b; font-size: 0.72rem; margin-bottom: 0.6rem; }
+        .project-card p { font-size: 0.8rem; color: #94a3b8; line-height: 1.5; }
+        .project-card .tags { padding: 0 1.2rem 1rem; display: flex; gap: 0.35rem; flex-wrap: wrap; }
+        .ptag { background: #1e3a5f; color: #93c5fd; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.68rem; font-weight: 500; }
+        .ptag.live { background: #14532d; color: #86efac; }
+        
+        .gallery-section {
+            background: #0f172a;
+            padding: 5rem 2rem;
+            max-width: 100%;
+        }
+        .gallery-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .gallery-item {
+            background: #1e293b;
+            border-radius: 10px;
+            height: 200px;
+            overflow: hidden;
+            border: 1px solid #334155;
+            transition: transform 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+        .gallery-item:hover { transform: scale(1.02); border-color: #3b82f6; }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .exp-item {
+            background: #1e293b;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            margin-bottom: 0.75rem;
+        }
+        .exp-item h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; color: #f1f5f9; }
+        .exp-item .date { color: #64748b; font-size: 0.78rem; margin-bottom: 0.5rem; }
+        .exp-item p { font-size: 0.83rem; color: #94a3b8; line-height: 1.7; }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+        }
+        .modal-overlay.active { display: flex; align-items: flex-start; justify-content: center; }
+        .modal-box {
+            background: #1e293b;
+            border-radius: 14px;
+            max-width: 750px;
+            width: 100%;
+            border: 1px solid #334155;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            margin: auto;
+        }
+        .modal-box .modal-head {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .modal-box .modal-head h2 { font-size: 1.1rem; font-weight: 700; color: #f1f5f9; }
+        .modal-box .modal-head .ind { color: #64748b; font-size: 0.75rem; display: block; margin-top: 0.2rem; }
+        .modal-box .close-btn {
+            background: none; border: none;
+            font-size: 1.5rem; cursor: pointer;
+            color: #64748b; padding: 0 0.5rem;
+        }
+        .modal-box .close-btn:hover { color: #f1f5f9; }
+        .modal-box .modal-body { padding: 1.5rem 2rem 2rem; }
+        .modal-box .modal-body h3 { font-size: 0.9rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; color: #f1f5f9; }
+        .modal-box .modal-body p, .modal-box .modal-body li { font-size: 0.83rem; color: #cbd5e1; line-height: 1.7; }
+        .modal-box .modal-body ul { margin-left: 1.2rem; }
+        .impact-note {
+            background: #14532d;
+            border-left: 3px solid #22c55e;
+            padding: 0.7rem 1rem;
+            margin: 0.8rem 0;
+            border-radius: 4px;
+            font-size: 0.83rem;
+            color: #bbf7d0;
+        }
+        .example-note {
+            background: #451a03;
+            border-left: 3px solid #f59e0b;
+            padding: 0.7rem 1rem;
+            margin: 0.8rem 0;
+            border-radius: 4px;
+            font-size: 0.83rem;
+            line-height: 1.7;
+            color: #fed7aa;
+        }
+        
+        .contact-popup {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .contact-popup.active { display: flex; }
+        .contact-card {
+            background: #1e293b;
+            border-radius: 14px;
+            padding: 2.5rem;
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+            border: 1px solid #334155;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        }
+        .contact-card h2 { font-size: 1.3rem; margin-bottom: 1.5rem; color: #f1f5f9; }
+        .contact-card .contact-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+        .contact-card .contact-row a { color: #60a5fa; text-decoration: none; }
+        .contact-card .contact-row a:hover { text-decoration: underline; }
+        .contact-card .close-contact {
+            margin-top: 1.5rem;
+            background: #334155;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.83rem;
+            color: #cbd5e1;
+            transition: background 0.2s;
+        }
+        .contact-card .close-contact:hover { background: #475569; }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+            font-size: 0.78rem;
+            border-top: 1px solid #1e293b;
+        }
+        footer a { color: #60a5fa; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        
+        @media (max-width: 600px) {
+            .landing h1 { font-size: 2rem; }
+            .projects-feed { grid-template-columns: 1fr; }
+            nav ul { gap: 1rem; }
+            nav a { font-size: 0.72rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <h1>Unaswi Leonard</h1>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#" onclick="openContact(); return false;">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="landing" id="home">
+    <div class="landing-content">
+        <div class="greeting">Francistown, Botswana</div>
+        <h1>I build <span>data tools</span> that solve business problems.</h1>
+        <p>Business Intelligence graduate from Botswana Accountancy College. I analyze data to find what's costing companies money, then build dashboards and software to fix it.</p>
+        <div class="cta-row">
+            <a href="#projects" class="btn btn-primary">See My Projects</a>
+            <button class="btn btn-outline" onclick="openContact()">Get in Touch</button>
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+</section>
+
+<section class="section" id="about">
+    <div class="section-label">About</div>
+    <h2>Who I am</h2>
+    <p class="subtitle">A bit about my background and what I do.</p>
+    
+    <div class="about-grid">
+        <div class="stat-card"><div class="num">10+</div><div class="lbl">Projects Built</div></div>
+        <div class="stat-card"><div class="num">8</div><div class="lbl">Industries Covered</div></div>
+        <div class="stat-card"><div class="num">BSc Hons</div><div class="lbl">Business Intelligence & Data Analytics</div></div>
+        <div class="stat-card"><div class="num">Francistown</div><div class="lbl">Botswana</div></div>
+    </div>
+    
+    <div class="about-text">
+        <p>
+            I graduated from <strong>Botswana Accountancy College</strong> (University of Sunderland) with a degree in Business Intelligence and Data Analytics.
+            Currently working as a developer intern at <strong>DoBiz Africa</strong> building comparison platforms and web tools.
+            Before that, I spent 6 months at <strong>App Digital Hub</strong> building Power BI dashboards that cut reporting time by 40%.
+            Every project below started with a business problem and ended with a working tool that solves it.
+        </p>
+    </div>
+    
+    <div style="margin-top:2.5rem;">
+        <div class="section-label" style="margin-bottom:1rem;">Skills & Tools</div>
+        <div class="skills-cloud">
+            <span class="skill-tag">Python</span><span class="skill-tag">SQL</span><span class="skill-tag">Power BI</span>
+            <span class="skill-tag">Excel</span><span class="skill-tag">Streamlit</span><span class="skill-tag">Pandas</span>
+            <span class="skill-tag">Scikit-learn</span><span class="skill-tag">Plotly</span><span class="skill-tag">Machine Learning</span>
+            <span class="skill-tag">HTML/CSS</span><span class="skill-tag">JavaScript</span><span class="skill-tag">Flutter</span>
+            <span class="skill-tag">React</span><span class="skill-tag">Airtable</span><span class="skill-tag">Vercel</span>
+            <span class="skill-tag">Git/GitHub</span><span class="skill-tag">Data Mining</span><span class="skill-tag">Predictive Modeling</span>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="projects">
+    <div class="projects-header">
+        <div class="section-label">Projects</div>
+        <h2>Work by Industry</h2>
+        <p class="subtitle" style="margin:0.5rem auto 1.5rem;">Each project includes a dashboard for analysis and a software tool for action. Click any card to read the full story.</p>
+    </div>
+    
+    <div class="industry-filters">
+        <button class="filter-btn active" data-industry="all">All</button>
+        <button class="filter-btn" data-industry="financial">Financial Services</button>
+        <button class="filter-btn" data-industry="mining">Mining & Heavy Industry</button>
+        <button class="filter-btn" data-industry="healthcare">Healthcare</button>
+        <button class="filter-btn" data-industry="retail">Retail & FMCG</button>
+        <button class="filter-btn" data-industry="education">Education</button>
+        <button class="filter-btn" data-industry="hospitality">Hospitality & Tourism</button>
+        <button class="filter-btn" data-industry="telecom">Telecom</button>
+    </div>
+    
+    <div class="projects-feed" id="projectsFeed"></div>
+</section>
+
+<section class="gallery-section" id="gallery">
+    <div class="gallery-inner">
+        <div class="section-label">Gallery</div>
+        <h2>Dashboard Screenshots</h2>
+        <p class="subtitle">Snapshots from dashboards I've built across different industries.</p>
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="images/financial.jpeg" alt="Financial Dashboard"></div>
+            <div class="gallery-item"><img src="images/network.jpeg" alt="Telecom Network Analysis"></div>
+            <div class="gallery-item"><img src="images/health.jpeg" alt="Healthcare Dashboard"></div>
+            <div class="gallery-item"><img src="images/retail.jpeg" alt="Retail Analytics"></div>
+            <div class="gallery-item"><img src="images/education.jpeg" alt="Education Dashboard"></div>
+            <div class="gallery-item"><img src="images/hotel.jpeg" alt="Hospitality Revenue"></div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="experience">
+    <div class="section-label">Experience</div>
+    <h2>Where I've Worked</h2>
+    <p class="subtitle">My work history and education.</p>
+    
+    <div class="exp-item">
+        <h3>Data Analyst & Web Developer</h3>
+        <div class="date">DoBiz Africa | Nov 2025 to Present | Francistown</div>
+        <p>Building comparison platforms for insurance, banking, and telecom. Developed dashboards and a network recommendation tool using real survey data from over 788 people across Botswana.</p>
+    </div>
+    <div class="exp-item">
+        <h3>Data Analyst Intern</h3>
+        <div class="date">App Digital Hub | Jan 2022 to Jul 2022 | Gaborone</div>
+        <p>Built 6 Power BI dashboards that became the company's main reporting tools. Cut manual reporting time by 40% and helped managers spot sales trends they were missing.</p>
+    </div>
+    <div class="exp-item">
+        <h3>BSc (Hons) Business Intelligence & Data Analytics</h3>
+        <div class="date">BAC / University of Sunderland | 2019 to 2025</div>
+        <p>Graduated with Second Class Honours (First Division).</p>
+    </div>
+</section>
+
+<footer>
+    <p>Unaswi Leonard | Francistown, Botswana | <a href="#" onclick="openContact(); return false;">Contact</a></p>
+</footer>
+
+<div class="modal-overlay" id="projectModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <div><h2 id="modalTitle"></h2><span class="ind" id="modalIndustry"></span></div>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<div class="contact-popup" id="contactPopup">
+    <div class="contact-card">
+        <h2>Get in Touch</h2>
+        <div class="contact-row">📧 <a href="mailto:unaswiseleka2000@gmail.com">unaswiseleka2000@gmail.com</a></div>
+        <div class="contact-row">📱 +267 71512483</div>
+        <div class="contact-row">📱 +267 78367970</div>
+        <div class="contact-row">🔗 <a href="https://linkedin.com/in/unaswileonard03a075290" target="_blank">LinkedIn Profile</a></div>
+        <div class="contact-row">📍 Francistown, Botswana</div>
+        <button class="close-contact" onclick="closeContact()">Close</button>
+    </div>
+</div>
+
+<script>
+const projects = [
+    {
+        id: 1,
+        title: "Loan Default Prediction System",
+        industry: "financial",
+        type: "Dashboard & Approval Tool",
+        shortDesc: "Helps lenders spot risky loans before approving them and catch existing customers before they stop paying.",
+        businessProblem: "A credit union was losing millions every year to loans that were never repaid. Loan officers relied on gut feeling to approve applications because there was no system to flag risky ones. By the time they noticed a customer was struggling, that customer had already missed several payments.",
+        whatIDid: "I analyzed 3,000 past loans to find patterns in who defaults and why. The biggest predictor was how much of someone's salary goes to loan payments, whether they've defaulted before, and how stable their job is. I built two tools: a dashboard showing management the health of the entire loan portfolio, and a software tool where loan officers screen applications and get instant risk scores with clear Approve or Decline recommendations.",
+        businessImpact: "The credit union now catches risky applications before they enter the system. For existing customers, they reach out when someone first shows warning signs, not months later when it's too late. Loan approvals are 30% faster because officers aren't doing manual checklists.",
+        scenario: "A customer asks for a P50,000 loan. The officer types in their details: they earn P12,000 a month, defaulted once before, and nearly half their salary would go to this loan payment. The system flags it as high risk and recommends declining or offering a smaller amount. Without this tool, that officer might have approved it based on a friendly conversation.",
+        liveLinks: true,
+        dashboardLink: "https://loan-default-report.streamlit.app/",
+        softwareLink: "https://loan-management-automation.streamlit.app/",
+        screenshot: "images/financial.jpeg"
+    },
+    {
+        id: 2,
+        title: "Equipment Breakdown Predictor",
+        industry: "mining",
+        type: "Dashboard & Maintenance Tool",
+        shortDesc: "Tells maintenance teams which machines are about to break down so they can fix them cheaply before they fail expensively.",
+        businessProblem: "A mining company running 80 heavy machines was losing millions every few months to unexpected breakdowns. Emergency repairs cost up to P600,000 each while planned maintenance on the same machine costs only P80,000. They had sensor data for temperature, vibration, and oil pressure sitting in spreadsheets nobody looked at.",
+        whatIDid: "I built a system that reads sensor readings and learns the pattern of a machine about to fail. Before a breakdown, temperature climbs, vibration increases, oil gets dirty, and pressure drops. The system catches these signals early. I built a dashboard for management to see fleet health and a daily tool where technicians enter readings and get instant answers on which machines need attention.",
+        businessImpact: "The maintenance team now knows exactly which machines to work on instead of servicing everything on a fixed schedule. Machines get fixed before they break. The system also identified which operators leave machines running idle. Five people were responsible for most of the wasted fuel.",
+        scenario: "A technician inspects a haul truck: temperature 108 degrees (safe limit is 90), vibration high, oil pressure low. The system flags it as critical with an 87% chance of breakdown within a week. The machine gets serviced now for P80,000 instead of failing next week and costing P500,000 plus halted production.",
+        liveLinks: true,
+        dashboardLink: "https://mining-dashboard.streamlit.app",
+        softwareLink: "https://machinery-system.streamlit.app/",
+        screenshot: "images/mining.jpeg"
+    },
+    {
+        id: 3,
+        title: "Hospital Operations Improvement",
+        industry: "healthcare",
+        type: "Dashboard & Operations Tool",
+        shortDesc: "Helps hospitals reduce patient waiting times, stop medicine from expiring on shelves, and find empty beds faster.",
+        businessProblem: "Patients waited 42 minutes on average. Medicine worth hundreds of thousands was expiring because nobody tracked dates. Emergency patients waited 15 to 20 minutes for a bed while nurses phoned around different wards. The hospital had the data but no way to use it.",
+        whatIDid: "I analyzed six months of patient flow and found afternoon shifts had much longer waits than mornings, same patients, just fewer staff. For the pharmacy, I built alerts that warn staff 30 days before anything expires. For bed tracking, I made a simple dashboard showing which wards have empty beds right now.",
+        businessImpact: "Moving two nurses to afternoon shifts cut average wait times by 15 minutes. The pharmacy now catches expiring stock early and sends it to busy departments instead of throwing it away. Finding a bed for an emergency patient now takes seconds instead of 15 minutes of phone calls.",
+        scenario: "A pharmacy staff member checks the dashboard. Paracetamol has 7 days until expiry with 500 units on the shelf, about P12,500 worth. The system recommends sending it to Outpatients who use the most. Medicine gets used instead of discarded. Before this tool, nobody would have known until the monthly count when it was too late.",
+        liveLinks: true,
+        dashboardLink: "https://health-dashboard1.streamlit.app/",
+        softwareLink: "https://health-system.streamlit.app/",
+        screenshot: "images/health.jpeg"
+    },
+    {
+        id: 4,
+        title: "Retail Sales & Stock Optimizer",
+        industry: "retail",
+        type: "Dashboard & Inventory Tool",
+        shortDesc: "Shows which products to place together, which promotions actually work, and what needs reordering before it runs out.",
+        businessProblem: "A supermarket placed products randomly because nobody knew which items customers bought together. Promotions ran every holiday without proof they increased sales. Popular products kept selling out because reordering was done from memory, someone walking the aisles and checking shelves.",
+        whatIDid: "I analyzed over 75,000 shopping baskets and found Milk and Bread appear together 65% of the time but sat in different aisles. Coca Cola and Chips had a 55% connection but were on opposite sides of the store. I measured every promotion against normal sales days to prove which ones actually worked.",
+        businessImpact: "The store now knows which products to place near each other to increase basket size. Black Friday delivered a 40% sales boost while Easter only managed 18%, so marketing spend can shift to what works. Automated alerts now flag items running low before they sell out.",
+        scenario: "Milk and Bread are bought together 65% of the time. But Milk is in the back corner and Bread by the entrance. The store moves them to the same aisle. A customer walking in for Bread now sees Milk and grabs it too. Same logic applies to Coca Cola and Chips. Small shelf changes, bigger baskets.",
+        liveLinks: true,
+        dashboardLink: "https://retail-dashboardd.streamlit.app/",
+        softwareLink: "https://retail-system.streamlit.app/",
+        screenshot: "images/retail.jpeg"
+    },
+    {
+        id: 5,
+        title: "Student Dropout Prevention System",
+        industry: "education",
+        type: "Dashboard & Student Management Tool",
+        shortDesc: "Predicts which students are likely to drop out so the school can reach out before they leave.",
+        businessProblem: "Four out of ten students were dropping out. Staff only noticed after students had missed weeks of classes. Each advisor handled 80 students with no way to know who needed help most urgently. The school was losing tuition money and reputation.",
+        whatIDid: "I studied 2,500 student records to understand what separates graduates from dropouts. Attendance was the biggest factor. Students below 75% rarely made it. Distance from campus and financial situation also mattered. I built a system that scores every student's risk and ranks them so advisors know exactly who to call first.",
+        businessImpact: "Advisors now work from a priority list instead of treating all students equally. A student flagged at 72% attendance gets a call the same week instead of being discovered after they're gone. Registration time dropped from 45 minutes to 15 minutes because the system handles the paperwork.",
+        scenario: "A new student enrolls living 52km from campus with no transport and parents who didn't finish secondary school. The system flags them as medium risk and recommends extra check-ins. Three months later attendance drops to 72%. An alert fires. Their advisor calls the next day to ask what's going on before the student disappears.",
+        liveLinks: true,
+        dashboardLink: "https://education-dashboard.streamlit.app/",
+        softwareLink: "https://student-syste.streamlit.app/",
+        screenshot: "images/education.jpeg"
+    },
+    {
+        id: 6,
+        title: "Hotel Revenue & Guest Review Manager",
+        industry: "hospitality",
+        type: "Dashboard & Pricing Tool",
+        shortDesc: "Helps hotels charge the right price based on demand and tracks guest reviews from all platforms in one place.",
+        businessProblem: "The hotel charged the same rate every day. During big events and weekends rooms sold out too cheaply. During quiet periods rooms sat empty because prices were too high. Guest reviews came in from four different websites but nobody was monitoring them. Complaints sat unanswered for weeks.",
+        whatIDid: "I analyzed a full year of bookings and found event days bring 35% more revenue and weekends are 15% busier, but prices never changed. I built a pricing tool that checks occupancy, upcoming events, and day of week to suggest the best rate. I also centralized all guest reviews into one dashboard so complaints are caught immediately.",
+        businessImpact: "The hotel now charges more when demand is high and offers discounts when rooms would sit empty. Monthly revenue increased by 12%, over P3.7 million extra per year. Guest complaints are now answered within a day instead of weeks. Staff schedules match occupancy so they're not overstaffed on quiet days.",
+        scenario: "Weekend during a conference, 90% full. The front desk checks the pricing tool for an Executive Suite. Base rate is P2,100. High demand adds 20%, the conference adds 15%, weekend adds 8%. Recommended rate: P3,130. Guest books it. Old flat rate would have lost P1,030 on just that one room.",
+        liveLinks: true,
+        dashboardLink: "https://hospitality-dash.streamlit.app/",
+        softwareLink: "https://hotel-systemm.streamlit.app/",
+        screenshot: "images/hotel.jpeg"
+    },
+    {
+        id: 7,
+        title: "Telecom Network Comparison Platform",
+        industry: "telecom",
+        type: "Analysis & Recommendation Tool",
+        shortDesc: "Analyzed 788 real customer reviews to show which mobile network works best based on where you live and what you use the internet for.",
+        businessProblem: "Botswana has three mobile networks but no easy way to compare them. People don't know which one works best in their village or which gives better speeds for streaming or gaming. They pick based on ads or what friends use, then switch later when they're unhappy.",
+        whatIDid: "I collected survey responses from 788 real people across Botswana about their network experience. I built a recommendation tool where someone selects their location, what they use the internet for, and what matters most to them, whether that's speed, price, or reliability. The tool then recommends the best network for their specific needs.",
+        businessImpact: "First centralized network recommendation tool for Botswana. Consumers can now make informed choices based on real user data instead of advertising. The analysis revealed what each network's customers actually want: Mascom users value reliability, Orange users want speed, BTC users have the highest overall satisfaction.",
+        scenario: "Someone living in Gaborone needs a network for streaming and gaming. They care most about speed. They select those options in the tool and it checks which network performs best in that area for that usage type. The recommendation comes back in seconds based on actual user experiences, not marketing claims.",
+        liveLinks: true,
+        softwareLink: "https://network-comparison.streamlit.app",
+        screenshot: "images/network.jpeg"
+    }
+];
+
+function renderProjects(filter = 'all') {
+    const feed = document.getElementById('projectsFeed');
+    feed.innerHTML = '';
+    const filtered = filter === 'all' ? projects : projects.filter(p => p.industry === filter);
+    
+    filtered.forEach(project => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.onclick = () => openProjectModal(project);
+        
+        const cardImg = project.screenshot 
+            ? `<div class="card-img"><img src="${project.screenshot}" alt="${project.title}"></div>`
+            : `<div class="card-img">Add screenshot</div>`;
+        
+        card.innerHTML = `
+            ${cardImg}
+            <div class="card-body">
+                <h3>${project.title}</h3>
+                <div class="type">${project.type}</div>
+                <p>${project.shortDesc}</p>
+            </div>
+            <div class="tags">
+                <span class="ptag">${project.industry}</span>
+                ${project.liveLinks ? '<span class="ptag live">Live Demo</span>' : ''}
+            </div>
+        `;
+        feed.appendChild(card);
+    });
+}
+
+function openProjectModal(project) {
+    document.getElementById('modalTitle').textContent = project.title;
+    document.getElementById('modalIndustry').textContent = project.industry + ' | ' + project.type;
+    
+    let html = '';
+    
+    if (project.screenshot) {
+        html += `<img src="${project.screenshot}" alt="${project.title}" style="width:100%;border-radius:8px;margin-bottom:1rem;border:1px solid #334155;">`;
+    }
+    
+    html += `
+        <h3>The Business Problem</h3>
+        <p>${project.businessProblem}</p>
+        <h3>What I Did</h3>
+        <p>${project.whatIDid}</p>
+        <div class="impact-note"><strong>Business Impact:</strong> ${project.businessImpact}</div>
+        <h3>Real Example</h3>
+        <div class="example-note">${project.scenario}</div>
+    `;
+    
+    if (project.liveLinks) {
+        html += '<div style="display:flex;gap:0.75rem;margin-top:1rem;flex-wrap:wrap;">';
+        if (project.dashboardLink) html += `<a href="${project.dashboardLink}" target="_blank" class="btn btn-primary" style="font-size:0.8rem;padding:0.5rem 1.2rem;">View Dashboard</a>`;
+        if (project.softwareLink && project.softwareLink !== project.dashboardLink) html += `<a href="${project.softwareLink}" target="_blank" class="btn btn-primary" style="font-size:0.8rem;padding:0.5rem 1.2rem;background:#16a34a;">View Software Tool</a>`;
+        html += '</div>';
+    }
+    
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('projectModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('projectModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function openContact() {
+    document.getElementById('contactPopup').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeContact() {
+    document.getElementById('contactPopup').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        renderProjects(this.dataset.industry);
+    });
+});
+
+document.getElementById('projectModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+document.getElementById('contactPopup').addEventListener('click', function(e) {
+    if (e.target === this) closeContact();
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeModal();
+        closeContact();
+    }
+});
+
+renderProjects();
+</script>
+
+</body>
+</html>
