@@ -1,0 +1,47 @@
+{
+  "partners": [
+    "Partner_Thapelo",
+    "Partner_Setlhabi",
+    "Partner_Molao",
+    "Partner_Mmolawa",
+    "Partner_Gaobuse"
+  ],
+  "practice_areas": [
+    "Mining & Resources",
+    "Litigation",
+    "Commercial Law",
+    "Regulatory & Compliance",
+    "Employment Law",
+    "Property & Conveyancing"
+  ],
+  "client_types": [
+    "Large Corporate",
+    "Government / Parastatal",
+    "SME",
+    "Financial Institution",
+    "Mining Company",
+    "High-Net-Worth Individual"
+  ],
+  "associates": [
+    "Associate_10",
+    "Associate_17",
+    "Associate_04",
+    "Associate_14",
+    "Associate_20",
+    "Associate_03",
+    "Associate_07",
+    "Associate_13",
+    "Associate_11",
+    "Associate_15",
+    "Associate_08",
+    "Associate_19",
+    "Associate_01",
+    "Associate_09",
+    "Associate_12",
+    "Associate_05",
+    "Associate_18",
+    "Associate_02",
+    "Associate_16",
+    "Associate_06"
+  ]
+}

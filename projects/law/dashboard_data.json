@@ -1,0 +1,432 @@
+{
+  "metrics": {
+    "total_matters": 800,
+    "active_matters": 146,
+    "completed_matters": 617,
+    "on_hold_matters": 37,
+    "total_potential": 227072452.0,
+    "total_billed": 181138481.0,
+    "total_leakage": 45933990.0,
+    "total_disbursements": 20567089.0,
+    "total_outstanding": 30612964.0,
+    "avg_recording_rate": 80.195625,
+    "model_r2": 0.9497649368569672,
+    "model_accuracy": 94.97649368569671,
+    "top_client_concentration": 31.986879695651194,
+    "top_leakage_area": "Mining & Resources",
+    "lowest_recording_partner": "Partner_Mmolawa"
+  },
+  "practice_areas": {
+    "Mining & Resources": {
+      "matter_id": 105,
+      "billed_fees_bwp": 66480941.0,
+      "leakage_bwp": 15858452.0,
+      "leakage_pct": 19.25985881922699,
+      "recording_rate": 81.0
+    },
+    "Litigation": {
+      "matter_id": 150,
+      "billed_fees_bwp": 47529549.0,
+      "leakage_bwp": 13429965.0,
+      "leakage_pct": 22.03096101205282,
+      "recording_rate": 78.0
+    },
+    "Commercial Law": {
+      "matter_id": 168,
+      "billed_fees_bwp": 36059932.0,
+      "leakage_bwp": 8506656.0,
+      "leakage_pct": 19.08752253370126,
+      "recording_rate": 81.0
+    },
+    "Regulatory & Compliance": {
+      "matter_id": 92,
+      "billed_fees_bwp": 12680496.0,
+      "leakage_bwp": 3095826.0,
+      "leakage_pct": 19.623251690905004,
+      "recording_rate": 80.0
+    },
+    "Employment Law": {
+      "matter_id": 122,
+      "billed_fees_bwp": 11095916.0,
+      "leakage_bwp": 3732267.0,
+      "leakage_pct": 25.170101838553844,
+      "recording_rate": 75.0
+    },
+    "Property & Conveyancing": {
+      "matter_id": 163,
+      "billed_fees_bwp": 7291647.0,
+      "leakage_bwp": 1310824.0,
+      "leakage_pct": 15.237752479634933,
+      "recording_rate": 85.0
+    }
+  },
+  "partners": {
+    "Partner_Thapelo": {
+      "matter_id": 133,
+      "billed_fees_bwp": 58875791.0,
+      "leakage_bwp": 13785105.0,
+      "leakage_pct": 18.97183354458863,
+      "recording_rate": 81.0
+    },
+    "Partner_Setlhabi": {
+      "matter_id": 164,
+      "billed_fees_bwp": 45231169.0,
+      "leakage_bwp": 13160263.0,
+      "leakage_pct": 22.53800622266026,
+      "recording_rate": 78.0
+    },
+    "Partner_Molao": {
+      "matter_id": 184,
+      "billed_fees_bwp": 41293501.0,
+      "leakage_bwp": 8805310.0,
+      "leakage_pct": 17.575890742927605,
+      "recording_rate": 82.0
+    },
+    "Partner_Mmolawa": {
+      "matter_id": 149,
+      "billed_fees_bwp": 21485060.0,
+      "leakage_bwp": 7587946.0,
+      "leakage_pct": 26.099632858653486,
+      "recording_rate": 74.0
+    },
+    "Partner_Gaobuse": {
+      "matter_id": 170,
+      "billed_fees_bwp": 14252960.0,
+      "leakage_bwp": 2595366.0,
+      "leakage_pct": 15.404292294844652,
+      "recording_rate": 86.0
+    }
+  },
+  "client_types": {
+    "Large Corporate": {
+      "matter_id": 267,
+      "billed_fees_bwp": 64542994.0,
+      "leakage_bwp": 15707276.0,
+      "outstanding_bwp": 8969921.0
+    },
+    "Government / Parastatal": {
+      "matter_id": 200,
+      "billed_fees_bwp": 42268273.0,
+      "leakage_bwp": 10685615.0,
+      "outstanding_bwp": 11209984.0
+    },
+    "SME": {
+      "matter_id": 107,
+      "billed_fees_bwp": 24410813.0,
+      "leakage_bwp": 6366178.0,
+      "outstanding_bwp": 3285744.0
+    },
+    "Financial Institution": {
+      "matter_id": 85,
+      "billed_fees_bwp": 20699802.0,
+      "leakage_bwp": 5262275.0,
+      "outstanding_bwp": 2756097.0
+    },
+    "Mining Company": {
+      "matter_id": 95,
+      "billed_fees_bwp": 20151532.0,
+      "leakage_bwp": 5593420.0,
+      "outstanding_bwp": 2973687.0
+    },
+    "High-Net-Worth Individual": {
+      "matter_id": 46,
+      "billed_fees_bwp": 9065067.0,
+      "leakage_bwp": 2319226.0,
+      "outstanding_bwp": 1417531.0
+    }
+  },
+  "years": {
+    "2018": {
+      "matter_id": 106,
+      "billed_fees_bwp": 26566085.0,
+      "leakage_bwp": 6654810.0,
+      "recording_rate": 80.0
+    },
+    "2019": {
+      "matter_id": 117,
+      "billed_fees_bwp": 21764288.0,
+      "leakage_bwp": 5519182.0,
+      "recording_rate": 80.0
+    },
+    "2020": {
+      "matter_id": 107,
+      "billed_fees_bwp": 25066632.0,
+      "leakage_bwp": 6222663.0,
+      "recording_rate": 80.0
+    },
+    "2021": {
+      "matter_id": 104,
+      "billed_fees_bwp": 21612604.0,
+      "leakage_bwp": 5805162.0,
+      "recording_rate": 81.0
+    },
+    "2022": {
+      "matter_id": 128,
+      "billed_fees_bwp": 26110938.0,
+      "leakage_bwp": 6753076.0,
+      "recording_rate": 80.0
+    },
+    "2023": {
+      "matter_id": 112,
+      "billed_fees_bwp": 27711469.0,
+      "leakage_bwp": 6833051.0,
+      "recording_rate": 81.0
+    },
+    "2024": {
+      "matter_id": 119,
+      "billed_fees_bwp": 30419776.0,
+      "leakage_bwp": 7568665.0,
+      "recording_rate": 80.0
+    },
+    "2025": {
+      "matter_id": 7,
+      "billed_fees_bwp": 1886689.0,
+      "leakage_bwp": 577381.0,
+      "recording_rate": 76.0
+    }
+  },
+  "top_clients": {
+    "CLT-006": {
+      "matter_id": 32,
+      "billed_fees_bwp": 8003307.0,
+      "leakage_bwp": 1677123.0,
+      "outstanding_bwp": 904541.0
+    },
+    "CLT-002": {
+      "matter_id": 25,
+      "billed_fees_bwp": 6829334.0,
+      "leakage_bwp": 1686722.0,
+      "outstanding_bwp": 1301766.0
+    },
+    "CLT-001": {
+      "matter_id": 28,
+      "billed_fees_bwp": 6100137.0,
+      "leakage_bwp": 1789291.0,
+      "outstanding_bwp": 1111863.0
+    },
+    "CLT-009": {
+      "matter_id": 25,
+      "billed_fees_bwp": 5928065.0,
+      "leakage_bwp": 1585583.0,
+      "outstanding_bwp": 1993911.0
+    },
+    "CLT-010": {
+      "matter_id": 21,
+      "billed_fees_bwp": 5835145.0,
+      "leakage_bwp": 1678392.0,
+      "outstanding_bwp": 1383783.0
+    },
+    "CLT-005": {
+      "matter_id": 26,
+      "billed_fees_bwp": 5800279.0,
+      "leakage_bwp": 1614197.0,
+      "outstanding_bwp": 668860.0
+    },
+    "CLT-003": {
+      "matter_id": 27,
+      "billed_fees_bwp": 5614235.0,
+      "leakage_bwp": 1398710.0,
+      "outstanding_bwp": 638483.0
+    },
+    "CLT-007": {
+      "matter_id": 25,
+      "billed_fees_bwp": 4972385.0,
+      "leakage_bwp": 1093524.0,
+      "outstanding_bwp": 1152025.0
+    },
+    "CLT-008": {
+      "matter_id": 22,
+      "billed_fees_bwp": 4804762.0,
+      "leakage_bwp": 883601.0,
+      "outstanding_bwp": 945150.0
+    },
+    "CLT-004": {
+      "matter_id": 22,
+      "billed_fees_bwp": 4052899.0,
+      "leakage_bwp": 1129580.0,
+      "outstanding_bwp": 1486905.0
+    }
+  },
+  "high_leakage": [
+    {
+      "matter_id": "MLA-0678",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 69.3,
+      "actual_hours": 344.4,
+      "recorded_hours": 238.6,
+      "leakage_bwp": 401769.0
+    },
+    {
+      "matter_id": "MLA-0436",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Mmolawa",
+      "recording_rate": 70.8,
+      "actual_hours": 303.4,
+      "recorded_hours": 214.7,
+      "leakage_bwp": 336823.0
+    },
+    {
+      "matter_id": "MLA-0607",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 72.39999999999999,
+      "actual_hours": 316.9,
+      "recorded_hours": 229.4,
+      "leakage_bwp": 332596.0
+    },
+    {
+      "matter_id": "MLA-0555",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 72.6,
+      "actual_hours": 304.4,
+      "recorded_hours": 220.9,
+      "leakage_bwp": 317179.0
+    },
+    {
+      "matter_id": "MLA-0574",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Setlhabi",
+      "recording_rate": 78.0,
+      "actual_hours": 351.0,
+      "recorded_hours": 273.7,
+      "leakage_bwp": 293609.0
+    },
+    {
+      "matter_id": "MLA-0746",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Mmolawa",
+      "recording_rate": 70.89999999999999,
+      "actual_hours": 262.7,
+      "recorded_hours": 186.2,
+      "leakage_bwp": 290542.0
+    },
+    {
+      "matter_id": "MLA-0087",
+      "practice_area": "Litigation",
+      "partner": "Partner_Setlhabi",
+      "recording_rate": 69.39999999999999,
+      "actual_hours": 328.8,
+      "recorded_hours": 228.3,
+      "leakage_bwp": 281451.0
+    },
+    {
+      "matter_id": "MLA-0419",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 72.0,
+      "actual_hours": 262.7,
+      "recorded_hours": 189.0,
+      "leakage_bwp": 279878.0
+    },
+    {
+      "matter_id": "MLA-0113",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 68.5,
+      "actual_hours": 232.3,
+      "recorded_hours": 159.1,
+      "leakage_bwp": 278256.0
+    },
+    {
+      "matter_id": "MLA-0002",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 76.4,
+      "actual_hours": 306.6,
+      "recorded_hours": 234.4,
+      "leakage_bwp": 274453.0
+    },
+    {
+      "matter_id": "MLA-0711",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 70.19999999999999,
+      "actual_hours": 235.9,
+      "recorded_hours": 165.5,
+      "leakage_bwp": 267409.0
+    },
+    {
+      "matter_id": "MLA-0484",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 75.4,
+      "actual_hours": 271.6,
+      "recorded_hours": 204.7,
+      "leakage_bwp": 254245.0
+    },
+    {
+      "matter_id": "MLA-0628",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 79.0,
+      "actual_hours": 305.9,
+      "recorded_hours": 241.8,
+      "leakage_bwp": 243685.0
+    },
+    {
+      "matter_id": "MLA-0679",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 68.89999999999999,
+      "actual_hours": 201.7,
+      "recorded_hours": 139.1,
+      "leakage_bwp": 238027.0
+    },
+    {
+      "matter_id": "MLA-0001",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 73.7,
+      "actual_hours": 234.8,
+      "recorded_hours": 173.0,
+      "leakage_bwp": 234767.0
+    },
+    {
+      "matter_id": "MLA-0430",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Molao",
+      "recording_rate": 80.60000000000001,
+      "actual_hours": 310.2,
+      "recorded_hours": 249.9,
+      "leakage_bwp": 229151.0
+    },
+    {
+      "matter_id": "MLA-0100",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Molao",
+      "recording_rate": 76.9,
+      "actual_hours": 260.6,
+      "recorded_hours": 200.5,
+      "leakage_bwp": 228357.0
+    },
+    {
+      "matter_id": "MLA-0566",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 75.1,
+      "actual_hours": 240.6,
+      "recorded_hours": 180.7,
+      "leakage_bwp": 227436.0
+    },
+    {
+      "matter_id": "MLA-0342",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Thapelo",
+      "recording_rate": 80.9,
+      "actual_hours": 310.6,
+      "recorded_hours": 251.1,
+      "leakage_bwp": 225945.0
+    },
+    {
+      "matter_id": "MLA-0795",
+      "practice_area": "Mining & Resources",
+      "partner": "Partner_Mmolawa",
+      "recording_rate": 82.39999999999999,
+      "actual_hours": 337.1,
+      "recorded_hours": 277.7,
+      "leakage_bwp": 225639.0
+    }
+  ]
+}

@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValuTrack - Pula Property Group</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #f8f9fa; 
+            color: #1a1a2e;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sidebar-logo span { font-size: 2rem; }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+            gap: 0.75rem;
+        }
+        
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+        
+        .sidebar-nav .icon {
+            font-size: 1.25rem;
+            width: 28px;
+            text-align: center;
+        }
+        
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 1rem 0;
+        }
+        
+        .sidebar-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-content h1 { 
+            font-size: 1.75rem; 
+            font-weight: 600; 
+            color: #1a1a2e; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+        }
+        
+        .header-content p { 
+            color: #6c757d; 
+            margin-top: 0.25rem; 
+        }
+        
+        .header-badge {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+        }
+        
+        /* Section styling */
+        .section {
+            scroll-margin-top: 1rem;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Valuation Tool */
+        .valuation-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .valuation-form-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .valuation-form-card h2 {
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.375rem;
+            font-weight: 500;
+            color: #495057;
+            font-size: 0.875rem;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .amenities-group {
+            display: flex;
+            gap: 1.5rem;
+            padding-top: 0.25rem;
+            flex-wrap: wrap;
+        }
+        
+        .amenities-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 400;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .amenities-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+        
+        .btn-calculate {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+        
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Results Card */
+        .results-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 400px;
+        }
+        
+        .results-card h2 {
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .results-placeholder {
+            text-align: center;
+            color: #6c757d;
+            padding: 2rem;
+        }
+        
+        .results-placeholder .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .results-placeholder h3 {
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .results-content {
+            display: none;
+        }
+        
+        .results-content.active {
+            display: block;
+        }
+        
+        .market-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin: 1rem 0;
+        }
+        
+        .market-value-label {
+            font-size: 0.875rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .result-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .result-item .label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .result-item .value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+        
+        .result-item .value.green { color: #4CAF50; }
+        .result-item .value.gold { color: #f59e0b; }
+        .result-item .value.blue { color: #667eea; }
+        
+        .recommendation-box {
+            background: #e9ecef;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .recommendation-box p {
+            font-size: 0.875rem;
+            color: #495057;
+        }
+        
+        .recommendation-box strong {
+            color: #1a1a2e;
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: #6c757d;
+        }
+        
+        /* History Section */
+        .history-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .history-table th {
+            background: #f8f9fa;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #495057;
+        }
+        
+        .history-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.875rem;
+        }
+        
+        .history-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .empty-history {
+            text-align: center;
+            color: #6c757d;
+            padding: 3rem;
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #667eea;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            border: none;
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+                padding: 1.5rem 1rem;
+            }
+            .main-content {
+                margin-left: 220px;
+                padding: 1.5rem;
+            }
+            .valuation-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .sidebar-logo {
+                margin-bottom: 0;
+                font-size: 1.25rem;
+                margin-right: 1rem;
+            }
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+            .sidebar-nav li {
+                margin-bottom: 0;
+            }
+            .sidebar-nav a {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            .sidebar-nav .icon {
+                font-size: 1rem;
+                width: 20px;
+            }
+            .sidebar-divider, .sidebar-footer {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .market-value {
+                font-size: 2rem;
+            }
+        }
+        /* 2026 architectural editorial redesign — visual layer only */
+        :root {
+            --ink: #2d241f;
+            --muted: #786f68;
+            --paper: #f3f0ec;
+            --white: #fffdfb;
+            --clay: #9b7865;
+            --sand: #d8c1af;
+            --line: rgba(45, 36, 31, 0.16);
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            display: block;
+            min-height: 100vh;
+            color: var(--ink);
+            background: var(--paper);
+            font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .sidebar {
+            position: absolute;
+            inset: 0 0 auto 0;
+            width: 100%;
+            height: 88px;
+            padding: 0 clamp(24px, 5vw, 76px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: visible;
+            color: var(--ink);
+            background: transparent;
+            z-index: 20;
+        }
+
+        .sidebar-logo {
+            margin: 0;
+            gap: 10px;
+            font-size: 1rem;
+            letter-spacing: .11em;
+            text-transform: uppercase;
+        }
+
+        .sidebar-logo span {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border: 1px solid currentColor;
+            border-radius: 50%;
+            font-size: 0;
+        }
+
+        .sidebar-logo span::after { content: "V"; font-size: .72rem; font-weight: 700; }
+        .sidebar-nav { display: flex; align-items: center; gap: 34px; }
+        .sidebar-nav li { margin: 0; }
+        .sidebar-nav a,
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            padding: 8px 0;
+            gap: 0;
+            border-radius: 0;
+            color: var(--ink);
+            background: transparent;
+            font-size: .78rem;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+        }
+        .sidebar-nav a:hover, .sidebar-nav a.active { border-bottom-color: var(--ink); }
+        .sidebar-nav .icon, .sidebar-divider, .sidebar-footer { display: none; }
+
+        .main-content { margin: 0; padding: 0; }
+        .header {
+            min-height: 690px;
+            margin: 0;
+            padding: 150px clamp(24px, 7.5vw, 116px) 210px;
+            position: relative;
+            display: block;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: none;
+            background:
+                linear-gradient(90deg, rgba(244,239,234,.95) 0%, rgba(244,239,234,.65) 31%, rgba(244,239,234,.05) 60%),
+                linear-gradient(0deg, rgba(35,29,25,.22), transparent 40%),
+                url("assets/valutrack-hero.png") center / cover no-repeat;
+        }
+        .header::after {
+            content: "BOTSWANA PROPERTY INTELLIGENCE  /  EST. 2026";
+            position: absolute;
+            left: clamp(24px, 7.5vw, 116px);
+            bottom: 116px;
+            font-size: .67rem;
+            letter-spacing: .2em;
+            color: rgba(255,255,255,.85);
+        }
+        .header-content { max-width: 470px; position: relative; z-index: 1; }
+        .header-content h1 {
+            display: block;
+            max-width: 420px;
+            color: var(--ink);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(4.5rem, 7vw, 7.2rem);
+            font-weight: 400;
+            line-height: .78;
+            letter-spacing: -.07em;
+            text-transform: uppercase;
+        }
+        .header-content p {
+            margin-top: 34px;
+            max-width: 300px;
+            padding-left: 28px;
+            position: relative;
+            color: var(--ink);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .header-content p::before { content: "/"; position: absolute; left: 0; }
+        .header-badge {
+            margin-top: 34px;
+            display: inline-block;
+            padding: 13px 25px;
+            color: #fff;
+            background: var(--ink);
+            border-radius: 999px;
+            font-size: .7rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .container { max-width: 1320px; margin: -88px auto 0; padding: 0 28px 80px; position: relative; z-index: 5; }
+        .loading { min-height: 240px; padding: 70px; background: var(--white); border-radius: 38px; }
+        .section-title { display: none; }
+        .valuation-container { grid-template-columns: minmax(0, 1.04fr) minmax(360px, .96fr); gap: 0; align-items: stretch; }
+        .valuation-form-card, .results-card {
+            padding: clamp(30px, 4vw, 56px);
+            border: 1px solid rgba(255,255,255,.55);
+            box-shadow: 0 24px 70px rgba(45,36,31,.13);
+        }
+        .valuation-form-card { border-radius: 42px 0 0 42px; background: rgba(255,253,251,.97); }
+        .results-card {
+            border-radius: 0 42px 42px 0;
+            color: #f8f2ed;
+            background: #806556;
+        }
+        .valuation-form-card h2, .results-card h2 {
+            margin-bottom: 32px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(1.8rem, 3vw, 2.65rem);
+            font-weight: 400;
+            letter-spacing: -.03em;
+        }
+        .valuation-form-card h2 { color: var(--ink); }
+        .results-card h2 { color: #fff; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { color: #71665f; font-size: .69rem; letter-spacing: .09em; text-transform: uppercase; }
+        .form-group input, .form-group select {
+            padding: 13px 0;
+            border: 0;
+            border-bottom: 1px solid var(--line);
+            border-radius: 0;
+            color: var(--ink);
+            background: transparent;
+            font-size: .95rem;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--ink); box-shadow: none; }
+        .amenities-group { gap: 22px; }
+        .amenities-group label { color: var(--ink); letter-spacing: 0; text-transform: none; }
+        .amenities-group input[type="checkbox"] { accent-color: var(--clay); }
+        .btn-calculate {
+            margin-top: 10px;
+            padding: 16px 22px;
+            border: 1px solid var(--ink);
+            border-radius: 999px;
+            color: #fff;
+            background: var(--ink);
+            font-size: .72rem;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+            box-shadow: none;
+        }
+        .btn-calculate:hover { background: #4b3d35; transform: translateY(-1px); }
+        .results-placeholder { min-height: 390px; color: rgba(255,255,255,.72); }
+        .results-placeholder .icon { filter: grayscale(1); opacity: .85; }
+        .results-placeholder h3 { color: #fff; font-family: Georgia, serif; font-weight: 400; font-size: 1.65rem; }
+        .results-content { color: #fff; }
+        .market-value-label { color: rgba(255,255,255,.62); letter-spacing: .12em; text-transform: uppercase; }
+        .market-value { color: #fff; font-family: Georgia, serif; font-weight: 400; font-size: clamp(2.8rem, 4vw, 4.4rem); }
+        .results-grid { gap: 1px; overflow: hidden; border: 1px solid rgba(255,255,255,.16); border-radius: 18px; background: rgba(255,255,255,.16); }
+        .result-item { border: 0; border-radius: 0; background: rgba(72,53,45,.42); }
+        .result-item .label { color: rgba(255,255,255,.58); }
+        .result-item .value.blue, .result-item .value.green, .result-item .value.gold { color: #fff; }
+        .recommendation-box { border: 1px solid rgba(255,255,255,.16); color: #fff; background: rgba(255,255,255,.08); }
+        .results-content button { border: 1px solid rgba(255,255,255,.6) !important; border-radius: 999px !important; background: transparent !important; }
+        .history-container { padding: 42px; border-radius: 34px; background: var(--white); box-shadow: 0 20px 60px rgba(45,36,31,.09); }
+        #history.section.active { padding-top: 120px; }
+        .history-table th { background: #ded3ca; color: var(--ink); }
+        .scroll-top { background: var(--ink); }
+        .valuation-range { margin: -10px 0 24px; color: rgba(255,255,255,.7); font-size: .82rem; }
+        .confidence-row { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+        .confidence-track { flex: 1; height: 5px; overflow: hidden; border-radius: 5px; background: rgba(255,255,255,.16); }
+        .confidence-fill { width: 0; height: 100%; border-radius: inherit; background: #ead6c6; transition: width .55s ease; }
+        .confidence-label { min-width: 112px; color: rgba(255,255,255,.78); font-size: .72rem; }
+        .evidence-panel { margin-top: 22px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.17); }
+        .evidence-panel h3 { margin-bottom: 13px; font-family: Georgia, serif; font-size: 1.1rem; font-weight: 400; }
+        .breakdown-list { display: grid; gap: 8px; }
+        .breakdown-row { display: flex; justify-content: space-between; gap: 18px; color: rgba(255,255,255,.68); font-size: .75rem; }
+        .breakdown-row strong { color: #fff; font-weight: 500; text-align: right; }
+        .comparable-section { margin-top: 24px; padding: clamp(28px, 4vw, 48px); border-radius: 34px; background: var(--white); box-shadow: 0 20px 60px rgba(45,36,31,.08); }
+        .comparable-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 22px; }
+        .comparable-head h2 { font-family: Georgia, serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 400; }
+        .comparable-head p { max-width: 440px; color: var(--muted); font-size: .82rem; line-height: 1.5; }
+        .comparable-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .comparable-card { padding: 20px; border: 1px solid var(--line); border-radius: 18px; background: #f8f4f0; }
+        .comparable-card .match { color: var(--clay); font-size: .67rem; letter-spacing: .1em; text-transform: uppercase; }
+        .comparable-card h3 { margin: 10px 0 4px; font-family: Georgia, serif; font-size: 1.2rem; font-weight: 400; }
+        .comparable-card .price { margin: 14px 0; font-size: 1.1rem; font-weight: 600; }
+        .comparable-card dl { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; color: var(--muted); font-size: .72rem; }
+        .comparable-card dd { color: var(--ink); text-align: right; }
+        .report-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+        .btn-report { padding: 12px 20px; border: 1px solid var(--ink); border-radius: 999px; color: var(--ink); background: transparent; cursor: pointer; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+
+        @media (max-width: 900px) {
+            .sidebar { height: 72px; padding: 0 20px; }
+            .sidebar-nav { gap: 18px; }
+            .header { min-height: 610px; padding: 130px 24px 180px; background-position: 60% center; }
+            .header-content h1 { font-size: clamp(4rem, 16vw, 6rem); }
+            .header::after { left: 24px; bottom: 105px; }
+            .container { margin-top: -70px; padding-inline: 16px; }
+            .valuation-container { grid-template-columns: 1fr; }
+            .valuation-form-card { border-radius: 30px 30px 0 0; }
+            .results-card { border-radius: 0 0 30px 30px; }
+            .comparable-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 560px) {
+            .sidebar-logo { font-size: .8rem; }
+            .sidebar-logo span { display: none; }
+            .sidebar-nav a { font-size: .7rem; }
+            .header { min-height: 570px; }
+            .header-content h1 { font-size: 4rem; }
+            .form-row, .results-grid { grid-template-columns: 1fr; }
+            .valuation-form-card, .results-card { padding: 28px 22px; }
+            .history-container { padding: 20px; overflow-x: auto; }
+            .comparable-head { display: block; }
+            .comparable-head p { margin-top: 8px; }
+        }
+        @media print {
+            body { background: #fff; }
+            .sidebar, .header, .valuation-form-card, .scroll-top, .report-actions { display: none !important; }
+            .container { max-width: none; margin: 0; padding: 0; }
+            .valuation-container { display: block; }
+            .results-card { color: #222; background: #fff; border: 0; border-radius: 0; box-shadow: none; }
+            .results-card h2, .market-value, .result-item .value.blue, .result-item .value.green, .result-item .value.gold,
+            .breakdown-row strong { color: #222; }
+            .market-value-label, .valuation-range, .confidence-label, .breakdown-row { color: #666; }
+            .result-item, .recommendation-box { color: #222; background: #f4f1ed; border-color: #ddd; }
+            .comparable-section { box-shadow: none; break-before: page; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <span aria-hidden="true">V</span> ValuTrack
+        </div>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="#valuation" class="active" onclick="switchSection('valuation')">
+                    <span class="icon">01</span> Valuation
+                </a>
+            </li>
+            <li>
+                <a href="#history" onclick="switchSection('history')">
+                    <span class="icon">02</span> History
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-footer">
+            <p>Pula Property Group</p>
+            <p>© 2026 • v2.0</p>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="header-content">
+                <h1>The true<br>value of<br>home</h1>
+                <p>Data-led property valuation, made clear.</p>
+            </div>
+            <span class="header-badge">Start a valuation</span>
+        </header>
+        
+        <div class="container">
+            <div id="loading" class="loading">
+                <h2>Loading valuation tools...</h2>
+                <p>Please wait while we prepare your workspace.</p>
+            </div>
+            
+            <div id="toolContent" style="display: none;">
+                <!-- Section: Valuation -->
+                <section id="valuation" class="section active">
+                    <div class="section-title">Property Valuation</div>
+                    
+                    <div class="valuation-container">
+                        <!-- Form -->
+                        <div class="valuation-form-card">
+                            <h2>Describe the property</h2>
+                            
+                            <form id="valuationForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>City</label>
+                                        <select id="city" onchange="updateSuburbs()">
+                                            <option value="Gaborone">Gaborone</option>
+                                            <option value="Francistown">Francistown</option>
+                                            <option value="Maun">Maun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Property Type</label>
+                                        <select id="propertyType">
+                                            <option value="House">House</option>
+                                            <option value="Apartment">Apartment</option>
+                                            <option value="Townhouse">Townhouse</option>
+                                            <option value="Commercial Office">Commercial Office</option>
+                                            <option value="Retail Space">Retail Space</option>
+                                            <option value="Plot">Plot</option>
+                                            <option value="Warehouse">Warehouse</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Suburb</label>
+                                        <select id="suburb">
+                                            <!-- Populated dynamically based on city -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Transaction Type</label>
+                                        <select id="transactionType">
+                                            <option value="Sale">Sale</option>
+                                            <option value="Rental">Rental</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Bedrooms</label>
+                                        <input type="number" id="bedrooms" value="3" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Bathrooms</label>
+                                        <input type="number" id="bathrooms" value="2" min="0">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Floor Area (sqm)</label>
+                                        <input type="number" id="floorArea" value="250">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Plot Size (sqm)</label>
+                                        <input type="number" id="plotSize" value="500">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Age of Property (years)</label>
+                                    <input type="number" id="age" value="10">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Amenities</label>
+                                    <div class="amenities-group">
+                                        <label><input type="checkbox" id="pool"> Pool</label>
+                                        <label><input type="checkbox" id="garage"> Garage</label>
+                                        <label><input type="checkbox" id="gated"> Gated Community</label>
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn-calculate" onclick="calculateValuation()">
+                                    Calculate market value
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <!-- Results -->
+                        <div class="results-card">
+                            <h2>Your valuation</h2>
+                            
+                            <div class="results-placeholder" id="resultsPlaceholder">
+                                <span class="icon">⌂</span>
+                                <h3>Ready to value</h3>
+                                <p>Fill in the property details and click "Calculate Market Value"</p>
+                            </div>
+                            
+                            <div class="results-content" id="resultsContent">
+                                <div class="market-value-label">Estimated Market Value</div>
+                                <div class="market-value" id="marketValue">P0</div>
+                                <div class="valuation-range" id="valuationRange">Expected range will appear here</div>
+                                <div class="confidence-row">
+                                    <div class="confidence-track"><div class="confidence-fill" id="confidenceFill"></div></div>
+                                    <div class="confidence-label" id="confidenceLabel">Confidence —</div>
+                                </div>
+                                
+                                <div class="results-grid">
+                                    <div class="result-item">
+                                        <div class="label">Recommended Listing Price</div>
+                                        <div class="value blue" id="recommendedPrice">P0</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="label">Estimated Commission</div>
+                                        <div class="value green" id="estimatedCommission">P0</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="label">Similar Properties</div>
+                                        <div class="value gold" id="similarCount">0</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="recommendation-box">
+                                    <p>
+                                        <strong>Recommendation:</strong> 
+                                        <span id="recommendationText">List at recommended price to maximize commission while maintaining competitive market position.</span>
+                                    </p>
+                                </div>
+
+                                <div class="evidence-panel">
+                                    <h3>How this value was built</h3>
+                                    <div class="breakdown-list" id="breakdownList"></div>
+                                </div>
+                                
+                                <div style="margin-top: 1rem; text-align: right;">
+                                    <button onclick="saveToHistory()" style="background: #4CAF50; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">
+                                        Save to history
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comparable-section" id="comparableSection" style="display: none;">
+                        <div class="comparable-head">
+                            <h2>Comparable evidence</h2>
+                            <p>Closest matching records from the available transaction dataset, ranked by property characteristics.</p>
+                        </div>
+                        <div class="comparable-grid" id="comparableGrid"></div>
+                        <div class="report-actions">
+                            <button type="button" class="btn-report" onclick="window.print()">Print valuation report</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: History -->
+                <section id="history" class="section">
+                    <div class="section-title">Valuation History</div>
+                    
+                    <div class="history-container">
+                        <div id="historyContent">
+                            <!-- Populated from localStorage -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        <!-- Scroll to top button -->
+        <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            ↑
+        </button>
+    </main>
+    
+    <script>
+        // City to Suburb mapping
+        const citySuburbs = {
+            'Gaborone': [
+                'Broadhurst', 'CBD', 'Extension 14', 'Phase 2', 'Tlokweng', 
+                'Riverwalk', 'Block 9', 'Mogoditshane', 'Phakalane'
+            ],
+            'Francistown': [
+                'Monarch', 'Tati Siding', 'Gerald Estate', 'Somerset'
+            ],
+            'Maun': [
+                'Matlapana', 'Boseja', 'Sedie Ward'
+            ]
+        };
+        
+        // Reference data for valuation
+        let referenceData = null;
+        let propertyData = [];
+        
+        // History array
+        let valuationHistory = [];
+        
+        async function loadData() {
+            try {
+                const [refResponse, propertyResponse] = await Promise.all([
+                    fetch('valuation_reference.json'),
+                    fetch('property_data.csv')
+                ]);
+                referenceData = await refResponse.json();
+                propertyData = parseCSV(await propertyResponse.text());
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('toolContent').style.display = 'block';
+                
+                // Initialize suburbs for default city
+                updateSuburbs();
+                
+                // Load history from localStorage
+                loadHistory();
+                
+            } catch (error) {
+                document.getElementById('loading').innerHTML = `
+                    <h2 style="color: #f44336;">❌ Error loading data</h2>
+                    <p>Please make sure valuation_reference.json exists.</p>
+                    <p style="color: #6c757d; font-size: 0.875rem;">${error.message}</p>
+                `;
+            }
+        }
+        
+        function updateSuburbs() {
+            const city = document.getElementById('city').value;
+            const suburbSelect = document.getElementById('suburb');
+            const suburbs = citySuburbs[city] || [];
+            
+            suburbSelect.innerHTML = suburbs.map(s => 
+                `<option value="${s}">${s}</option>`
+            ).join('');
+        }
+
+        function parseCSV(csv) {
+            const lines = csv.trim().split(/\r?\n/);
+            const headers = lines.shift().split(',');
+            return lines.map(line => {
+                const values = line.split(',');
+                return headers.reduce((record, header, index) => {
+                    record[header] = values[index] ?? '';
+                    return record;
+                }, {});
+            });
+        }
+
+        function formatPula(value) {
+            return 'P' + Math.round(Number(value) || 0).toLocaleString();
+        }
+
+        function findComparables(subject) {
+            return propertyData.filter(item =>
+                item.city === subject.city &&
+                item.property_type === subject.propertyType &&
+                item.transaction_type === subject.transactionType
+            ).map(item => {
+                const floorDifference = Math.abs((Number(item.floor_area_sqm) || 0) - subject.floorArea) / Math.max(subject.floorArea, 1);
+                const plotDifference = Math.abs((Number(item.plot_size_sqm) || 0) - subject.plotSize) / Math.max(subject.plotSize, 1);
+                const bedroomDifference = Math.abs((Number(item.bedrooms) || 0) - subject.bedrooms) * .12;
+                const bathroomDifference = Math.abs((Number(item.bathrooms) || 0) - subject.bathrooms) * .1;
+                const suburbPenalty = item.suburb === subject.suburb ? 0 : .18;
+                const score = Math.max(45, Math.round(100 - ((floorDifference * .34 + plotDifference * .18 + bedroomDifference + bathroomDifference + suburbPenalty) * 100)));
+                return { ...item, score };
+            }).sort((a, b) => b.score - a.score);
+        }
+
+        function renderValuationEvidence(details) {
+            const margin = Math.max(.06, (100 - details.confidence) / 100);
+            const low = Math.round(details.value * (1 - margin) / 1000) * 1000;
+            const high = Math.round(details.value * (1 + margin) / 1000) * 1000;
+            document.getElementById('valuationRange').textContent = `Expected range ${formatPula(low)} – ${formatPula(high)}`;
+            document.getElementById('confidenceLabel').textContent = `Confidence ${details.confidence}%`;
+            document.getElementById('confidenceFill').style.width = details.confidence + '%';
+            document.getElementById('breakdownList').innerHTML = `
+                <div class="breakdown-row"><span>Market benchmark</span><strong>${formatPula(details.ref.avg_price)}</strong></div>
+                <div class="breakdown-row"><span>Reference rate</span><strong>${formatPula(details.ref.avg_sqm_rate)} / sqm</strong></div>
+                <div class="breakdown-row"><span>Location adjustment</span><strong>${details.suburbMultiplier.toFixed(2)}× for ${details.subject.suburb}</strong></div>
+                <div class="breakdown-row"><span>Reference sample</span><strong>${details.ref.count} ${details.subject.propertyType.toLowerCase()} records</strong></div>
+                <div class="breakdown-row"><span>Matching records</span><strong>${details.comparables.length} found</strong></div>
+            `;
+
+            document.getElementById('comparableGrid').innerHTML = details.comparables.slice(0, 3).map(item => {
+                const displayValue = details.subject.transactionType === 'Rental' ? item.monthly_rent_bwp : (item.sale_price || item.true_market_value);
+                const area = Number(item.floor_area_sqm) || Number(item.plot_size_sqm) || 0;
+                const rate = area ? Number(displayValue) / area : 0;
+                return `
+                    <article class="comparable-card">
+                        <div class="match">${item.score}% characteristic match</div>
+                        <h3>${item.suburb}, ${item.city}</h3>
+                        <div class="price">${formatPula(displayValue)}${details.subject.transactionType === 'Rental' ? ' / month' : ''}</div>
+                        <dl>
+                            <dt>Property</dt><dd>${item.property_type}</dd>
+                            <dt>Configuration</dt><dd>${item.bedrooms} bed · ${item.bathrooms} bath</dd>
+                            <dt>Floor area</dt><dd>${item.floor_area_sqm} sqm</dd>
+                            <dt>Rate</dt><dd>${formatPula(rate)} / sqm</dd>
+                            <dt>Closed</dt><dd>${item.closed_date || 'Recorded'}</dd>
+                        </dl>
+                    </article>
+                `;
+            }).join('') || '<p>No sufficiently similar records are currently available.</p>';
+            document.getElementById('comparableSection').style.display = 'block';
+            return { low, high };
+        }
+        
+        function calculateValuation() {
+            const city = document.getElementById('city').value;
+            const propertyType = document.getElementById('propertyType').value;
+            const suburb = document.getElementById('suburb').value;
+            const transactionType = document.getElementById('transactionType').value;
+            const bedrooms = parseInt(document.getElementById('bedrooms').value) || 0;
+            const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
+            const floorArea = parseInt(document.getElementById('floorArea').value) || 0;
+            const plotSize = parseInt(document.getElementById('plotSize').value) || 0;
+            const age = parseInt(document.getElementById('age').value) || 0;
+            const hasPool = document.getElementById('pool').checked ? 1 : 0;
+            const hasGarage = document.getElementById('garage').checked ? 1 : 0;
+            const isGated = document.getElementById('gated').checked ? 1 : 0;
+            
+            let value = 0;
+            let suburbMultiplier = 1;
+            let activeReference = { avg_price: 0, avg_sqm_rate: 0, count: 0 };
+            
+            // Use reference data if available
+            if (referenceData && referenceData[city] && referenceData[city][propertyType]) {
+                const ref = referenceData[city][propertyType];
+                activeReference = ref;
+                value = ref.avg_price;
+                
+                // Adjust for floor area
+                if (floorArea > 0) {
+                    value += (floorArea - 200) * ref.avg_sqm_rate * 0.5;
+                }
+                
+                // Adjust for plot size (only for properties with land)
+                if (plotSize > 0 && propertyType !== 'Apartment' && propertyType !== 'Commercial Office') {
+                    value += (plotSize - 500) * 200;
+                }
+                
+                // Adjust for bedrooms and bathrooms
+                value += (bedrooms - 3) * 50000;
+                value += (bathrooms - 2) * 30000;
+                
+                // Age adjustment
+                if (age > 0) {
+                    value *= (1 - (age / 100) * 0.5);
+                }
+                
+                // Amenities
+                if (hasPool) value += 50000;
+                if (hasGarage) value += 40000;
+                if (isGated) value += 60000;
+                
+                // Suburb multiplier
+                const suburbMultipliers = {
+                    'CBD': 1.3, 'Broadhurst': 1.2, 'Riverwalk': 1.2,
+                    'Tlokweng': 1.1, 'Extension 14': 1.1, 'Phase 2': 1.0,
+                    'Block 9': 1.0, 'Phakalane': 1.0, 'Mogoditshane': 0.9,
+                    'Monarch': 1.1, 'Gerald Estate': 1.0, 'Tati Siding': 0.9,
+                    'Somerset': 0.9, 'Matlapana': 1.0, 'Boseja': 0.9, 'Sedie Ward': 0.9
+                };
+                suburbMultiplier = suburbMultipliers[suburb] || 1.0;
+                value *= suburbMultiplier;
+                
+                // Rental adjustment
+                if (transactionType === 'Rental') {
+                    value = value * 0.007; // Monthly rent as 0.7% of property value
+                }
+                
+                // Round to nearest 1000
+                value = Math.round(value / 1000) * 1000;
+            } else {
+                // Fallback calculation
+                value = 500000 + (floorArea * 3000) + (plotSize * 200) + (bedrooms * 50000);
+                if (transactionType === 'Rental') {
+                    value = value * 0.007;
+                }
+                value = Math.round(value / 1000) * 1000;
+            }
+            
+            // Display results
+            document.getElementById('resultsPlaceholder').style.display = 'none';
+            document.getElementById('resultsContent').classList.add('active');
+            document.getElementById('marketValue').textContent = 'P' + value.toLocaleString();
+            
+            const subject = { city, suburb, propertyType, transactionType, bedrooms, bathrooms, floorArea, plotSize };
+            const allComparables = findComparables(subject);
+            const confidence = Math.min(92, Math.round(55 + Math.min(activeReference.count / 5, 20) + Math.min(allComparables.length / 4, 17)));
+
+            // Stable recommendation: a modest positioning premium for sales.
+            const recommendedPrice = transactionType === 'Sale'
+                ? Math.round(value * 1.01 / 1000) * 1000
+                : value;
+            document.getElementById('recommendedPrice').textContent = 'P' + recommendedPrice.toLocaleString();
+            
+            // Calculate estimated commission
+            let commission = 0;
+            if (transactionType === 'Sale') {
+                commission = value * 0.05;
+            } else {
+                commission = value * 0.07;
+            }
+            document.getElementById('estimatedCommission').textContent = 'P' + Math.round(commission).toLocaleString();
+            
+            // Similar properties count from the transaction dataset
+            const similarCount = allComparables.length;
+            document.getElementById('similarCount').textContent = similarCount;
+            
+            // Recommendation text
+            const diff = ((recommendedPrice - value) / value * 100);
+            let recommendation = '';
+            if (diff > 2) {
+                recommendation = 'Consider listing slightly above market value for premium positioning.';
+            } else if (diff < -2) {
+                recommendation = 'Consider listing slightly below market value for faster sale.';
+            } else {
+                recommendation = 'List at recommended price to maximize commission while maintaining competitive market position.';
+            }
+            document.getElementById('recommendationText').textContent = recommendation;
+
+            const range = renderValuationEvidence({
+                value,
+                confidence,
+                ref: activeReference,
+                suburbMultiplier,
+                comparables: allComparables,
+                subject
+            });
+            
+            // Store current valuation for history
+            window.currentValuation = {
+                city: city,
+                suburb: suburb,
+                propertyType: propertyType,
+                transactionType: transactionType,
+                bedrooms: bedrooms,
+                bathrooms: bathrooms,
+                floorArea: floorArea,
+                plotSize: plotSize,
+                age: age,
+                amenities: {
+                    pool: hasPool,
+                    garage: hasGarage,
+                    gated: isGated
+                },
+                marketValue: value,
+                recommendedPrice: recommendedPrice,
+                commission: Math.round(commission),
+                confidence: confidence,
+                valuationLow: range.low,
+                valuationHigh: range.high,
+                date: new Date().toLocaleString()
+            };
+        }
+        
+        function saveToHistory() {
+            if (window.currentValuation) {
+                valuationHistory.unshift(window.currentValuation);
+                
+                // Keep only last 50 entries
+                if (valuationHistory.length > 50) {
+                    valuationHistory = valuationHistory.slice(0, 50);
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('valuationHistory', JSON.stringify(valuationHistory));
+                
+                // Update display
+                renderHistory();
+                
+                // Show feedback
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Saved!';
+                btn.style.background = '#28a745';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#4CAF50';
+                }, 2000);
+            }
+        }
+        
+        function loadHistory() {
+            const saved = localStorage.getItem('valuationHistory');
+            if (saved) {
+                try {
+                    valuationHistory = JSON.parse(saved);
+                } catch (e) {
+                    valuationHistory = [];
+                }
+            }
+            renderHistory();
+        }
+        
+        function renderHistory() {
+            const container = document.getElementById('historyContent');
+            
+            if (valuationHistory.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-history">
+                        <p style="font-size: 3rem; margin-bottom: 1rem;">📭</p>
+                        <h3>No valuations saved yet</h3>
+                        <p>Your saved valuations will appear here.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <p style="color: #6c757d; font-size: 0.875rem;">${valuationHistory.length} valuations saved</p>
+                    <button onclick="clearHistory()" style="background: #f44336; color: white; border: none; padding: 0.375rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem;">
+                        Clear All
+                    </button>
+                </div>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Property</th>
+                            <th>Location</th>
+                            <th>Market Value</th>
+                            <th>Recommended Price</th>
+                            <th>Commission</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${valuationHistory.map(item => `
+                            <tr>
+                                <td>${item.date}</td>
+                                <td>${item.propertyType} (${item.bedrooms} bed, ${item.bathrooms} bath)</td>
+                                <td>${item.suburb}, ${item.city}</td>
+                                <td><strong>P${item.marketValue.toLocaleString()}</strong></td>
+                                <td>P${item.recommendedPrice.toLocaleString()}</td>
+                                <td style="color: #4CAF50;">P${item.commission.toLocaleString()}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+        
+        function clearHistory() {
+            if (confirm('Clear all valuation history?')) {
+                valuationHistory = [];
+                localStorage.removeItem('valuationHistory');
+                renderHistory();
+            }
+        }
+        
+        function switchSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update sidebar
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            document.querySelector(`.sidebar-nav a[href="#${sectionId}"]`).classList.add('active');
+        }
+        
+        // Setup scroll to top
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 400) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+        
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

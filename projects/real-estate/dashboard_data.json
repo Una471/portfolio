@@ -1,0 +1,313 @@
+{
+  "metrics": {
+    "total_properties": 2000,
+    "total_commission": 106606300.0,
+    "total_lost": 1882500.0,
+    "potential_revenue": 108488800.0,
+    "recovery_rate": 98.2647978408831,
+    "active_listings": 154,
+    "avg_days_on_market": 60.815276273022754,
+    "avg_pricing_error": -0.5547291440953412,
+    "model_r2": 0.5012561403524094,
+    "model_accuracy": 50.12561403524094,
+    "top_agent": "Agent_Lesego",
+    "top_agent_commission": 17154200.0
+  },
+  "agents": {
+    "Agent_Lesego": {
+      "property_id": 258,
+      "commission_earned_bwp": 17154200.0,
+      "commission_lost_bwp": 188550.0,
+      "pricing_error_pct": 0.01
+    },
+    "Agent_Kabo": {
+      "property_id": 261,
+      "commission_earned_bwp": 16043900.0,
+      "commission_lost_bwp": 513450.0,
+      "pricing_error_pct": -1.45
+    },
+    "Agent_Gomolemo": {
+      "property_id": 263,
+      "commission_earned_bwp": 15661850.0,
+      "commission_lost_bwp": 118250.0,
+      "pricing_error_pct": 0.04
+    },
+    "Agent_Neo": {
+      "property_id": 264,
+      "commission_earned_bwp": 15327500.0,
+      "commission_lost_bwp": 441600.0,
+      "pricing_error_pct": -0.94
+    },
+    "Agent_Mpho": {
+      "property_id": 261,
+      "commission_earned_bwp": 14897900.0,
+      "commission_lost_bwp": 278900.0,
+      "pricing_error_pct": -0.87
+    },
+    "Agent_Boago": {
+      "property_id": 281,
+      "commission_earned_bwp": 14801100.0,
+      "commission_lost_bwp": 268150.0,
+      "pricing_error_pct": -0.67
+    },
+    "Agent_Tshepho": {
+      "property_id": 258,
+      "commission_earned_bwp": 12719850.0,
+      "commission_lost_bwp": 73600.0,
+      "pricing_error_pct": 0.01
+    }
+  },
+  "property_types": {
+    "Apartment": {
+      "commission_earned_bwp": 5796500.0,
+      "commission_lost_bwp": 105450.0,
+      "property_id": 304
+    },
+    "Commercial Office": {
+      "commission_earned_bwp": 25716650.0,
+      "commission_lost_bwp": 410700.0,
+      "property_id": 271
+    },
+    "House": {
+      "commission_earned_bwp": 8878100.0,
+      "commission_lost_bwp": 134500.0,
+      "property_id": 254
+    },
+    "Plot": {
+      "commission_earned_bwp": 2243200.0,
+      "commission_lost_bwp": 24500.0,
+      "property_id": 234
+    },
+    "Retail Space": {
+      "commission_earned_bwp": 22177350.0,
+      "commission_lost_bwp": 434350.0,
+      "property_id": 258
+    },
+    "Townhouse": {
+      "commission_earned_bwp": 7182200.0,
+      "commission_lost_bwp": 121900.0,
+      "property_id": 257
+    },
+    "Warehouse": {
+      "commission_earned_bwp": 34612300.0,
+      "commission_lost_bwp": 651100.0,
+      "property_id": 268
+    }
+  },
+  "cities": {
+    "Francistown": {
+      "commission_earned_bwp": 35920150.0,
+      "commission_lost_bwp": 633250.0,
+      "property_id": 627
+    },
+    "Gaborone": {
+      "commission_earned_bwp": 39039250.0,
+      "commission_lost_bwp": 721600.0,
+      "property_id": 602
+    },
+    "Maun": {
+      "commission_earned_bwp": 31646900.0,
+      "commission_lost_bwp": 527650.0,
+      "property_id": 617
+    }
+  },
+  "referrals": {
+    "Agent Network": {
+      "property_id": 417,
+      "commission_earned_bwp": 21907400.0,
+      "days_on_market": 58.28
+    },
+    "Referral": {
+      "property_id": 368,
+      "commission_earned_bwp": 21567200.0,
+      "days_on_market": 56.37
+    },
+    "Online Listing": {
+      "property_id": 367,
+      "commission_earned_bwp": 21976850.0,
+      "days_on_market": 62.6
+    },
+    "Cold Call": {
+      "property_id": 350,
+      "commission_earned_bwp": 19803600.0,
+      "days_on_market": 65.29
+    },
+    "Walk-in": {
+      "property_id": 344,
+      "commission_earned_bwp": 21351250.0,
+      "days_on_market": 62.18
+    }
+  },
+  "monthly": {
+    "2024-01": {
+      "commission_earned_bwp": 7734250.0,
+      "property_id": 123
+    },
+    "2024-02": {
+      "commission_earned_bwp": 5825200.0,
+      "property_id": 113
+    },
+    "2024-03": {
+      "commission_earned_bwp": 7829950.0,
+      "property_id": 111
+    },
+    "2024-04": {
+      "commission_earned_bwp": 6867500.0,
+      "property_id": 119
+    },
+    "2024-05": {
+      "commission_earned_bwp": 8825600.0,
+      "property_id": 143
+    },
+    "2024-06": {
+      "commission_earned_bwp": 6975500.0,
+      "property_id": 122
+    },
+    "2024-07": {
+      "commission_earned_bwp": 8075100.0,
+      "property_id": 115
+    },
+    "2024-08": {
+      "commission_earned_bwp": 7169500.0,
+      "property_id": 129
+    },
+    "2024-09": {
+      "commission_earned_bwp": 8050550.0,
+      "property_id": 131
+    },
+    "2024-10": {
+      "commission_earned_bwp": 6849500.0,
+      "property_id": 124
+    },
+    "2024-11": {
+      "commission_earned_bwp": 9650850.0,
+      "property_id": 142
+    },
+    "2024-12": {
+      "commission_earned_bwp": 5417950.0,
+      "property_id": 106
+    },
+    "2025-01": {
+      "commission_earned_bwp": 5240900.0,
+      "property_id": 79
+    },
+    "2025-02": {
+      "commission_earned_bwp": 3983000.0,
+      "property_id": 81
+    },
+    "2025-03": {
+      "commission_earned_bwp": 2826200.0,
+      "property_id": 76
+    },
+    "2025-04": {
+      "commission_earned_bwp": 3127900.0,
+      "property_id": 69
+    },
+    "2025-05": {
+      "commission_earned_bwp": 2156850.0,
+      "property_id": 63
+    }
+  },
+  "active_listings": [
+    {
+      "property_id": "PPG-00010",
+      "location": "Boseja, Maun",
+      "type": "House",
+      "listed_price": 705000.0,
+      "market_value": 3084053.0893576895,
+      "days_on_market": 69,
+      "agent": "Agent_Mpho",
+      "status": "Active"
+    },
+    {
+      "property_id": "PPG-00015",
+      "location": "Boseja, Maun",
+      "type": "Plot",
+      "listed_price": 93000.0,
+      "market_value": 226605.2583955027,
+      "days_on_market": 146,
+      "agent": "Agent_Lesego",
+      "status": "Active"
+    },
+    {
+      "property_id": "PPG-00018",
+      "location": "Monarch, Francistown",
+      "type": "House",
+      "listed_price": 334000.0,
+      "market_value": 2239118.946249541,
+      "days_on_market": 165,
+      "agent": "Agent_Kabo",
+      "status": "Active"
+    },
+    {
+      "property_id": "PPG-00033",
+      "location": "Tlokweng, Gaborone",
+      "type": "Townhouse",
+      "listed_price": 1746000.0,
+      "market_value": 3030288.210951864,
+      "days_on_market": 132,
+      "agent": "Agent_Tshepho",
+      "status": "Active"
+    },
+    {
+      "property_id": "PPG-00041",
+      "location": "Sedie Ward, Maun",
+      "type": "Plot",
+      "listed_price": 88000.0,
+      "market_value": 676208.1780791339,
+      "days_on_market": 147,
+      "agent": "Agent_Lesego",
+      "status": "Active"
+    },
+    {
+      "property_id": "PPG-00042",
+      "location": "Gerald Estate, Francistown",
+      "type": "House",
+      "listed_price": 18600.0,
+      "market_value": 498433.0325570579,
+      "days_on_market": 43,
+      "agent": "Agent_Gomolemo",
+      "status": "Active"
+    },
+    {
+      "property_id": "PPG-00053",
+      "location": "Sedie Ward, Maun",
+      "type": "Retail Space",
+      "listed_price": 1634000.0,
+      "market_value": 3547356.81416133,
+      "days_on_market": 129,
+      "agent": "Agent_Boago",
+      "status": "Active"
+    },
+    {
+      "property_id": "PPG-00069",
+      "location": "Sedie Ward, Maun",
+      "type": "Retail Space",
+      "listed_price": 1541000.0,
+      "market_value": 3977585.336620591,
+      "days_on_market": 232,
+      "agent": "Agent_Mpho",
+      "status": "Active"
+    },
+    {
+      "property_id": "PPG-00074",
+      "location": "Mogoditshane, Gaborone",
+      "type": "House",
+      "listed_price": 2350000.0,
+      "market_value": 2002702.3673169434,
+      "days_on_market": 163,
+      "agent": "Agent_Lesego",
+      "status": "Active"
+    },
+    {
+      "property_id": "PPG-00087",
+      "location": "Boseja, Maun",
+      "type": "Townhouse",
+      "listed_price": 688000.0,
+      "market_value": 1611691.7886120065,
+      "days_on_market": 141,
+      "agent": "Agent_Gomolemo",
+      "status": "Active"
+    }
+  ]
+}

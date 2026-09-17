@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setshaba Construction - Portfolio Intelligence Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #f0f2f5; 
+            color: #1a1a2e;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #2d3436 0%, #1a1a2e 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+            gap: 0.75rem;
+        }
+        
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .sidebar-nav .icon {
+            font-size: 1.25rem;
+            width: 28px;
+            text-align: center;
+        }
+        
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 1rem 0;
+        }
+        
+        .sidebar-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-content h1 { font-size: 1.75rem; font-weight: 600; color: #1a1a2e; }
+        .header-content p { color: #6c757d; margin-top: 0.25rem; }
+        .header-meta { text-align: right; color: #6c757d; font-size: 0.875rem; }
+        
+        .container { max-width: 1400px; }
+        
+        .section {
+            scroll-margin-top: 1rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-title .badge {
+            font-size: 0.75rem;
+            background: #667eea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .metrics-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 1rem; 
+            margin-bottom: 2rem; 
+        }
+        
+        .metric-card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+        }
+        
+        .metric-card h3 { 
+            color: #6c757d; 
+            font-size: 0.875rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .metric-card .value { 
+            font-size: 2rem; 
+            font-weight: 600; 
+            margin-top: 0.5rem; 
+        }
+        
+        .metric-card .change {
+            display: inline-block;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .metric-card .change.danger { color: #f44336; }
+        .metric-card .change.success { color: #4CAF50; }
+        
+        .charts-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); 
+            gap: 1.5rem; 
+            margin-bottom: 2rem; 
+        }
+        
+        .chart-card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+        }
+        
+        .chart-card h3 { 
+            margin-bottom: 1rem; 
+            color: #1a1a2e; 
+            font-size: 1rem;
+        }
+        
+        .chart-container { 
+            position: relative; 
+            height: 300px; 
+        }
+        
+        .full-width-chart { 
+            grid-column: 1 / -1; 
+        }
+        
+        .table-container { 
+            overflow-x: auto; 
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        
+        th { 
+            background: #f8f9fa; 
+            padding: 0.75rem; 
+            text-align: left; 
+            font-weight: 600; 
+        }
+        
+        td { 
+            padding: 0.75rem; 
+            border-bottom: 1px solid #f0f0f0; 
+        }
+        
+        .badge { 
+            display: inline-block; 
+            padding: 0.25rem 0.5rem; 
+            border-radius: 4px; 
+            font-size: 0.75rem; 
+            font-weight: 500; 
+        }
+        
+        .badge-critical { background: #f8d7da; color: #721c24; }
+        .badge-high { background: #fff3cd; color: #856404; }
+        .badge-medium { background: #cce5ff; color: #004085; }
+        .badge-low { background: #d4edda; color: #155724; }
+        
+        .loading { 
+            text-align: center; 
+            padding: 4rem; 
+            color: #6c757d; 
+        }
+        
+        /* Scroll to top */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #667eea;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            border: none;
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+        
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+                padding: 1.5rem 1rem;
+            }
+            .main-content {
+                margin-left: 220px;
+                padding: 1.5rem;
+            }
+            .charts-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .sidebar-logo {
+                margin-bottom: 0;
+                font-size: 1.25rem;
+                margin-right: 1rem;
+            }
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+            .sidebar-nav li {
+                margin-bottom: 0;
+            }
+            .sidebar-nav a {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            .sidebar-divider, .sidebar-footer {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header-meta {
+                text-align: center;
+            }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <span>🏗️</span> Setshaba
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="#overview" class="active"><span class="icon">📊</span> Overview</a></li>
+            <li><a href="#costs"><span class="icon">💰</span> Costs</a></li>
+            <li><a href="#managers"><span class="icon">👷</span> Managers</a></li>
+            <li><a href="#delays"><span class="icon">⏰</span> Delays</a></li>
+            <li><a href="#waste"><span class="icon">♻️</span> Waste</a></li>
+            <li><a href="#risk"><span class="icon">⚠️</span> Risk</a></li>
+            <li><a href="#insights"><span class="icon">💡</span> Insights</a></li>
+        </ul>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-footer">
+            <p>Setshaba Construction</p>
+            <p>© 2026 • v2.0</p>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="header-content">
+                <h1>🏗️ Portfolio Intelligence Dashboard</h1>
+                <p>Data-driven insights for better project outcomes</p>
+            </div>
+            <div class="header-meta">
+                <p><strong>Period:</strong> 2018 – 2025</p>
+                <p><strong>Updated:</strong> <span id="reportDate">Loading...</span></p>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div id="loading" class="loading">
+                <h2>Loading dashboard data...</h2>
+                <p>Please wait while we prepare your insights.</p>
+            </div>
+            
+            <div id="dashboardContent" style="display: none;">
+                <!-- Section: Overview -->
+                <section id="overview" class="section">
+                    <div class="section-title">
+                        📊 Overview
+                        <span class="badge">Live</span>
+                    </div>
+                    <div class="metrics-grid" id="metricsGrid"></div>
+                </section>
+                
+                <!-- Section: Costs -->
+                <section id="costs" class="section">
+                    <div class="section-title">💰 Cost Analysis</div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Cost Variance by Project Type</h3>
+                            <div class="chart-container">
+                                <canvas id="costChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Overrun Rate by Project Type</h3>
+                            <div class="chart-container">
+                                <canvas id="overrunChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Managers -->
+                <section id="managers" class="section">
+                    <div class="section-title">👷 Project Manager Scorecard</div>
+                    <div class="charts-grid">
+                        <div class="chart-card full-width-chart">
+                            <h3>Manager Performance Comparison</h3>
+                            <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+                                <table id="managerTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Manager</th>
+                                            <th>Projects</th>
+                                            <th>Overrun Rate</th>
+                                            <th>Avg Delay (mo)</th>
+                                            <th>Waste %</th>
+                                            <th>Quality Score</th>
+                                            <th>Rating</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Delays -->
+                <section id="delays" class="section">
+                    <div class="section-title">⏰ Delay Analysis</div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Delay Causes</h3>
+                            <div class="chart-container">
+                                <canvas id="delayChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Average Delay by Cause</h3>
+                            <div class="chart-container">
+                                <canvas id="delayDurationChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Waste -->
+                <section id="waste" class="section">
+                    <div class="section-title">♻️ Material Waste Analysis</div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Waste % by Project Type</h3>
+                            <div class="chart-container">
+                                <canvas id="wasteChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Waste Cost by Project Type</h3>
+                            <div class="chart-container">
+                                <canvas id="wasteCostChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Risk -->
+                <section id="risk" class="section">
+                    <div class="section-title">⚠️ At-Risk Projects</div>
+                    <div class="charts-grid">
+                        <div class="chart-card full-width-chart">
+                            <h3>Top 20 Projects at Risk of Overrun</h3>
+                            <div class="table-container" style="max-height: 500px; overflow-y: auto;">
+                                <table id="riskTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Project ID</th>
+                                            <th>Type</th>
+                                            <th>Region</th>
+                                            <th>Manager</th>
+                                            <th>Budget</th>
+                                            <th>Risk Level</th>
+                                            <th>Probability</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Insights -->
+                <section id="insights" class="section">
+                    <div class="section-title">💡 Key Insights</div>
+                    <div class="charts-grid">
+                        <div class="chart-card full-width-chart">
+                            <div style="padding: 1rem;">
+                                <h3 style="margin-bottom: 1rem;">What's Driving Cost Overruns?</h3>
+                                <div id="insightsContent">
+                                    <!-- Populated from data -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        <!-- Scroll to top -->
+        <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            ↑
+        </button>
+    </main>
+    
+    <script>
+        let dashboardData = null;
+        
+        async function loadData() {
+            try {
+                const response = await fetch('dashboard_data.json');
+                dashboardData = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+                document.getElementById('reportDate').textContent = new Date().toLocaleDateString('en-ZA', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                populateMetrics();
+                populateManagers();
+                populateRiskTable();
+                populateInsights();
+                initCharts();
+                setupSidebarNavigation();
+                setupScrollTopButton();
+            } catch (error) {
+                document.getElementById('loading').innerHTML = `
+                    <h2 style="color: #f44336;">❌ Error loading data</h2>
+                    <p>Please make sure dashboard_data.json exists and is valid.</p>
+                    <p style="color: #6c757d; font-size: 0.875rem;">${error.message}</p>
+                `;
+            }
+        }
+        
+        function populateMetrics() {
+            const metrics = dashboardData.metrics;
+            const grid = document.getElementById('metricsGrid');
+            
+            const metricItems = [
+                { label: 'Total Projects', value: metrics.total_projects.toLocaleString(), change: '', class: '' },
+                { label: 'Completed', value: metrics.completed_projects.toLocaleString(), change: '', class: '' },
+                { label: 'Active', value: metrics.active_projects.toLocaleString(), change: '', class: '' },
+                { label: 'Overrun Rate', value: metrics.overrun_rate.toFixed(1) + '%', change: '⚠️ Needs attention', class: 'danger' },
+                { label: 'Total Contracted', value: 'P' + (metrics.total_contracted/1000000).toFixed(1) + 'M', change: '', class: '' },
+                { label: 'Total Variance', value: 'P' + (metrics.total_variance/1000000).toFixed(1) + 'M', change: '🔴 High', class: 'danger' },
+                { label: 'Total Waste', value: 'P' + (metrics.total_material_waste/1000000).toFixed(1) + 'M', change: '', class: '' },
+                { label: 'Avg Waste %', value: metrics.avg_waste_pct.toFixed(1) + '%', change: '📉 Reducing', class: 'success' }
+            ];
+            
+            grid.innerHTML = metricItems.map(m => `
+                <div class="metric-card">
+                    <h3>${m.label}</h3>
+                    <div class="value">${m.value}</div>
+                    ${m.change ? `<span class="change ${m.class}">${m.change}</span>` : ''}
+                </div>
+            `).join('');
+        }
+        
+        function populateManagers() {
+            const tbody = document.querySelector('#managerTable tbody');
+            const managers = dashboardData.managers;
+            
+            tbody.innerHTML = Object.entries(managers).map(([name, data]) => {
+                let rating = 'Good';
+                if (data.overrun_rate < 30) rating = 'Excellent';
+                else if (data.overrun_rate > 50) rating = 'Needs Improvement';
+                
+                return `
+                    <tr>
+                        <td><strong>${name}</strong></td>
+                        <td>${data.project_id}</td>
+                        <td>${data.overrun_rate.toFixed(1)}%</td>
+                        <td>${data.delay_months.toFixed(1)}</td>
+                        <td>${data.material_waste_pct.toFixed(1)}%</td>
+                        <td>${data.quality_score.toFixed(1)}</td>
+                        <td>
+                            <span class="badge ${rating === 'Excellent' ? 'badge-low' : rating === 'Good' ? 'badge-medium' : 'badge-high'}">
+                                ${rating}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function populateRiskTable() {
+            const tbody = document.querySelector('#riskTable tbody');
+            const projects = dashboardData.risk_projects;
+            
+            tbody.innerHTML = projects.map(p => `
+                <tr>
+                    <td><strong>${p.project_id}</strong></td>
+                    <td>${p.project_type}</td>
+                    <td>${p.region}</td>
+                    <td>${p.project_manager}</td>
+                    <td>P${p.contracted_budget_bwp.toLocaleString()}</td>
+                    <td>
+                        <span class="badge ${p.risk_level === 'Critical' ? 'badge-critical' : p.risk_level === 'High' ? 'badge-high' : p.risk_level === 'Medium' ? 'badge-medium' : 'badge-low'}">
+                            ${p.risk_level}
+                        </span>
+                    </td>
+                    <td>${(p.overrun_probability * 100).toFixed(0)}%</td>
+                </tr>
+            `).join('');
+        }
+        
+        function populateInsights() {
+            const container = document.getElementById('insightsContent');
+            const metrics = dashboardData.metrics;
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f44336;">
+                        <h4 style="color: #1a1a2e; margin-bottom: 0.5rem;">🔥 Critical Risk Signal #1</h4>
+                        <p style="color: #6c757d;"><strong>Project type</strong> is the strongest predictor of overruns. <strong>${metrics.top_overrun_type}</strong> projects have the highest overrun rates.</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #495057;">
+                            <strong>Action:</strong> Increase contingency for high-risk project types during bid stage.
+                        </p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #ff9800;">
+                        <h4 style="color: #1a1a2e; margin-bottom: 0.5rem;">⚠️ Critical Risk Signal #2</h4>
+                        <p style="color: #6c757d;"><strong>Region</strong> significantly impacts project outcomes. <strong>${metrics.top_overrun_region}</strong> has the highest overrun rate.</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #495057;">
+                            <strong>Action:</strong> Assign more experienced managers to high-risk regions.
+                        </p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #4CAF50;">
+                        <h4 style="color: #1a1a2e; margin-bottom: 0.5rem;">✅ What's Working</h4>
+                        <p style="color: #6c757d;">Projects with <strong>higher quality scores</strong> (70+) have significantly lower overrun rates.</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #495057;">
+                            <strong>Action:</strong> Invest in quality control processes across all projects.
+                        </p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9C27B0;">
+                        <h4 style="color: #1a1a2e; margin-bottom: 0.5rem;">💰 Financial Impact</h4>
+                        <p style="color: #6c757d;">Reducing overrun rate from <strong>${metrics.overrun_rate.toFixed(0)}% to below 30%</strong> could save <strong>P12-15M</strong> annually.</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #495057;">
+                            <strong>Action:</strong> Prioritize interventions for high-risk projects identified by the model.
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function initCharts() {
+            const projectTypes = dashboardData.project_types;
+            const regions = dashboardData.regions;
+            const delays = dashboardData.delays;
+            const waste = dashboardData.waste;
+            
+            // Cost Chart
+            const ptNames = Object.keys(projectTypes);
+            const costVariances = ptNames.map(p => projectTypes[p].cost_variance_bwp);
+            const colors = costVariances.map(v => v > 0 ? '#f44336' : '#4CAF50');
+            
+            new Chart(document.getElementById('costChart'), {
+                type: 'bar',
+                data: {
+                    labels: ptNames,
+                    datasets: [{
+                        label: 'Cost Variance (P)',
+                        data: costVariances,
+                        backgroundColor: colors,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: (v) => 'P' + (v/1000000).toFixed(1) + 'M'
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: (v) => 'P' + (v/1000000).toFixed(1) + 'M' } }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Overrun Rate Chart
+            const overrunRates = ptNames.map(p => projectTypes[p].overrun_rate);
+            
+            new Chart(document.getElementById('overrunChart'), {
+                type: 'bar',
+                data: {
+                    labels: ptNames,
+                    datasets: [{
+                        label: 'Overrun Rate (%)',
+                        data: overrunRates,
+                        backgroundColor: overrunRates.map(r => r > 50 ? '#f44336' : r > 30 ? '#ff9800' : '#4CAF50'),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: (v) => v.toFixed(1) + '%'
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, ticks: { callback: (v) => v + '%' } }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Delay Chart
+            const delayNames = Object.keys(delays);
+            const delayCounts = delayNames.map(d => delays[d].project_id);
+            
+            new Chart(document.getElementById('delayChart'), {
+                type: 'pie',
+                data: {
+                    labels: delayNames,
+                    datasets: [{
+                        data: delayCounts,
+                        backgroundColor: ['#f44336', '#ff9800', '#4CAF50', '#667eea', '#764ba2', '#f093fb', '#4facfe']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' },
+                        datalabels: {
+                            formatter: (v, ctx) => {
+                                let sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                return (v/sum*100).toFixed(1) + '%';
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Delay Duration Chart
+            const delayDurations = delayNames.map(d => delays[d].delay_months);
+            
+            new Chart(document.getElementById('delayDurationChart'), {
+                type: 'bar',
+                data: {
+                    labels: delayNames,
+                    datasets: [{
+                        label: 'Avg Delay (months)',
+                        data: delayDurations,
+                        backgroundColor: '#667eea',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: (v) => v.toFixed(1) + ' mo'
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Waste Chart
+            const wasteNames = Object.keys(waste);
+            const wastePcts = wasteNames.map(w => waste[w].material_waste_pct);
+            
+            new Chart(document.getElementById('wasteChart'), {
+                type: 'bar',
+                data: {
+                    labels: wasteNames,
+                    datasets: [{
+                        label: 'Waste %',
+                        data: wastePcts,
+                        backgroundColor: '#ff9800',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: (v) => v.toFixed(1) + '%'
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: (v) => v + '%' } }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Waste Cost Chart
+            const wasteCosts = wasteNames.map(w => waste[w].material_waste_cost_bwp);
+            
+            new Chart(document.getElementById('wasteCostChart'), {
+                type: 'bar',
+                data: {
+                    labels: wasteNames,
+                    datasets: [{
+                        label: 'Waste Cost (P)',
+                        data: wasteCosts,
+                        backgroundColor: '#f44336',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: (v) => 'P' + (v/1000000).toFixed(1) + 'M'
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: (v) => 'P' + (v/1000000).toFixed(1) + 'M' } }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+        
+        function setupSidebarNavigation() {
+            const links = document.querySelectorAll('.sidebar-nav a');
+            const sections = document.querySelectorAll('.section');
+            
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    links.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            window.addEventListener('scroll', function() {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    if (window.scrollY >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                links.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+        
+        function setupScrollTopButton() {
+            const btn = document.getElementById('scrollTopBtn');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 400) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+            });
+        }
+        
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

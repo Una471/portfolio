@@ -1,0 +1,872 @@
+{
+  "metrics": {
+    "total_requests": 5000,
+    "resolved_requests": 4992,
+    "pending_requests": 8,
+    "escalated_requests": 682,
+    "escalation_rate": 13.639999999999999,
+    "within_sla": 3291,
+    "sla_compliance_rate": 65.92548076923077,
+    "avg_resolution_days": 14.620112179487178,
+    "avg_sla_breach": 13.873083674663546,
+    "model_accuracy": 90.2,
+    "model_auc": 0.8570114942528737,
+    "best_department": "Motor Registry",
+    "worst_department": "Land Board",
+    "best_channel": "Digital"
+  },
+  "departments": {
+    "Land Board": {
+      "request_id": 409,
+      "within_sla": 23,
+      "escalated": 343,
+      "actual_days": 62.06,
+      "sla_rate": 5.623471882640587,
+      "escalation_rate": 83.86308068459658
+    },
+    "Immigration": {
+      "request_id": 364,
+      "within_sla": 191,
+      "escalated": 71,
+      "actual_days": 30.8,
+      "sla_rate": 52.472527472527474,
+      "escalation_rate": 19.505494505494507
+    },
+    "Social Welfare": {
+      "request_id": 591,
+      "within_sla": 360,
+      "escalated": 58,
+      "actual_days": 19.33,
+      "sla_rate": 60.913705583756354,
+      "escalation_rate": 9.813874788494077
+    },
+    "Education": {
+      "request_id": 636,
+      "within_sla": 407,
+      "escalated": 53,
+      "actual_days": 12.51,
+      "sla_rate": 63.9937106918239,
+      "escalation_rate": 8.333333333333332
+    },
+    "Works": {
+      "request_id": 455,
+      "within_sla": 305,
+      "escalated": 31,
+      "actual_days": 11.97,
+      "sla_rate": 67.03296703296702,
+      "escalation_rate": 6.813186813186813
+    },
+    "Police": {
+      "request_id": 545,
+      "within_sla": 381,
+      "escalated": 34,
+      "actual_days": 3.98,
+      "sla_rate": 69.90825688073394,
+      "escalation_rate": 6.238532110091743
+    },
+    "BURS": {
+      "request_id": 500,
+      "within_sla": 359,
+      "escalated": 35,
+      "actual_days": 8.02,
+      "sla_rate": 71.8,
+      "escalation_rate": 7.000000000000001
+    },
+    "Health": {
+      "request_id": 818,
+      "within_sla": 612,
+      "escalated": 55,
+      "actual_days": 5.3,
+      "sla_rate": 74.81662591687042,
+      "escalation_rate": 6.723716381418093
+    },
+    "Motor Registry": {
+      "request_id": 682,
+      "within_sla": 653,
+      "escalated": 2,
+      "actual_days": 2.61,
+      "sla_rate": 95.74780058651027,
+      "escalation_rate": 0.2932551319648094
+    }
+  },
+  "channels": {
+    "Digital": {
+      "request_id": 1243,
+      "within_sla": 1024,
+      "actual_days": 11.09,
+      "sla_rate": 82.38133547868061
+    },
+    "Phone": {
+      "request_id": 861,
+      "within_sla": 598,
+      "actual_days": 14.65,
+      "sla_rate": 69.45412311265969
+    },
+    "In-Person": {
+      "request_id": 2542,
+      "within_sla": 1505,
+      "actual_days": 15.9,
+      "sla_rate": 59.20535011801731
+    },
+    "Post": {
+      "request_id": 354,
+      "within_sla": 164,
+      "actual_days": 19.52,
+      "sla_rate": 46.32768361581921
+    }
+  },
+  "districts": {
+    "Gaborone": {
+      "request_id": 606,
+      "within_sla": 387,
+      "escalated": 96,
+      "actual_days": 15.63,
+      "sla_rate": 63.86138613861386,
+      "escalation_rate": 15.841584158415841
+    },
+    "Palapye": {
+      "request_id": 606,
+      "within_sla": 387,
+      "escalated": 85,
+      "actual_days": 15.05,
+      "sla_rate": 63.86138613861386,
+      "escalation_rate": 14.026402640264028
+    },
+    "Serowe": {
+      "request_id": 656,
+      "within_sla": 426,
+      "escalated": 87,
+      "actual_days": 14.22,
+      "sla_rate": 64.9390243902439,
+      "escalation_rate": 13.26219512195122
+    },
+    "Lobatse": {
+      "request_id": 585,
+      "within_sla": 384,
+      "escalated": 85,
+      "actual_days": 15.21,
+      "sla_rate": 65.64102564102564,
+      "escalation_rate": 14.529914529914532
+    },
+    "Maun": {
+      "request_id": 636,
+      "within_sla": 418,
+      "escalated": 87,
+      "actual_days": 14.59,
+      "sla_rate": 65.72327044025157,
+      "escalation_rate": 13.679245283018867
+    },
+    "Francistown": {
+      "request_id": 621,
+      "within_sla": 415,
+      "escalated": 77,
+      "actual_days": 14.21,
+      "sla_rate": 66.82769726247987,
+      "escalation_rate": 12.399355877616747
+    },
+    "Molepolole": {
+      "request_id": 670,
+      "within_sla": 453,
+      "escalated": 89,
+      "actual_days": 15.02,
+      "sla_rate": 67.61194029850746,
+      "escalation_rate": 13.28358208955224
+    },
+    "Kanye": {
+      "request_id": 620,
+      "within_sla": 421,
+      "escalated": 76,
+      "actual_days": 14.09,
+      "sla_rate": 67.90322580645162,
+      "escalation_rate": 12.258064516129032
+    }
+  },
+  "services": {
+    "Land Allocation": {
+      "request_id": 95,
+      "within_sla": 3,
+      "actual_days": 69.19,
+      "sla_rate": 3.1578947368421053
+    },
+    "Land Use Approval": {
+      "request_id": 114,
+      "within_sla": 5,
+      "actual_days": 72.22,
+      "sla_rate": 4.385964912280701
+    },
+    "Land Certificate": {
+      "request_id": 93,
+      "within_sla": 6,
+      "actual_days": 52.32,
+      "sla_rate": 6.451612903225806
+    },
+    "Consent to Transfer": {
+      "request_id": 107,
+      "within_sla": 9,
+      "actual_days": 53.38,
+      "sla_rate": 8.411214953271028
+    },
+    "Citizenship Application": {
+      "request_id": 70,
+      "within_sla": 21,
+      "actual_days": 39.01,
+      "sla_rate": 30.0
+    },
+    "Scholarship Application": {
+      "request_id": 159,
+      "within_sla": 58,
+      "actual_days": 16.18,
+      "sla_rate": 36.477987421383645
+    },
+    "Permanent Residency": {
+      "request_id": 100,
+      "within_sla": 40,
+      "actual_days": 34.6,
+      "sla_rate": 40.0
+    },
+    "Assessment Dispute": {
+      "request_id": 128,
+      "within_sla": 54,
+      "actual_days": 11.17,
+      "sla_rate": 42.1875
+    },
+    "Destitute Support": {
+      "request_id": 144,
+      "within_sla": 66,
+      "actual_days": 22.1,
+      "sla_rate": 45.83333333333333
+    },
+    "Teacher Posting": {
+      "request_id": 172,
+      "within_sla": 81,
+      "actual_days": 14.93,
+      "sla_rate": 47.093023255813954
+    },
+    "Infrastructure Defect": {
+      "request_id": 105,
+      "within_sla": 52,
+      "actual_days": 13.65,
+      "sla_rate": 49.523809523809526
+    },
+    "Protection Service": {
+      "request_id": 122,
+      "within_sla": 61,
+      "actual_days": 5.16,
+      "sla_rate": 50.0
+    },
+    "Specialist Referral": {
+      "request_id": 184,
+      "within_sla": 101,
+      "actual_days": 6.53,
+      "sla_rate": 54.891304347826086
+    },
+    "Orphan Welfare": {
+      "request_id": 145,
+      "within_sla": 81,
+      "actual_days": 21.12,
+      "sla_rate": 55.86206896551724
+    },
+    "Work Permit": {
+      "request_id": 93,
+      "within_sla": 56,
+      "actual_days": 28.39,
+      "sla_rate": 60.215053763440864
+    },
+    "Old Age Pension": {
+      "request_id": 163,
+      "within_sla": 100,
+      "actual_days": 18.35,
+      "sla_rate": 61.34969325153374
+    },
+    "Case Registration": {
+      "request_id": 126,
+      "within_sla": 78,
+      "actual_days": 4.43,
+      "sla_rate": 61.904761904761905
+    },
+    "Asset Management": {
+      "request_id": 118,
+      "within_sla": 81,
+      "actual_days": 12.03,
+      "sla_rate": 68.64406779661016
+    },
+    "Property Maintenance": {
+      "request_id": 113,
+      "within_sla": 78,
+      "actual_days": 11.73,
+      "sla_rate": 69.02654867256636
+    },
+    "Facility Request": {
+      "request_id": 219,
+      "within_sla": 152,
+      "actual_days": 5.85,
+      "sla_rate": 69.40639269406392
+    },
+    "Border Documentation": {
+      "request_id": 101,
+      "within_sla": 74,
+      "actual_days": 23.58,
+      "sla_rate": 73.26732673267327
+    },
+    "VAT Filing": {
+      "request_id": 112,
+      "within_sla": 84,
+      "actual_days": 7.28,
+      "sla_rate": 75.0
+    },
+    "Clearance Certificate": {
+      "request_id": 139,
+      "within_sla": 108,
+      "actual_days": 3.55,
+      "sla_rate": 77.6978417266187
+    },
+    "Utility Request": {
+      "request_id": 119,
+      "within_sla": 94,
+      "actual_days": 10.66,
+      "sla_rate": 78.99159663865547
+    },
+    "Social Grant": {
+      "request_id": 139,
+      "within_sla": 113,
+      "actual_days": 15.76,
+      "sla_rate": 81.29496402877699
+    },
+    "Compliance Certificate": {
+      "request_id": 136,
+      "within_sla": 115,
+      "actual_days": 6.79,
+      "sla_rate": 84.55882352941177
+    },
+    "Document Request": {
+      "request_id": 158,
+      "within_sla": 134,
+      "actual_days": 3.1,
+      "sla_rate": 84.81012658227847
+    },
+    "Tax Registration": {
+      "request_id": 124,
+      "within_sla": 106,
+      "actual_days": 6.8,
+      "sla_rate": 85.48387096774194
+    },
+    "Medical Certificate": {
+      "request_id": 205,
+      "within_sla": 176,
+      "actual_days": 4.69,
+      "sla_rate": 85.85365853658537
+    },
+    "Patient Query": {
+      "request_id": 210,
+      "within_sla": 183,
+      "actual_days": 4.22,
+      "sla_rate": 87.14285714285714
+    },
+    "School Admin": {
+      "request_id": 167,
+      "within_sla": 146,
+      "actual_days": 9.1,
+      "sla_rate": 87.42514970059881
+    },
+    "Student Enrollment": {
+      "request_id": 138,
+      "within_sla": 122,
+      "actual_days": 9.37,
+      "sla_rate": 88.40579710144928
+    },
+    "Roadworthy Certificate": {
+      "request_id": 175,
+      "within_sla": 161,
+      "actual_days": 2.78,
+      "sla_rate": 92.0
+    },
+    "Number Plate": {
+      "request_id": 165,
+      "within_sla": 159,
+      "actual_days": 2.41,
+      "sla_rate": 96.36363636363636
+    },
+    "Driver Licence": {
+      "request_id": 158,
+      "within_sla": 153,
+      "actual_days": 2.82,
+      "sla_rate": 96.83544303797468
+    },
+    "Vehicle Licensing": {
+      "request_id": 184,
+      "within_sla": 180,
+      "actual_days": 2.47,
+      "sla_rate": 97.82608695652173
+    }
+  },
+  "escalations": {
+    "Land Board": {
+      "request_id": 343
+    },
+    "Immigration": {
+      "request_id": 71
+    },
+    "Social Welfare": {
+      "request_id": 58
+    },
+    "Health": {
+      "request_id": 55
+    },
+    "Education": {
+      "request_id": 53
+    },
+    "BURS": {
+      "request_id": 35
+    },
+    "Police": {
+      "request_id": 34
+    },
+    "Works": {
+      "request_id": 31
+    },
+    "Motor Registry": {
+      "request_id": 2
+    }
+  },
+  "complexity": {
+    "0.7": {
+      "request_id": 210,
+      "within_sla": 183,
+      "escalated": 3,
+      "actual_days": 4.22,
+      "sla_rate": 87.14285714285714,
+      "escalation_rate": 1.4285714285714286
+    },
+    "0.75": {
+      "request_id": 158,
+      "within_sla": 134,
+      "escalated": 2,
+      "actual_days": 3.1,
+      "sla_rate": 84.81012658227847,
+      "escalation_rate": 1.2658227848101267
+    },
+    "0.8": {
+      "request_id": 537,
+      "within_sla": 481,
+      "escalated": 14,
+      "actual_days": 5.36,
+      "sla_rate": 89.57169459962756,
+      "escalation_rate": 2.60707635009311
+    },
+    "0.85": {
+      "request_id": 275,
+      "within_sla": 223,
+      "escalated": 12,
+      "actual_days": 5.15,
+      "sla_rate": 81.0909090909091,
+      "escalation_rate": 4.363636363636364
+    },
+    "0.9": {
+      "request_id": 666,
+      "within_sla": 576,
+      "escalated": 19,
+      "actual_days": 9.37,
+      "sla_rate": 86.48648648648648,
+      "escalation_rate": 2.8528528528528527
+    },
+    "0.95": {
+      "request_id": 158,
+      "within_sla": 153,
+      "escalated": 1,
+      "actual_days": 2.82,
+      "sla_rate": 96.83544303797468,
+      "escalation_rate": 0.6329113924050633
+    },
+    "1.0": {
+      "request_id": 539,
+      "within_sla": 436,
+      "escalated": 21,
+      "actual_days": 8.94,
+      "sla_rate": 80.89053803339517,
+      "escalation_rate": 3.896103896103896
+    },
+    "1.1": {
+      "request_id": 626,
+      "within_sla": 411,
+      "escalated": 45,
+      "actual_days": 9.98,
+      "sla_rate": 65.65495207667732,
+      "escalation_rate": 7.188498402555911
+    },
+    "1.2": {
+      "request_id": 620,
+      "within_sla": 296,
+      "escalated": 156,
+      "actual_days": 21.3,
+      "sla_rate": 47.74193548387097,
+      "escalation_rate": 25.161290322580644
+    },
+    "1.3": {
+      "request_id": 545,
+      "within_sla": 217,
+      "escalated": 141,
+      "actual_days": 22.19,
+      "sla_rate": 39.816513761467895,
+      "escalation_rate": 25.871559633027523
+    },
+    "1.4": {
+      "request_id": 259,
+      "within_sla": 98,
+      "escalated": 48,
+      "actual_days": 23.29,
+      "sla_rate": 37.83783783783784,
+      "escalation_rate": 18.53281853281853
+    },
+    "1.5": {
+      "request_id": 223,
+      "within_sla": 57,
+      "escalated": 100,
+      "actual_days": 35.89,
+      "sla_rate": 25.56053811659193,
+      "escalation_rate": 44.843049327354265
+    },
+    "1.6": {
+      "request_id": 184,
+      "within_sla": 26,
+      "escalated": 120,
+      "actual_days": 59.59,
+      "sla_rate": 14.130434782608695,
+      "escalation_rate": 65.21739130434783
+    }
+  },
+  "monthly": {
+    "2022-01": {
+      "request_id": 153,
+      "within_sla": 105,
+      "escalated": 24,
+      "sla_rate": 68.62745098039215,
+      "escalation_rate": 15.686274509803921
+    },
+    "2022-02": {
+      "request_id": 123,
+      "within_sla": 88,
+      "escalated": 15,
+      "sla_rate": 71.54471544715447,
+      "escalation_rate": 12.195121951219512
+    },
+    "2022-03": {
+      "request_id": 131,
+      "within_sla": 86,
+      "escalated": 19,
+      "sla_rate": 65.64885496183206,
+      "escalation_rate": 14.50381679389313
+    },
+    "2022-04": {
+      "request_id": 137,
+      "within_sla": 89,
+      "escalated": 16,
+      "sla_rate": 64.96350364963503,
+      "escalation_rate": 11.678832116788321
+    },
+    "2022-05": {
+      "request_id": 120,
+      "within_sla": 82,
+      "escalated": 14,
+      "sla_rate": 68.33333333333333,
+      "escalation_rate": 11.666666666666666
+    },
+    "2022-06": {
+      "request_id": 127,
+      "within_sla": 82,
+      "escalated": 16,
+      "sla_rate": 64.56692913385827,
+      "escalation_rate": 12.598425196850393
+    },
+    "2022-07": {
+      "request_id": 129,
+      "within_sla": 89,
+      "escalated": 13,
+      "sla_rate": 68.9922480620155,
+      "escalation_rate": 10.077519379844961
+    },
+    "2022-08": {
+      "request_id": 125,
+      "within_sla": 82,
+      "escalated": 15,
+      "sla_rate": 65.60000000000001,
+      "escalation_rate": 12.0
+    },
+    "2022-09": {
+      "request_id": 140,
+      "within_sla": 93,
+      "escalated": 17,
+      "sla_rate": 66.42857142857143,
+      "escalation_rate": 12.142857142857142
+    },
+    "2022-10": {
+      "request_id": 153,
+      "within_sla": 98,
+      "escalated": 19,
+      "sla_rate": 64.05228758169935,
+      "escalation_rate": 12.418300653594772
+    },
+    "2022-11": {
+      "request_id": 139,
+      "within_sla": 97,
+      "escalated": 17,
+      "sla_rate": 69.7841726618705,
+      "escalation_rate": 12.23021582733813
+    },
+    "2022-12": {
+      "request_id": 141,
+      "within_sla": 87,
+      "escalated": 19,
+      "sla_rate": 61.702127659574465,
+      "escalation_rate": 13.47517730496454
+    },
+    "2023-01": {
+      "request_id": 135,
+      "within_sla": 88,
+      "escalated": 27,
+      "sla_rate": 65.18518518518519,
+      "escalation_rate": 20.0
+    },
+    "2023-02": {
+      "request_id": 112,
+      "within_sla": 69,
+      "escalated": 18,
+      "sla_rate": 61.60714285714286,
+      "escalation_rate": 16.071428571428573
+    },
+    "2023-03": {
+      "request_id": 118,
+      "within_sla": 73,
+      "escalated": 23,
+      "sla_rate": 61.86440677966102,
+      "escalation_rate": 19.491525423728813
+    },
+    "2023-04": {
+      "request_id": 135,
+      "within_sla": 93,
+      "escalated": 16,
+      "sla_rate": 68.88888888888889,
+      "escalation_rate": 11.851851851851853
+    },
+    "2023-05": {
+      "request_id": 133,
+      "within_sla": 84,
+      "escalated": 18,
+      "sla_rate": 63.1578947368421,
+      "escalation_rate": 13.533834586466165
+    },
+    "2023-06": {
+      "request_id": 135,
+      "within_sla": 86,
+      "escalated": 19,
+      "sla_rate": 63.70370370370371,
+      "escalation_rate": 14.074074074074074
+    },
+    "2023-07": {
+      "request_id": 121,
+      "within_sla": 83,
+      "escalated": 16,
+      "sla_rate": 68.59504132231406,
+      "escalation_rate": 13.223140495867769
+    },
+    "2023-08": {
+      "request_id": 143,
+      "within_sla": 96,
+      "escalated": 20,
+      "sla_rate": 67.13286713286713,
+      "escalation_rate": 13.986013986013987
+    },
+    "2023-09": {
+      "request_id": 128,
+      "within_sla": 83,
+      "escalated": 20,
+      "sla_rate": 64.84375,
+      "escalation_rate": 15.625
+    },
+    "2023-10": {
+      "request_id": 156,
+      "within_sla": 104,
+      "escalated": 24,
+      "sla_rate": 66.66666666666666,
+      "escalation_rate": 15.384615384615385
+    },
+    "2023-11": {
+      "request_id": 117,
+      "within_sla": 73,
+      "escalated": 14,
+      "sla_rate": 62.39316239316239,
+      "escalation_rate": 11.965811965811966
+    },
+    "2023-12": {
+      "request_id": 140,
+      "within_sla": 93,
+      "escalated": 18,
+      "sla_rate": 66.42857142857143,
+      "escalation_rate": 12.857142857142856
+    },
+    "2024-01": {
+      "request_id": 120,
+      "within_sla": 68,
+      "escalated": 28,
+      "sla_rate": 56.666666666666664,
+      "escalation_rate": 23.333333333333332
+    },
+    "2024-02": {
+      "request_id": 140,
+      "within_sla": 92,
+      "escalated": 18,
+      "sla_rate": 65.71428571428571,
+      "escalation_rate": 12.857142857142856
+    },
+    "2024-03": {
+      "request_id": 170,
+      "within_sla": 117,
+      "escalated": 21,
+      "sla_rate": 68.82352941176471,
+      "escalation_rate": 12.352941176470589
+    },
+    "2024-04": {
+      "request_id": 156,
+      "within_sla": 90,
+      "escalated": 20,
+      "sla_rate": 57.692307692307686,
+      "escalation_rate": 12.82051282051282
+    },
+    "2024-05": {
+      "request_id": 149,
+      "within_sla": 97,
+      "escalated": 18,
+      "sla_rate": 65.1006711409396,
+      "escalation_rate": 12.080536912751679
+    },
+    "2024-06": {
+      "request_id": 142,
+      "within_sla": 98,
+      "escalated": 19,
+      "sla_rate": 69.01408450704226,
+      "escalation_rate": 13.380281690140844
+    },
+    "2024-07": {
+      "request_id": 153,
+      "within_sla": 102,
+      "escalated": 26,
+      "sla_rate": 66.66666666666666,
+      "escalation_rate": 16.99346405228758
+    },
+    "2024-08": {
+      "request_id": 145,
+      "within_sla": 100,
+      "escalated": 17,
+      "sla_rate": 68.96551724137932,
+      "escalation_rate": 11.724137931034482
+    },
+    "2024-09": {
+      "request_id": 136,
+      "within_sla": 98,
+      "escalated": 11,
+      "sla_rate": 72.05882352941177,
+      "escalation_rate": 8.088235294117647
+    },
+    "2024-10": {
+      "request_id": 135,
+      "within_sla": 87,
+      "escalated": 18,
+      "sla_rate": 64.44444444444444,
+      "escalation_rate": 13.333333333333334
+    },
+    "2024-11": {
+      "request_id": 108,
+      "within_sla": 67,
+      "escalated": 16,
+      "sla_rate": 62.03703703703704,
+      "escalation_rate": 14.814814814814813
+    },
+    "2024-12": {
+      "request_id": 123,
+      "within_sla": 78,
+      "escalated": 20,
+      "sla_rate": 63.41463414634146,
+      "escalation_rate": 16.260162601626014
+    },
+    "2025-01": {
+      "request_id": 132,
+      "within_sla": 94,
+      "escalated": 13,
+      "sla_rate": 71.21212121212122,
+      "escalation_rate": 9.848484848484848
+    }
+  },
+  "high_risk": [
+    {
+      "request_id": "BPS-03713",
+      "department": "Land Board",
+      "service_type": "Land Use Approval",
+      "channel": "In-Person",
+      "submitted": "2025-01-15",
+      "escalation_probability": 0.9693094884013664,
+      "risk_level": "Critical"
+    },
+    {
+      "request_id": "BPS-03535",
+      "department": "Land Board",
+      "service_type": "Land Use Approval",
+      "channel": "Digital",
+      "submitted": "2024-12-25",
+      "escalation_probability": 0.9558407010967686,
+      "risk_level": "Critical"
+    },
+    {
+      "request_id": "BPS-03647",
+      "department": "Land Board",
+      "service_type": "Land Use Approval",
+      "channel": "In-Person",
+      "submitted": "2025-01-13",
+      "escalation_probability": 0.9463900788711961,
+      "risk_level": "Critical"
+    },
+    {
+      "request_id": "BPS-03668",
+      "department": "Land Board",
+      "service_type": "Land Allocation",
+      "channel": "In-Person",
+      "submitted": "2025-01-11",
+      "escalation_probability": 0.9006841495553113,
+      "risk_level": "Critical"
+    },
+    {
+      "request_id": "BPS-03537",
+      "department": "Land Board",
+      "service_type": "Land Allocation",
+      "channel": "In-Person",
+      "submitted": "2025-01-24",
+      "escalation_probability": 0.8630735748044254,
+      "risk_level": "Critical"
+    },
+    {
+      "request_id": "BPS-03722",
+      "department": "Land Board",
+      "service_type": "Land Certificate",
+      "channel": "In-Person",
+      "submitted": "2025-01-23",
+      "escalation_probability": 0.8247682355679857,
+      "risk_level": "Critical"
+    },
+    {
+      "request_id": "BPS-03608",
+      "department": "Land Board",
+      "service_type": "Land Allocation",
+      "channel": "Phone",
+      "submitted": "2024-12-30",
+      "escalation_probability": 0.7582688799206492,
+      "risk_level": "High"
+    },
+    {
+      "request_id": "BPS-03542",
+      "department": "Land Board",
+      "service_type": "Land Use Approval",
+      "channel": "Phone",
+      "submitted": "2025-01-14",
+      "escalation_probability": 0.7456577776221097,
+      "risk_level": "High"
+    }
+  ]
+}

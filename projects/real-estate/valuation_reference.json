@@ -1,0 +1,113 @@
+{
+  "Maun": {
+    "House": {
+      "avg_price": 1974161.0942249238,
+      "avg_sqm_rate": 8459.576998125387,
+      "count": 94
+    },
+    "Plot": {
+      "avg_price": 114925.92592592593,
+      "avg_sqm_rate": 114925.92592592593,
+      "count": 81
+    },
+    "Apartment": {
+      "avg_price": 1058522.9110512128,
+      "avg_sqm_rate": 4229.722945230214,
+      "count": 106
+    },
+    "Commercial Office": {
+      "avg_price": 5326306.12244898,
+      "avg_sqm_rate": 19131.529048741264,
+      "count": 91
+    },
+    "Retail Space": {
+      "avg_price": 4047708.928571428,
+      "avg_sqm_rate": 15118.381552610832,
+      "count": 80
+    },
+    "Townhouse": {
+      "avg_price": 1434721.340388007,
+      "avg_sqm_rate": 6403.662602628001,
+      "count": 81
+    },
+    "Warehouse": {
+      "avg_price": 6752950.68027211,
+      "avg_sqm_rate": 26766.27238710773,
+      "count": 84
+    }
+  },
+  "Gaborone": {
+    "House": {
+      "avg_price": 2419700.952380952,
+      "avg_sqm_rate": 10250.04605029156,
+      "count": 75
+    },
+    "Plot": {
+      "avg_price": 327854.8387096774,
+      "avg_sqm_rate": 327854.8387096774,
+      "count": 62
+    },
+    "Apartment": {
+      "avg_price": 1360965.3679653676,
+      "avg_sqm_rate": 5462.0128833658355,
+      "count": 99
+    },
+    "Commercial Office": {
+      "avg_price": 5390543.778801843,
+      "avg_sqm_rate": 21420.60346804193,
+      "count": 93
+    },
+    "Retail Space": {
+      "avg_price": 4124672.473867596,
+      "avg_sqm_rate": 15840.77555201243,
+      "count": 82
+    },
+    "Townhouse": {
+      "avg_price": 1691815.4761904764,
+      "avg_sqm_rate": 6180.774151282334,
+      "count": 96
+    },
+    "Warehouse": {
+      "avg_price": 6803706.766917294,
+      "avg_sqm_rate": 25403.168244680153,
+      "count": 95
+    }
+  },
+  "Francistown": {
+    "House": {
+      "avg_price": 1970026.8907563027,
+      "avg_sqm_rate": 8736.59388428405,
+      "count": 85
+    },
+    "Plot": {
+      "avg_price": 172263.73626373627,
+      "avg_sqm_rate": 172263.73626373627,
+      "count": 91
+    },
+    "Apartment": {
+      "avg_price": 1101969.696969697,
+      "avg_sqm_rate": 3920.1363956580954,
+      "count": 99
+    },
+    "Commercial Office": {
+      "avg_price": 5194543.513957308,
+      "avg_sqm_rate": 18903.214563381727,
+      "count": 87
+    },
+    "Retail Space": {
+      "avg_price": 4054540.178571429,
+      "avg_sqm_rate": 16354.797225978851,
+      "count": 96
+    },
+    "Townhouse": {
+      "avg_price": 1541316.0714285714,
+      "avg_sqm_rate": 5320.723829211836,
+      "count": 80
+    },
+    "Warehouse": {
+      "avg_price": 7044955.056179775,
+      "avg_sqm_rate": 24444.68435024748,
+      "count": 89
+    }
+  }
+}

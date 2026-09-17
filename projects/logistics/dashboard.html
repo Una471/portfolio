@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transdelta Logistics - Fleet Analytics Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #f39c12;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right .date {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .header-right .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            background: #f39c12;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            padding: 0 40px;
+            display: flex;
+            gap: 30px;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            padding: 18px 0;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover {
+            color: #1a1a2e;
+        }
+
+        .nav-item.active {
+            color: #1a1a2e;
+            border-bottom-color: #f39c12;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 30px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: transform 0.2s;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .kpi-label {
+            font-size: 13px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+
+        .kpi-change {
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .kpi-change.positive {
+            color: #27ae60;
+        }
+
+        .kpi-change.negative {
+            color: #e74c3c;
+        }
+
+        .kpi-change.neutral {
+            color: #f39c12;
+        }
+
+        /* Chart Grid */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .chart-card h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #1a1a2e;
+        }
+
+        .chart-card .chart-container {
+            height: 300px;
+        }
+
+        /* Full Width Chart */
+        .chart-full {
+            grid-column: 1 / -1;
+        }
+
+        /* Fleet Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 15px 20px;
+                gap: 10px;
+            }
+            .nav {
+                overflow-x: auto;
+                padding: 0 20px;
+                gap: 20px;
+            }
+            .main {
+                padding: 20px;
+            }
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .kpi-value {
+                font-size: 22px;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+        }
+
+        .loading::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f0f0f0;
+            border-top-color: #1a1a2e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tooltip style override for Plotly */
+        .js-plotly-plot .plotly .hoverlayer .hovertext {
+            font-family: 'Segoe UI', sans-serif !important;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">Transdelta <span>Logistics</span></div>
+        </div>
+        <div class="header-right">
+            <div class="date" id="currentDate"></div>
+            <div class="user">
+                <div class="avatar">JD</div>
+                <span>John Doe, Fleet Manager</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <a class="nav-item active" onclick="switchTab('overview')">Overview</a>
+        <a class="nav-item" onclick="switchTab('routes')">Route Performance</a>
+        <a class="nav-item" onclick="switchTab('drivers')">Driver Performance</a>
+        <a class="nav-item" onclick="switchTab('fleet')">Fleet & Maintenance</a>
+    </nav>
+
+    <main class="main">
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Deliveries</div>
+                    <div class="kpi-value">8,000</div>
+                    <div class="kpi-change positive">▲ 12% vs last period</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Revenue</div>
+                    <div class="kpi-value">P68.4M</div>
+                    <div class="kpi-change positive">▲ 8% vs last period</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Fuel Cost Ratio</div>
+                    <div class="kpi-value">25.2%</div>
+                    <div class="kpi-change negative">▼ 2.1% vs target</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">On-Time Delivery Rate</div>
+                    <div class="kpi-value">49.0%</div>
+                    <div class="kpi-change negative">▼ Needs Improvement</div>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Distance Driven</div>
+                    <div class="kpi-value">4.96M km</div>
+                    <div class="kpi-change neutral">● 4% increase</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Avg Fuel Consumption</div>
+                    <div class="kpi-value">33.0 L/100km</div>
+                    <div class="kpi-change negative">▼ 1.5L above target</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Avg Load Utilization</div>
+                    <div class="kpi-value">80.0%</div>
+                    <div class="kpi-change positive">▲ 3% improvement</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Harsh Braking Events</div>
+                    <div class="kpi-value">4,721</div>
+                    <div class="kpi-change negative">▼ 15% increase</div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card chart-full">
+                    <h3>Monthly Revenue & Fuel Cost Trends</h3>
+                    <div class="chart-container" id="revenueFuelChart"></div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>Fleet Performance by Vehicle Type</h3>
+                    <div class="chart-container" id="vehicleTypeChart"></div>
+                </div>
+                <div class="chart-card">
+                    <h3>On-Time Delivery Rate by Route</h3>
+                    <div class="chart-container" id="routeOnTimeChart"></div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card chart-full">
+                    <h3>Driver Performance Distribution</h3>
+                    <div class="chart-container" id="driverPerformanceChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Routes Tab -->
+        <div id="routes" class="tab-content" style="display:none;">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Most Profitable Route</div>
+                    <div class="kpi-value">Gaborone-Windhoek</div>
+                    <div class="kpi-change positive">Highest revenue</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Best On-Time Route</div>
+                    <div class="kpi-value">Local Gaborone</div>
+                    <div class="kpi-change positive">94% on-time</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Highest Fuel Cost Route</div>
+                    <div class="kpi-value">Gaborone-Windhoek</div>
+                    <div class="kpi-change negative">Long distance + delays</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Avg Border Delay</div>
+                    <div class="kpi-value">2.4 hrs</div>
+                    <div class="kpi-change negative">Impact on SLA</div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>Route Revenue & Cost Analysis</h3>
+                    <div class="chart-container" id="routeRevenueChart"></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Fuel Efficiency by Route</h3>
+                    <div class="chart-container" id="routeFuelChart"></div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card chart-full">
+                    <h3>Route Performance Scorecard</h3>
+                    <div class="chart-container" id="routeScorecard"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Drivers Tab -->
+        <div id="drivers" class="tab-content" style="display:none;">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Drivers</div>
+                    <div class="kpi-value">140</div>
+                    <div class="kpi-change neutral">Active fleet</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Excellent Performers</div>
+                    <div class="kpi-value">28</div>
+                    <div class="kpi-change positive">Top tier drivers</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Needs Improvement</div>
+                    <div class="kpi-value">42</div>
+                    <div class="kpi-change negative">Requires training</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Critical Performance</div>
+                    <div class="kpi-value">14</div>
+                    <div class="kpi-change negative">Immediate action needed</div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>Driver Tier Distribution</h3>
+                    <div class="chart-container" id="driverTierChart"></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Driver Performance Metrics</h3>
+                    <div class="chart-container" id="driverMetricsChart"></div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card chart-full">
+                    <h3>Top vs Bottom Performers Comparison</h3>
+                    <div class="chart-container" id="driverComparisonChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fleet Tab -->
+        <div id="fleet" class="tab-content" style="display:none;">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Fleet Size</div>
+                    <div class="kpi-value">140</div>
+                    <div class="kpi-change neutral">5 vehicle types</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Avg Vehicle Age</div>
+                    <div class="kpi-value">6.2 years</div>
+                    <div class="kpi-change neutral">Scheduled replacement</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Maintenance Flags</div>
+                    <div class="kpi-value">428</div>
+                    <div class="kpi-change negative">▼ 8% increase</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">High-Risk Vehicles</div>
+                    <div class="kpi-value">23</div>
+                    <div class="kpi-change negative">Immediate inspection</div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>Maintenance Risk Factors</h3>
+                    <div class="chart-container" id="maintenanceRiskChart"></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Vehicle Age Distribution</h3>
+                    <div class="chart-container" id="vehicleAgeChart"></div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card chart-full">
+                    <h3>Maintenance Predictions by Vehicle</h3>
+                    <div class="chart-container" id="maintenancePredictions"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Tab switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).style.display = 'block';
+            event.target.classList.add('active');
+            
+            // Re-render charts if needed
+            if (tabId === 'overview') renderOverviewCharts();
+            if (tabId === 'routes') renderRouteCharts();
+            if (tabId === 'drivers') renderDriverCharts();
+            if (tabId === 'fleet') renderFleetCharts();
+        }
+
+        // ==================== OVERVIEW CHARTS ====================
+        function renderOverviewCharts() {
+            // Revenue & Fuel Cost Trends
+            var revenueFuelData = [
+                {
+                    x: ['Jan 2023', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+                        'Jan 2024', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+                        'Jan 2025', 'Feb', 'Mar'],
+                    y: [2.1, 2.3, 2.0, 2.5, 2.8, 2.6, 2.9, 3.1, 2.8, 3.0, 3.2, 3.4,
+                        3.0, 3.2, 3.5, 3.1, 3.4, 3.6, 3.3, 3.8, 3.5, 3.7, 3.9, 4.0,
+                        3.6, 3.8, 4.1],
+                    name: 'Revenue (P Millions)',
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    line: {color: '#1a1a2e', width: 2}
+                },
+                {
+                    x: ['Jan 2023', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+                        'Jan 2024', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+                        'Jan 2025', 'Feb', 'Mar'],
+                    y: [0.52, 0.55, 0.48, 0.60, 0.65, 0.58, 0.68, 0.72, 0.65, 0.70, 0.75, 0.78,
+                        0.70, 0.72, 0.80, 0.68, 0.75, 0.82, 0.72, 0.85, 0.78, 0.82, 0.88, 0.90,
+                        0.82, 0.85, 0.92],
+                    name: 'Fuel Cost (P Millions)',
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    line: {color: '#f39c12', width: 2}
+                }
+            ];
+
+            Plotly.newPlot('revenueFuelChart', revenueFuelData, {
+                title: '',
+                xaxis: {title: 'Month', tickangle: -45},
+                yaxis: {title: 'Amount (P Millions)'},
+                legend: {orientation: 'h', y: -0.2},
+                hovermode: 'x unified',
+                margin: {t: 20, b: 60, l: 60, r: 20}
+            }, {responsive: true});
+
+            // Vehicle Type Performance
+            var vehicleData = {
+                x: ['Long-Haul Articulated', 'Refrigerated', 'B-Train', 'Light Commercial', 'Courier Van'],
+                y: [35.2, 38.5, 42.3, 12.8, 10.5],
+                type: 'bar',
+                name: 'Avg Fuel L/100km',
+                marker: {color: ['#1a1a2e', '#2c3e50', '#34495e', '#f39c12', '#e67e22']}
+            };
+
+            Plotly.newPlot('vehicleTypeChart', [vehicleData], {
+                title: '',
+                xaxis: {title: 'Vehicle Type'},
+                yaxis: {title: 'Fuel Consumption (L/100km)'},
+                margin: {t: 20, b: 60, l: 60, r: 20}
+            }, {responsive: true});
+
+            // Route On-Time Rates
+            var routeData = {
+                x: ['Gaborone-Windhoek', 'Gaborone-Lusaka', 'Gaborone-Johannesburg', 
+                    'Francistown-Harare', 'Gaborone-Maun', 'Gaborone-Francistown',
+                    'Gaborone-Palapye', 'Local Gaborone'],
+                y: [34.5, 28.3, 42.1, 38.7, 45.2, 52.8, 58.3, 94.2],
+                type: 'bar',
+                marker: {
+                    color: ['#e74c3c', '#e74c3c', '#e67e22', '#e67e22', '#f1c40f', '#f1c40f', '#27ae60', '#27ae60']
+                }
+            };
+
+            Plotly.newPlot('routeOnTimeChart', [routeData], {
+                title: '',
+                xaxis: {title: 'Route', tickangle: -45},
+                yaxis: {title: 'On-Time Delivery Rate (%)', range: [0, 100]},
+                margin: {t: 20, b: 80, l: 60, r: 20}
+            }, {responsive: true});
+
+            // Driver Performance Distribution
+            var driverDistData = {
+                x: [45, 48, 52, 55, 58, 62, 65, 68, 72, 75, 78, 82, 85, 88, 92, 95],
+                type: 'histogram',
+                nbinsx: 16,
+                marker: {color: '#1a1a2e', opacity: 0.7}
+            };
+
+            Plotly.newPlot('driverPerformanceChart', [driverDistData], {
+                title: '',
+                xaxis: {title: 'Driver Performance Score'},
+                yaxis: {title: 'Number of Drivers'},
+                margin: {t: 20, b: 50, l: 60, r: 20}
+            }, {responsive: true});
+        }
+
+        // ==================== ROUTE CHARTS ====================
+        function renderRouteCharts() {
+            // Route Revenue & Cost
+            var routeRevenueData = [
+                {
+                    x: ['Gaborone-Windhoek', 'Gaborone-Lusaka', 'Gaborone-Johannesburg', 
+                        'Francistown-Harare', 'Gaborone-Maun', 'Gaborone-Francistown',
+                        'Gaborone-Palapye', 'Local Gaborone'],
+                    y: [12.4, 9.8, 8.2, 7.5, 6.9, 5.8, 4.2, 3.6],
+                    name: 'Revenue (P Millions)',
+                    type: 'bar',
+                    marker: {color: '#1a1a2e'}
+                },
+                {
+                    x: ['Gaborone-Windhoek', 'Gaborone-Lusaka', 'Gaborone-Johannesburg', 
+                        'Francistown-Harare', 'Gaborone-Maun', 'Gaborone-Francistown',
+                        'Gaborone-Palapye', 'Local Gaborone'],
+                    y: [3.1, 2.4, 1.9, 1.7, 1.6, 1.3, 0.9, 0.7],
+                    name: 'Fuel Cost (P Millions)',
+                    type: 'bar',
+                    marker: {color: '#f39c12'}
+                }
+            ];
+
+            Plotly.newPlot('routeRevenueChart', routeRevenueData, {
+                title: '',
+                xaxis: {title: 'Route', tickangle: -45},
+                yaxis: {title: 'Amount (P Millions)'},
+                barmode: 'group',
+                legend: {orientation: 'h', y: -0.2},
+                margin: {t: 20, b: 80, l: 60, r: 20}
+            }, {responsive: true});
+
+            // Route Fuel Efficiency
+            var routeFuelData = {
+                x: ['Gaborone-Windhoek', 'Gaborone-Lusaka', 'Gaborone-Johannesburg', 
+                    'Francistown-Harare', 'Gaborone-Maun', 'Gaborone-Francistown',
+                    'Gaborone-Palapye', 'Local Gaborone'],
+                y: [38.2, 36.8, 35.5, 34.2, 33.8, 32.1, 30.5, 28.3],
+                type: 'bar',
+                marker: {
+                    color: ['#e74c3c', '#e74c3c', '#e67e22', '#e67e22', '#f1c40f', '#f1c40f', '#27ae60', '#27ae60']
+                }
+            };
+
+            Plotly.newPlot('routeFuelChart', [routeFuelData], {
+                title: '',
+                xaxis: {title: 'Route', tickangle: -45},
+                yaxis: {title: 'Average Fuel Consumption (L/100km)'},
+                margin: {t: 20, b: 80, l: 60, r: 20}
+            }, {responsive: true});
+
+            // Route Scorecard
+            var routeScoreData = [
+                {
+                    x: ['Gaborone-Windhoek', 'Gaborone-Lusaka', 'Gaborone-Johannesburg', 
+                        'Francistown-Harare', 'Gaborone-Maun', 'Gaborone-Francistown',
+                        'Gaborone-Palapye', 'Local Gaborone'],
+                    y: [65, 58, 72, 68, 75, 82, 85, 95],
+                    name: 'Performance Score',
+                    type: 'bar',
+                    marker: {color: '#1a1a2e'}
+                }
+            ];
+
+            Plotly.newPlot('routeScorecard', routeScoreData, {
+                title: '',
+                xaxis: {title: 'Route', tickangle: -45},
+                yaxis: {title: 'Composite Score (%)', range: [0, 100]},
+                margin: {t: 20, b: 80, l: 60, r: 20}
+            }, {responsive: true});
+        }
+
+        // ==================== DRIVER CHARTS ====================
+        function renderDriverCharts() {
+            // Driver Tier Distribution
+            var tierData = {
+                labels: ['Excellent', 'Good', 'Needs Improvement', 'Critical'],
+                values: [28, 56, 42, 14],
+                type: 'pie',
+                marker: {
+                    colors: ['#27ae60', '#f1c40f', '#e67e22', '#e74c3c']
+                },
+                hole: 0.4
+            };
+
+            Plotly.newPlot('driverTierChart', [tierData], {
+                title: '',
+                showlegend: true,
+                margin: {t: 20, b: 20, l: 20, r: 20}
+            }, {responsive: true});
+
+            // Driver Performance Metrics
+            var driverMetricsData = [
+                {
+                    x: ['Excellent', 'Good', 'Needs Improvement', 'Critical'],
+                    y: [95, 78, 55, 32],
+                    name: 'On-Time Rate (%)',
+                    type: 'bar',
+                    marker: {color: '#1a1a2e'}
+                },
+                {
+                    x: ['Excellent', 'Good', 'Needs Improvement', 'Critical'],
+                    y: [28.5, 32.8, 38.2, 45.6],
+                    name: 'Avg Fuel (L/100km)',
+                    type: 'bar',
+                    marker: {color: '#f39c12'}
+                },
+                {
+                    x: ['Excellent', 'Good', 'Needs Improvement', 'Critical'],
+                    y: [0.8, 2.1, 4.5, 8.2],
+                    name: 'Avg Harsh Events/Trip',
+                    type: 'bar',
+                    marker: {color: '#e74c3c'}
+                }
+            ];
+
+            Plotly.newPlot('driverMetricsChart', driverMetricsData, {
+                title: '',
+                xaxis: {title: 'Driver Tier'},
+                yaxis: {title: 'Performance Metric'},
+                barmode: 'group',
+                legend: {orientation: 'h', y: -0.2},
+                margin: {t: 20, b: 60, l: 60, r: 20}
+            }, {responsive: true});
+
+            // Driver Comparison
+            var comparisonData = [
+                {
+                    x: ['Fuel Efficiency', 'On-Time Rate', 'Safety Score', 'Reliability'],
+                    y: [92, 95, 96, 93],
+                    name: 'Top Performers',
+                    type: 'bar',
+                    marker: {color: '#27ae60'}
+                },
+                {
+                    x: ['Fuel Efficiency', 'On-Time Rate', 'Safety Score', 'Reliability'],
+                    y: [45, 32, 38, 42],
+                    name: 'Bottom Performers',
+                    type: 'bar',
+                    marker: {color: '#e74c3c'}
+                }
+            ];
+
+            Plotly.newPlot('driverComparisonChart', comparisonData, {
+                title: '',
+                xaxis: {title: 'Performance Metric'},
+                yaxis: {title: 'Score (%)', range: [0, 100]},
+                barmode: 'group',
+                legend: {orientation: 'h', y: -0.2},
+                margin: {t: 20, b: 60, l: 60, r: 20}
+            }, {responsive: true});
+        }
+
+        // ==================== FLEET CHARTS ====================
+        function renderFleetCharts() {
+            // Maintenance Risk Factors
+            var riskData = {
+                x: ['Vehicle Age', 'Total KM', 'Harsh Events', 'Fuel Consumption', 'Idle Time'],
+                y: [0.32, 0.28, 0.18, 0.12, 0.10],
+                type: 'bar',
+                marker: {
+                    color: ['#e74c3c', '#e67e22', '#f1c40f', '#3498db', '#2ecc71']
+                }
+            };
+
+            Plotly.newPlot('maintenanceRiskChart', [riskData], {
+                title: '',
+                xaxis: {title: 'Risk Factor'},
+                yaxis: {title: 'Importance Weight', range: [0, 0.4]},
+                margin: {t: 20, b: 60, l: 60, r: 20}
+            }, {responsive: true});
+
+            // Vehicle Age Distribution
+            var ageData = {
+                x: ['0-2', '3-4', '5-6', '7-8', '9-10', '10+'],
+                y: [12, 28, 42, 35, 18, 5],
+                type: 'bar',
+                marker: {
+                    color: ['#2ecc71', '#27ae60', '#f1c40f', '#f39c12', '#e67e22', '#e74c3c']
+                }
+            };
+
+            Plotly.newPlot('vehicleAgeChart', [ageData], {
+                title: '',
+                xaxis: {title: 'Vehicle Age (Years)'},
+                yaxis: {title: 'Number of Vehicles'},
+                margin: {t: 20, b: 50, l: 60, r: 20}
+            }, {responsive: true});
+
+            // Maintenance Predictions
+            var predData = {
+                x: ['TD-033', 'TD-007', 'TD-015', 'TD-084', 'TD-049', 'TD-022', 'TD-031', 'TD-045', 'TD-082', 'TD-009'],
+                y: [92, 88, 85, 82, 78, 75, 72, 68, 65, 62],
+                type: 'bar',
+                marker: {
+                    color: ['#e74c3c', '#e74c3c', '#e74c3c', '#e67e22', '#e67e22', 
+                            '#e67e22', '#f1c40f', '#f1c40f', '#f1c40f', '#27ae60']
+                }
+            };
+
+            Plotly.newPlot('maintenancePredictions', [predData], {
+                title: '',
+                xaxis: {title: 'Vehicle ID', tickangle: -45},
+                yaxis: {title: 'Maintenance Risk Score (%)', range: [0, 100]},
+                margin: {t: 20, b: 60, l: 60, r: 20}
+            }, {responsive: true});
+        }
+
+        // Initial render
+        document.addEventListener('DOMContentLoaded', function() {
+            renderOverviewCharts();
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            Plotly.Plots.resize(document.getElementById('revenueFuelChart'));
+            Plotly.Plots.resize(document.getElementById('vehicleTypeChart'));
+            Plotly.Plots.resize(document.getElementById('routeOnTimeChart'));
+            Plotly.Plots.resize(document.getElementById('driverPerformanceChart'));
+        });
+    </script>
+</body>
+</html>

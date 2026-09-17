@@ -1,0 +1,6 @@
+{
+  "model": "GradientBoosting",
+  "auc": 0.9214,
+  "sensitivity": 0.8782,
+  "trained": "2026-02-20"
+}

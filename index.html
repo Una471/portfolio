@@ -592,8 +592,8 @@ const projects = [
         businessImpact: "The credit union now catches risky applications before they enter the system. For existing customers, they reach out when someone first shows warning signs, not months later when it's too late. Loan approvals are 30% faster because officers aren't doing manual checklists.",
         scenario: "A customer asks for a P50,000 loan. The officer types in their details: they earn P12,000 a month, defaulted once before, and nearly half their salary would go to this loan payment. The system flags it as high risk and recommends declining or offering a smaller amount. Without this tool, that officer might have approved it based on a friendly conversation.",
         liveLinks: true,
-        dashboardLink: "https://loan-default-report.streamlit.app/",
-        softwareLink: "https://loan-management-automation.streamlit.app/",
+        dashboardLink: "https://loan-management-automation.streamlit.app/?view=dashboard",
+        softwareLink: "https://loan-management-automation.streamlit.app/?view=software",
         screenshot: "images/financial.jpeg"
     },
     {
@@ -607,8 +607,8 @@ const projects = [
         businessImpact: "The maintenance team now knows exactly which machines to work on instead of servicing everything on a fixed schedule. Machines get fixed before they break. The system also identified which operators leave machines running idle. Five people were responsible for most of the wasted fuel.",
         scenario: "A technician inspects a haul truck: temperature 108 degrees (safe limit is 90), vibration high, oil pressure low. The system flags it as critical with an 87% chance of breakdown within a week. The machine gets serviced now for P80,000 instead of failing next week and costing P500,000 plus halted production.",
         liveLinks: true,
-        dashboardLink: "https://mining-dashboard.streamlit.app",
-        softwareLink: "https://machinery-system.streamlit.app/",
+        dashboardLink: "https://machinery-system.streamlit.app/?view=dashboard",
+        softwareLink: "https://machinery-system.streamlit.app/?view=software",
         screenshot: "images/mining.jpeg"
     },
     {
@@ -622,8 +622,8 @@ const projects = [
         businessImpact: "Moving two nurses to afternoon shifts cut average wait times by 15 minutes. The pharmacy now catches expiring stock early and sends it to busy departments instead of throwing it away. Finding a bed for an emergency patient now takes seconds instead of 15 minutes of phone calls.",
         scenario: "A pharmacy staff member checks the dashboard. Paracetamol has 7 days until expiry with 500 units on the shelf, about P12,500 worth. The system recommends sending it to Outpatients who use the most. Medicine gets used instead of discarded. Before this tool, nobody would have known until the monthly count when it was too late.",
         liveLinks: true,
-        dashboardLink: "https://health-dashboard1.streamlit.app/",
-        softwareLink: "https://health-system.streamlit.app/",
+        dashboardLink: "https://health-system.streamlit.app/?view=dashboard",
+        softwareLink: "https://health-system.streamlit.app/?view=software",
         screenshot: "images/health.jpeg"
     },
     {
@@ -637,8 +637,8 @@ const projects = [
         businessImpact: "The store now knows which products to place near each other to increase basket size. Black Friday delivered a 40% sales boost while Easter only managed 18%, so marketing spend can shift to what works. Automated alerts now flag items running low before they sell out.",
         scenario: "Milk and Bread are bought together 65% of the time. But Milk is in the back corner and Bread by the entrance. The store moves them to the same aisle. A customer walking in for Bread now sees Milk and grabs it too. Same logic applies to Coca Cola and Chips. Small shelf changes, bigger baskets.",
         liveLinks: true,
-        dashboardLink: "https://retail-dashboardd.streamlit.app/",
-        softwareLink: "https://retail-system.streamlit.app/",
+        dashboardLink: "https://retail-system.streamlit.app/?view=dashboard",
+        softwareLink: "https://retail-system.streamlit.app/?view=software",
         screenshot: "images/retail.jpeg"
     },
     {
@@ -652,8 +652,8 @@ const projects = [
         businessImpact: "Advisors now work from a priority list instead of treating all students equally. A student flagged at 72% attendance gets a call the same week instead of being discovered after they're gone. Registration time dropped from 45 minutes to 15 minutes because the system handles the paperwork.",
         scenario: "A new student enrolls living 52km from campus with no transport and parents who didn't finish secondary school. The system flags them as medium risk and recommends extra check-ins. Three months later attendance drops to 72%. An alert fires. Their advisor calls the next day to ask what's going on before the student disappears.",
         liveLinks: true,
-        dashboardLink: "https://education-dashboard.streamlit.app/",
-        softwareLink: "https://student-syste.streamlit.app/",
+        dashboardLink: "projects/education/dashboard.html",
+        softwareLink: "projects/education/software.html",
         screenshot: "images/education.jpeg"
     },
     {
@@ -667,8 +667,8 @@ const projects = [
         businessImpact: "The hotel now charges more when demand is high and offers discounts when rooms would sit empty. Monthly revenue increased by 12%, over P3.7 million extra per year. Guest complaints are now answered within a day instead of weeks. Staff schedules match occupancy so they're not overstaffed on quiet days.",
         scenario: "Weekend during a conference, 90% full. The front desk checks the pricing tool for an Executive Suite. Base rate is P2,100. High demand adds 20%, the conference adds 15%, weekend adds 8%. Recommended rate: P3,130. Guest books it. Old flat rate would have lost P1,030 on just that one room.",
         liveLinks: true,
-        dashboardLink: "https://hospitality-dash.streamlit.app/",
-        softwareLink: "https://hotel-systemm.streamlit.app/",
+        dashboardLink: "https://hotel-systemm.streamlit.app/?view=dashboard",
+        softwareLink: "https://hotel-systemm.streamlit.app/?view=software",
         screenshot: "images/hotel.jpeg"
     },
     {
@@ -684,6 +684,90 @@ const projects = [
         liveLinks: true,
         softwareLink: "https://network-comparison.streamlit.app",
         screenshot: "images/network.jpeg"
+    },
+    {
+        id: 8,
+        title: "Construction Project Risk Control",
+        industry: "construction",
+        type: "Dashboard & Site Risk Tool",
+        shortDesc: "Tracks project overruns and helps site teams identify delivery risks before they affect cost and schedule.",
+        businessProblem: "Construction teams need one clear view of project cost, schedule and operational risk.",
+        whatIDid: "I combined project records with a risk model and built a management dashboard plus an operational site-risk tool.",
+        businessImpact: "Teams can focus attention on projects most likely to overrun instead of reviewing every project manually.",
+        scenario: "A manager opens the risk tool, reviews a delayed project and sees the factors requiring intervention.",
+        liveLinks: true,
+        dashboardLink: "projects/construction/dashboard.html",
+        softwareLink: "projects/construction/software.html"
+    },
+    {
+        id: 9,
+        title: "Public Service Request Intelligence",
+        industry: "government",
+        type: "Dashboard & Escalation Tool",
+        shortDesc: "Helps public-service teams monitor requests, delays and cases that require escalation.",
+        businessProblem: "Service requests can remain unresolved because managers lack a consolidated operational view.",
+        whatIDid: "I built a delivery dashboard and a case-screening tool that highlights requests at risk of delay.",
+        businessImpact: "Operational teams can prioritise unresolved cases and respond before service targets are missed.",
+        scenario: "A service officer screens a request and receives a clear escalation recommendation.",
+        liveLinks: true,
+        dashboardLink: "projects/government/dashboard.html",
+        softwareLink: "projects/government/software.html"
+    },
+    {
+        id: 10,
+        title: "Legal Revenue & Time Recovery",
+        industry: "legal",
+        type: "Dashboard & Timekeeping Tool",
+        shortDesc: "Connects legal matter performance with time capture and revenue leakage controls.",
+        businessProblem: "Unrecorded billable time and fragmented matter data reduce legal-practice revenue visibility.",
+        whatIDid: "I built a revenue dashboard and a timekeeping tool for matter-level operational action.",
+        businessImpact: "The practice can identify leakage and improve the completeness of billable-time records.",
+        scenario: "A lawyer records work against a matter while managers monitor revenue and leakage trends.",
+        liveLinks: true,
+        dashboardLink: "projects/law/dashboard.html",
+        softwareLink: "projects/law/software.html"
+    },
+    {
+        id: 11,
+        title: "Logistics Fleet Performance",
+        industry: "logistics",
+        type: "Dashboard & Delivery Tool",
+        shortDesc: "Monitors fleet delivery performance and turns operational data into dispatch decisions.",
+        businessProblem: "Delivery delays and fleet inefficiencies are difficult to manage from disconnected records.",
+        whatIDid: "I created a fleet analytics dashboard and a delivery operations tool for daily decisions.",
+        businessImpact: "Dispatch teams can identify delays and focus resources on routes requiring attention.",
+        scenario: "A dispatcher reviews current performance and acts on a delivery flagged for intervention.",
+        liveLinks: true,
+        dashboardLink: "projects/logistics/dashboard.html",
+        softwareLink: "projects/logistics/software.html"
+    },
+    {
+        id: 12,
+        title: "Property Valuation Intelligence",
+        industry: "real-estate",
+        type: "Dashboard & Valuation Tool",
+        shortDesc: "Combines property portfolio analysis with an evidence-based valuation workflow.",
+        businessProblem: "Property teams need consistent valuations and a clear view of portfolio performance.",
+        whatIDid: "I analysed property records and built a portfolio dashboard with the ValuTrack valuation tool.",
+        businessImpact: "Valuation decisions become faster, more consistent and easier to explain.",
+        scenario: "An analyst enters a property's characteristics and receives a valuation supported by portfolio evidence.",
+        liveLinks: true,
+        dashboardLink: "projects/real-estate/dashboard.html",
+        softwareLink: "projects/real-estate/software.html"
+    },
+    {
+        id: 13,
+        title: "SaaS Customer Retention Intelligence",
+        industry: "technology",
+        type: "Dashboard & Retention Tool",
+        shortDesc: "Shows customer-retention performance and identifies accounts requiring intervention.",
+        businessProblem: "Customer churn is expensive when warning signals remain scattered across product and account data.",
+        whatIDid: "I built a retention analytics dashboard and the RetainIQ customer-risk tool.",
+        businessImpact: "Customer-success teams can prioritise high-risk accounts before they cancel.",
+        scenario: "An account manager screens a customer and receives a clear retention-risk assessment.",
+        liveLinks: true,
+        dashboardLink: "projects/technology/dashboard.html",
+        softwareLink: "projects/technology/software.html"
     }
 ];
 

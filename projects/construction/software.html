@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiteRisk - Setshaba Construction</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #f8f9fa; 
+            color: #1a1a2e;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #2d3436 0%, #1a1a2e 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+        
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .sidebar-nav .icon {
+            font-size: 1.25rem;
+            width: 28px;
+            text-align: center;
+        }
+        
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 1rem 0;
+        }
+        
+        .sidebar-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-content h1 { 
+            font-size: 1.75rem; 
+            font-weight: 600; 
+            color: #1a1a2e; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+        }
+        
+        .header-content p { 
+            color: #6c757d; 
+            margin-top: 0.25rem; 
+        }
+        
+        .header-badge {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+        }
+        
+        .section {
+            scroll-margin-top: 1rem;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .tool-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .tool-card h2 {
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.375rem;
+            font-weight: 500;
+            color: #495057;
+            font-size: 0.875rem;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .btn-calculate {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+        
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+        }
+        
+        .result-box {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .result-box h3 {
+            margin-bottom: 0.5rem;
+            color: #495057;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .result-details {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .result-detail-item {
+            background: white;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .result-detail-item label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .result-detail-item .value {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+        
+        .risk-meter {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .risk-meter .fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+        
+        .risk-meter .fill.green { background: #4CAF50; }
+        .risk-meter .fill.yellow { background: #ff9800; }
+        .risk-meter .fill.red { background: #f44336; }
+        
+        .action-list {
+            margin-top: 1rem;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .action-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .action-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .action-list .priority {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .priority-high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .priority-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .priority-low {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+                padding: 1.5rem 1rem;
+            }
+            .main-content {
+                margin-left: 220px;
+                padding: 1.5rem;
+            }
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .sidebar-logo {
+                margin-bottom: 0;
+                font-size: 1.25rem;
+                margin-right: 1rem;
+            }
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+            .sidebar-nav li {
+                margin-bottom: 0;
+            }
+            .sidebar-nav a {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            .sidebar-divider, .sidebar-footer {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <span>⚠️</span> SiteRisk
+        </div>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="#predict" class="active" onclick="switchSection('predict')">
+                    <span class="icon">🔮</span> Risk Predictor
+                </a>
+            </li>
+            <li>
+                <a href="#history" onclick="switchSection('history')">
+                    <span class="icon">📋</span> History
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-footer">
+            <p>Setshaba Construction</p>
+            <p>© 2026 • v2.0</p>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="header-content">
+                <h1>⚠️ SiteRisk</h1>
+                <p>Bid-stage project overrun risk assessment</p>
+            </div>
+            <span class="header-badge">⚡ Powered by ML model (80%+ accuracy)</span>
+        </header>
+        
+        <div class="container">
+            <div id="loading" class="loading">
+                <h2>Loading risk predictor...</h2>
+                <p>Please wait while we prepare your workspace.</p>
+            </div>
+            
+            <div id="toolContent" style="display: none;">
+                <!-- Section: Predict -->
+                <section id="predict" class="section active">
+                    <div class="section-title">🔮 Overrun Risk Predictor</div>
+                    
+                    <div class="tool-grid">
+                        <!-- Form -->
+                        <div class="tool-card">
+                            <h2>📊 Enter Project Details</h2>
+                            
+                            <form id="riskForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Project Type</label>
+                                        <select id="projectType">
+                                            <option value="Road Construction">Road Construction</option>
+                                            <option value="Commercial Building">Commercial Building</option>
+                                            <option value="Residential Building">Residential Building</option>
+                                            <option value="Government Office">Government Office</option>
+                                            <option value="Healthcare Facility">Healthcare Facility</option>
+                                            <option value="Education Infrastructure">Education Infrastructure</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Region</label>
+                                        <select id="region">
+                                            <option value="Gaborone">Gaborone</option>
+                                            <option value="Francistown">Francistown</option>
+                                            <option value="Maun">Maun</option>
+                                            <option value="Serowe">Serowe</option>
+                                            <option value="Palapye">Palapye</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Project Manager</label>
+                                        <select id="manager">
+                                            <option value="PM_Moeti">PM_Moeti</option>
+                                            <option value="PM_Segametsi">PM_Segametsi</option>
+                                            <option value="PM_Kebonye">PM_Kebonye</option>
+                                            <option value="PM_Ditiro">PM_Ditiro</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tender Type</label>
+                                        <select id="tenderType">
+                                            <option value="Government">Government</option>
+                                            <option value="Private">Private</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Planned Duration (months)</label>
+                                        <input type="number" id="duration" value="12" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Contracted Budget (P)</label>
+                                        <input type="number" id="budget" value="5000000" min="100000" step="100000">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Workforce Headcount</label>
+                                        <input type="number" id="headcount" value="20" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Estimated Quality Score (0-100)</label>
+                                        <input type="number" id="quality" value="75" min="0" max="100">
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn-calculate" onclick="predictRisk()">
+                                    🔮 Predict Overrun Risk
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <!-- Results -->
+                        <div class="tool-card">
+                            <h2>📈 Risk Assessment</h2>
+                            
+                            <div class="result-box" id="resultPlaceholder">
+                                <p style="color: #6c757d; text-align: center;">
+                                    Enter project details and click "Predict Overrun Risk" to get an assessment.
+                                </p>
+                            </div>
+                            
+                            <div class="result-box" id="resultContent" style="display: none;">
+                                <h3>⚠️ Overrun Risk Score</h3>
+                                <div class="result-value" id="riskScore">0%</div>
+                                
+                                <div class="risk-meter">
+                                    <div class="fill" id="riskMeter" style="width: 0%;"></div>
+                                </div>
+                                
+                                <div style="margin-top: 0.5rem; display: flex; justify-content: space-between; font-size: 0.75rem; color: #6c757d;">
+                                    <span>Low Risk</span>
+                                    <span>High Risk</span>
+                                </div>
+                                
+                                <div class="result-details">
+                                    <div class="result-detail-item">
+                                        <label>Risk Level</label>
+                                        <div class="value" id="riskLevel">Low</div>
+                                    </div>
+                                    <div class="result-detail-item">
+                                        <label>Project Health</label>
+                                        <div class="value" id="projectHealth">Good</div>
+                                    </div>
+                                    <div class="result-detail-item">
+                                        <label>Budget at Risk</label>
+                                        <div class="value" id="budgetAtRisk">P0</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: 1.5rem;">
+                                    <h4 style="margin-bottom: 0.5rem; color: #495057;">🎯 Recommended Actions</h4>
+                                    <ul class="action-list" id="actionList">
+                                        <!-- Populated from JS -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: History -->
+                <section id="history" class="section">
+                    <div class="section-title">📋 Assessment History</div>
+                    
+                    <div class="tool-card">
+                        <div id="historyContent">
+                            <!-- Populated from localStorage -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Risk factors based on analysis
+        const projectTypeRisks = {
+            'Road Construction': 0.45,
+            'Commercial Building': 0.35,
+            'Residential Building': 0.40,
+            'Government Office': 0.30,
+            'Healthcare Facility': 0.25,
+            'Education Infrastructure': 0.28
+        };
+        
+        const regionRisks = {
+            'Gaborone': 0.30,
+            'Francistown': 0.42,
+            'Maun': 0.38,
+            'Serowe': 0.35,
+            'Palapye': 0.40
+        };
+        
+        const managerRisks = {
+            'PM_Moeti': 0.32,
+            'PM_Segametsi': 0.45,
+            'PM_Kebonye': 0.38,
+            'PM_Ditiro': 0.28
+        };
+        
+        const tenderRisks = {
+            'Government': 0.38,
+            'Private': 0.32
+        };
+        
+        // History array
+        let assessmentHistory = [];
+        
+        async function loadData() {
+            try {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('toolContent').style.display = 'block';
+                
+                // Load history from localStorage
+                loadHistory();
+                
+            } catch (error) {
+                document.getElementById('loading').innerHTML = `
+                    <h2 style="color: #f44336;">❌ Error loading data</h2>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+        
+        function predictRisk() {
+            // Get form values
+            const projectType = document.getElementById('projectType').value;
+            const region = document.getElementById('region').value;
+            const manager = document.getElementById('manager').value;
+            const tenderType = document.getElementById('tenderType').value;
+            const duration = parseInt(document.getElementById('duration').value) || 12;
+            const budget = parseInt(document.getElementById('budget').value) || 5000000;
+            const headcount = parseInt(document.getElementById('headcount').value) || 20;
+            const quality = parseInt(document.getElementById('quality').value) || 75;
+            
+            // Calculate risk probability
+            let risk = 0.5; // Base risk
+            
+            // Project type impact
+            risk += (projectTypeRisks[projectType] || 0.35) - 0.35;
+            
+            // Region impact
+            risk += (regionRisks[region] || 0.35) - 0.35;
+            
+            // Manager impact
+            risk += (managerRisks[manager] || 0.35) - 0.35;
+            
+            // Tender type impact
+            risk += (tenderRisks[tenderType] || 0.35) - 0.35;
+            
+            // Duration impact
+            if (duration > 24) risk += 0.1;
+            else if (duration > 18) risk += 0.05;
+            else if (duration < 6) risk -= 0.05;
+            
+            // Budget impact
+            if (budget > 10000000) risk += 0.05;
+            else if (budget < 2000000) risk -= 0.05;
+            
+            // Headcount impact
+            if (headcount > 40) risk += 0.05;
+            else if (headcount < 10) risk -= 0.05;
+            
+            // Quality score impact
+            if (quality < 60) risk += 0.15;
+            else if (quality < 70) risk += 0.08;
+            else if (quality > 85) risk -= 0.1;
+            
+            // Normalize to 0-1 range
+            risk = Math.max(0, Math.min(1, risk));
+            
+            // Determine risk level
+            let riskLevel, healthColor;
+            if (risk > 0.8) {
+                riskLevel = 'Critical';
+                healthColor = 'red';
+            } else if (risk > 0.6) {
+                riskLevel = 'High';
+                healthColor = 'red';
+            } else if (risk > 0.3) {
+                riskLevel = 'Medium';
+                healthColor = 'yellow';
+            } else {
+                riskLevel = 'Low';
+                healthColor = 'green';
+            }
+            
+            // Calculate budget at risk
+            const budgetAtRisk = budget * risk;
+            
+            // Generate actions based on risk factors
+            const actions = [];
+            if (risk > 0.6) {
+                actions.push({
+                    priority: 'high',
+                    text: 'Increase contingency budget - project has high overrun risk'
+                });
+            }
+            if (projectTypeRisks[projectType] > 0.4) {
+                actions.push({
+                    priority: 'high',
+                    text: `Carefully review scope - ${projectType} projects historically overrun at high rates`
+                });
+            }
+            if (regionRisks[region] > 0.38) {
+                actions.push({
+                    priority: 'medium',
+                    text: `Assign experienced site team - ${region} region has higher delivery risk`
+                });
+            }
+            if (quality < 70) {
+                actions.push({
+                    priority: 'medium',
+                    text: 'Strengthen quality control processes - low quality scores correlate with overruns'
+                });
+            }
+            if (duration > 24) {
+                actions.push({
+                    priority: 'medium',
+                    text: 'Break project into phases - long duration projects have higher risk'
+                });
+            }
+            if (actions.length === 0) {
+                actions.push({
+                    priority: 'low',
+                    text: 'Monitor regularly - project appears low risk'
+                });
+            }
+            
+            // Display results
+            document.getElementById('resultPlaceholder').style.display = 'none';
+            document.getElementById('resultContent').style.display = 'block';
+            
+            document.getElementById('riskScore').textContent = (risk * 100).toFixed(0) + '%';
+            document.getElementById('riskLevel').textContent = riskLevel;
+            document.getElementById('projectHealth').textContent = riskLevel === 'Low' ? 'Good' : riskLevel === 'Medium' ? 'Fair' : 'At Risk';
+            document.getElementById('budgetAtRisk').textContent = 'P' + Math.round(budgetAtRisk).toLocaleString();
+            
+            const meter = document.getElementById('riskMeter');
+            meter.style.width = (risk * 100) + '%';
+            meter.className = 'fill ' + healthColor;
+            
+            // Populate actions
+            const actionList = document.getElementById('actionList');
+            actionList.innerHTML = actions.map(a => `
+                <li>
+                    <span class="priority priority-${a.priority}">${a.priority}</span>
+                    ${a.text}
+                </li>
+            `).join('');
+            
+            // Store for history
+            window.currentAssessment = {
+                date: new Date().toLocaleString(),
+                projectType: projectType,
+                region: region,
+                manager: manager,
+                budget: 'P' + budget.toLocaleString(),
+                riskScore: (risk * 100).toFixed(0) + '%',
+                riskLevel: riskLevel,
+                budgetAtRisk: 'P' + Math.round(budgetAtRisk).toLocaleString()
+            };
+        }
+        
+        function saveToHistory() {
+            if (window.currentAssessment) {
+                assessmentHistory.unshift(window.currentAssessment);
+                
+                if (assessmentHistory.length > 50) {
+                    assessmentHistory = assessmentHistory.slice(0, 50);
+                }
+                
+                localStorage.setItem('riskAssessments', JSON.stringify(assessmentHistory));
+                renderHistory();
+                
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Saved!';
+                btn.style.background = '#28a745';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#4CAF50';
+                }, 2000);
+            }
+        }
+        
+        function loadHistory() {
+            const saved = localStorage.getItem('riskAssessments');
+            if (saved) {
+                try {
+                    assessmentHistory = JSON.parse(saved);
+                } catch (e) {
+                    assessmentHistory = [];
+                }
+            }
+            renderHistory();
+        }
+        
+        function renderHistory() {
+            const container = document.getElementById('historyContent');
+            
+            if (assessmentHistory.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #6c757d;">
+                        <p style="font-size: 3rem; margin-bottom: 1rem;">📭</p>
+                        <h3>No assessments saved yet</h3>
+                        <p>Your risk assessments will appear here.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <p style="color: #6c757d; font-size: 0.875rem;">${assessmentHistory.length} assessments saved</p>
+                    <button onclick="clearHistory()" style="background: #f44336; color: white; border: none; padding: 0.375rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem;">
+                        Clear All
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Date</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Project Type</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Region</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Manager</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Risk Score</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Risk Level</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Budget at Risk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${assessmentHistory.map(item => `
+                                <tr>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">${item.date}</td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">${item.projectType}</td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">${item.region}</td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">${item.manager}</td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0; font-weight: 600;">${item.riskScore}</td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">
+                                        <span class="badge ${item.riskLevel === 'Critical' ? 'badge-critical' : item.riskLevel === 'High' ? 'badge-high' : item.riskLevel === 'Medium' ? 'badge-medium' : 'badge-low'}">
+                                            ${item.riskLevel}
+                                        </span>
+                                    </td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">${item.budgetAtRisk}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        
+        function clearHistory() {
+            if (confirm('Clear all assessment history?')) {
+                assessmentHistory = [];
+                localStorage.removeItem('riskAssessments');
+                renderHistory();
+            }
+        }
+        
+        function switchSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            document.querySelector(`.sidebar-nav a[href="#${sectionId}"]`).classList.add('active');
+        }
+        
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

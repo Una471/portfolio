@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pula Property Group - Portfolio Intelligence Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #f0f2f5; 
+            color: #1a1a2e;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sidebar-logo span { font-size: 2rem; }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-nav a {
+            display: block;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .sidebar-nav .icon {
+            margin-right: 0.75rem;
+        }
+        
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.15);
+            margin: 1rem 0;
+        }
+        
+        .sidebar-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-content h1 { font-size: 1.75rem; font-weight: 600; color: #1a1a2e; }
+        .header-content p { color: #6c757d; margin-top: 0.25rem; }
+        .header-meta { text-align: right; color: #6c757d; font-size: 0.875rem; }
+        
+        .container { max-width: 1400px; }
+        
+        /* Section styling */
+        .section {
+            scroll-margin-top: 1rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-title .badge {
+            font-size: 0.75rem;
+            background: #667eea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .metrics-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 1rem; 
+            margin-bottom: 2rem; 
+        }
+        
+        .metric-card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+        }
+        
+        .metric-card h3 { 
+            color: #6c757d; 
+            font-size: 0.875rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .metric-card .value { 
+            font-size: 2rem; 
+            font-weight: 600; 
+            margin-top: 0.5rem; 
+        }
+        
+        .charts-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); 
+            gap: 1.5rem; 
+            margin-bottom: 2rem; 
+        }
+        
+        .chart-card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+        }
+        
+        .chart-card h3 { 
+            margin-bottom: 1rem; 
+            color: #1a1a2e; 
+            font-size: 1rem;
+        }
+        
+        .chart-container { 
+            position: relative; 
+            height: 300px; 
+        }
+        
+        .full-width-chart { 
+            grid-column: 1 / -1; 
+        }
+        
+        .table-container { 
+            overflow-x: auto; 
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        
+        th { 
+            background: #f8f9fa; 
+            padding: 0.75rem; 
+            text-align: left; 
+            font-weight: 600; 
+        }
+        
+        td { 
+            padding: 0.75rem; 
+            border-bottom: 1px solid #f0f0f0; 
+        }
+        
+        .badge { 
+            display: inline-block; 
+            padding: 0.25rem 0.5rem; 
+            border-radius: 4px; 
+            font-size: 0.75rem; 
+            font-weight: 500; 
+        }
+        
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        
+        .loading { 
+            text-align: center; 
+            padding: 4rem; 
+            color: #6c757d; 
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #667eea;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            border: none;
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+        
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+                padding: 1.5rem 1rem;
+            }
+            .main-content {
+                margin-left: 220px;
+                padding: 1.5rem;
+            }
+            .charts-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .sidebar-logo {
+                margin-bottom: 0;
+                font-size: 1.25rem;
+                margin-right: 1rem;
+            }
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+            .sidebar-nav li {
+                margin-bottom: 0;
+            }
+            .sidebar-nav a {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            .sidebar-divider, .sidebar-footer {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header-meta {
+                text-align: center;
+            }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <span>🏠</span> Pula Group
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="#overview" class="active"><span class="icon">📊</span> Overview</a></li>
+            <li><a href="#revenue"><span class="icon">💰</span> Revenue</a></li>
+            <li><a href="#agents"><span class="icon">👤</span> Agents</a></li>
+            <li><a href="#properties"><span class="icon">🏘️</span> Properties</a></li>
+            <li><a href="#cities"><span class="icon">📍</span> Cities</a></li>
+            <li><a href="#trends"><span class="icon">📈</span> Trends</a></li>
+            <li><a href="#referrals"><span class="icon">🔗</span> Referrals</a></li>
+            <li><a href="#scorecard"><span class="icon">📋</span> Scorecard</a></li>
+        </ul>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-footer">
+            <p>Pula Property Group</p>
+            <p>© 2026 • v2.0</p>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="header-content">
+                <h1>📊 Portfolio Intelligence Dashboard</h1>
+                <p>Data-driven insights for better business decisions</p>
+            </div>
+            <div class="header-meta">
+                <p><strong>Period:</strong> Jan 2024 – Present</p>
+                <p><strong>Updated:</strong> <span id="reportDate">Loading...</span></p>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div id="loading" class="loading">
+                <h2>Loading dashboard data...</h2>
+                <p>Please wait while we prepare your insights.</p>
+            </div>
+            
+            <div id="dashboardContent" style="display: none;">
+                <!-- Section: Overview -->
+                <section id="overview" class="section">
+                    <div class="section-title">
+                        📈 Overview
+                        <span class="badge">Live</span>
+                    </div>
+                    <div class="metrics-grid" id="metricsGrid"></div>
+                </section>
+                
+                <!-- Section: Revenue -->
+                <section id="revenue" class="section">
+                    <div class="section-title">💰 Revenue Analysis</div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Commission Earned vs Lost</h3>
+                            <div class="chart-container">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Commission Lost by Agent</h3>
+                            <div class="chart-container">
+                                <canvas id="lostCommissionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Agents -->
+                <section id="agents" class="section">
+                    <div class="section-title">👤 Agent Performance</div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Commission Earned by Agent</h3>
+                            <div class="chart-container">
+                                <canvas id="agentChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Properties -->
+                <section id="properties" class="section">
+                    <div class="section-title">🏘️ Property Types</div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Distribution by Property Type</h3>
+                            <div class="chart-container">
+                                <canvas id="propertyTypeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Cities -->
+                <section id="cities" class="section">
+                    <div class="section-title">📍 City Performance</div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Commission by City</h3>
+                            <div class="chart-container">
+                                <canvas id="cityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Trends -->
+                <section id="trends" class="section">
+                    <div class="section-title">📈 Monthly Trends</div>
+                    <div class="charts-grid">
+                        <div class="chart-card full-width-chart">
+                            <h3>Commission & Deals Over Time</h3>
+                            <div class="chart-container" style="height: 350px;">
+                                <canvas id="trendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Referrals -->
+                <section id="referrals" class="section">
+                    <div class="section-title">🔗 Referral Sources</div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Deals by Referral Source</h3>
+                            <div class="chart-container">
+                                <canvas id="referralChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: Scorecard -->
+                <section id="scorecard" class="section">
+                    <div class="section-title">📋 Agent Scorecard</div>
+                    <div class="chart-card">
+                        <div class="table-container" style="max-height: 500px; overflow-y: auto;">
+                            <table id="agentScorecard">
+                                <thead>
+                                    <tr>
+                                        <th>Agent</th>
+                                        <th>Deals Closed</th>
+                                        <th>Commission Earned</th>
+                                        <th>Commission Lost</th>
+                                        <th>Avg Pricing Error</th>
+                                        <th>Rating</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        <!-- Scroll to top button -->
+        <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            ↑
+        </button>
+    </main>
+    
+    <script>
+        let dashboardData = null;
+        
+        async function loadData() {
+            try {
+                const response = await fetch('dashboard_data.json');
+                dashboardData = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+                document.getElementById('reportDate').textContent = new Date().toLocaleDateString('en-ZA', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                populateMetrics();
+                populateScorecard();
+                initCharts();
+                setupSidebarNavigation();
+                setupScrollTopButton();
+            } catch (error) {
+                document.getElementById('loading').innerHTML = `
+                    <h2 style="color: #f44336;">❌ Error loading data</h2>
+                    <p>Please make sure dashboard_data.json exists and is valid.</p>
+                    <p style="color: #6c757d; font-size: 0.875rem;">${error.message}</p>
+                `;
+            }
+        }
+        
+        function populateMetrics() {
+            const metrics = dashboardData.metrics;
+            const grid = document.getElementById('metricsGrid');
+            
+            const metricItems = [
+                { label: 'Total Properties', value: metrics.total_properties.toLocaleString(), change: '+12%' },
+                { label: 'Commission Earned', value: 'P' + metrics.total_commission.toLocaleString(), change: '+8%' },
+                { label: 'Commission Lost', value: 'P' + metrics.total_lost.toLocaleString(), change: '-15%' },
+                { label: 'Active Listings', value: metrics.active_listings, change: '+3%' },
+                { label: 'Avg Days on Market', value: metrics.avg_days_on_market.toFixed(0) + ' days', change: '-5%' },
+                { label: 'Avg Pricing Error', value: metrics.avg_pricing_error.toFixed(1) + '%', change: 'Improving' },
+                { label: 'Recovery Rate', value: metrics.recovery_rate.toFixed(1) + '%', change: '+10%' },
+                { label: 'Top Agent', value: metrics.top_agent, change: 'P' + metrics.top_agent_commission.toLocaleString() }
+            ];
+            
+            grid.innerHTML = metricItems.map(m => `
+                <div class="metric-card">
+                    <h3>${m.label}</h3>
+                    <div class="value">${m.value}</div>
+                    <span class="change">${m.change}</span>
+                </div>
+            `).join('');
+        }
+        
+        function populateScorecard() {
+            const tbody = document.querySelector('#agentScorecard tbody');
+            const agents = dashboardData.agents;
+            
+            tbody.innerHTML = Object.entries(agents).map(([name, data]) => {
+                let rating = 'Good';
+                if (data.pricing_error_pct > -1 && data.pricing_error_pct < 1) rating = 'Excellent';
+                else if (data.pricing_error_pct < -3) rating = 'Needs Improvement';
+                
+                return `
+                    <tr>
+                        <td><strong>${name}</strong></td>
+                        <td>${data.property_id}</td>
+                        <td>P${data.commission_earned_bwp.toLocaleString()}</td>
+                        <td style="color: #f44336;">P${data.commission_lost_bwp.toLocaleString()}</td>
+                        <td>${data.pricing_error_pct}%</td>
+                        <td>
+                            <span class="badge ${rating === 'Excellent' ? 'badge-success' : rating === 'Good' ? 'badge-warning' : 'badge-danger'}">
+                                ${rating}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function initCharts() {
+            const metrics = dashboardData.metrics;
+            const agents = dashboardData.agents;
+            const propertyTypes = dashboardData.property_types;
+            const cities = dashboardData.cities;
+            const referrals = dashboardData.referrals;
+            const monthly = dashboardData.monthly;
+            
+            // Revenue Chart
+            new Chart(document.getElementById('revenueChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Commission Earned', 'Commission Lost', 'Potential Revenue'],
+                    datasets: [{
+                        label: 'Amount (P)',
+                        data: [metrics.total_commission, metrics.total_lost, metrics.potential_revenue],
+                        backgroundColor: ['#4CAF50', '#f44336', '#667eea'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: (v) => 'P' + (v/1000000).toFixed(1) + 'M'
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: (v) => 'P' + (v/1000000).toFixed(1) + 'M' } }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Agent Chart
+            const agentNames = Object.keys(agents);
+            const agentEarned = agentNames.map(a => agents[a].commission_earned_bwp);
+            const agentLost = agentNames.map(a => agents[a].commission_lost_bwp);
+            
+            new Chart(document.getElementById('agentChart'), {
+                type: 'bar',
+                data: {
+                    labels: agentNames,
+                    datasets: [
+                        { label: 'Commission Earned', data: agentEarned, backgroundColor: '#4CAF50' },
+                        { label: 'Commission Lost', data: agentLost, backgroundColor: '#f44336' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        datalabels: { anchor: 'end', align: 'end', formatter: (v) => 'P' + (v/1000).toFixed(0) + 'k' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: (v) => 'P' + (v/1000).toFixed(0) + 'k' } }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Property Type Chart
+            const ptNames = Object.keys(propertyTypes);
+            const ptCounts = ptNames.map(p => propertyTypes[p].property_id);
+            
+            new Chart(document.getElementById('propertyTypeChart'), {
+                type: 'pie',
+                data: {
+                    labels: ptNames,
+                    datasets: [{
+                        data: ptCounts,
+                        backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#fa709a', '#fee140']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' },
+                        datalabels: {
+                            formatter: (v, ctx) => {
+                                let sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                return (v/sum*100).toFixed(1) + '%';
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // City Chart
+            const cityNames = Object.keys(cities);
+            const cityEarned = cityNames.map(c => cities[c].commission_earned_bwp);
+            const cityLost = cityNames.map(c => cities[c].commission_lost_bwp);
+            
+            new Chart(document.getElementById('cityChart'), {
+                type: 'bar',
+                data: {
+                    labels: cityNames,
+                    datasets: [
+                        { label: 'Commission Earned', data: cityEarned, backgroundColor: '#4CAF50' },
+                        { label: 'Commission Lost', data: cityLost, backgroundColor: '#f44336' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        datalabels: { anchor: 'end', align: 'end', formatter: (v) => 'P' + (v/1000).toFixed(0) + 'k' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: (v) => 'P' + (v/1000).toFixed(0) + 'k' } }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Trend Chart
+            const monthLabels = Object.keys(monthly);
+            const monthCommission = monthLabels.map(m => monthly[m].commission_earned_bwp);
+            const monthDeals = monthLabels.map(m => monthly[m].property_id);
+            
+            new Chart(document.getElementById('trendChart'), {
+                type: 'line',
+                data: {
+                    labels: monthLabels,
+                    datasets: [
+                        {
+                            label: 'Commission Earned',
+                            data: monthCommission,
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Deals Closed',
+                            data: monthDeals,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'top' },
+                        datalabels: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: (v) => 'P' + (v/1000).toFixed(0) + 'k' } },
+                        y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false } }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Referral Chart
+            const refNames = Object.keys(referrals);
+            const refCounts = refNames.map(r => referrals[r].property_id);
+            
+            new Chart(document.getElementById('referralChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: refNames,
+                    datasets: [{
+                        data: refCounts,
+                        backgroundColor: ['#4CAF50', '#667eea', '#f093fb', '#ff6b6b', '#ffd93d']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' },
+                        datalabels: {
+                            formatter: (v, ctx) => {
+                                let sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                return (v/sum*100).toFixed(1) + '%';
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Lost Commission Chart
+            const lostData = agentNames.map(a => agents[a].commission_lost_bwp);
+            
+            new Chart(document.getElementById('lostCommissionChart'), {
+                type: 'bar',
+                data: {
+                    labels: agentNames,
+                    datasets: [{
+                        label: 'Commission Lost',
+                        data: lostData,
+                        backgroundColor: '#f44336',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: { anchor: 'end', align: 'end', formatter: (v) => 'P' + v.toLocaleString() }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, ticks: { callback: (v) => 'P' + v.toLocaleString() } }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+        
+        function setupSidebarNavigation() {
+            const links = document.querySelectorAll('.sidebar-nav a');
+            const sections = document.querySelectorAll('.section');
+            
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active from all links
+                    links.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Scroll to section
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            // Update active link on scroll
+            window.addEventListener('scroll', function() {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    if (window.scrollY >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                links.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+        
+        function setupScrollTopButton() {
+            const btn = document.getElementById('scrollTopBtn');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 400) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+            });
+        }
+        
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

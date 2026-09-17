@@ -1,0 +1,406 @@
+{
+  "metrics": {
+    "total_projects": 300,
+    "completed_projects": 246,
+    "active_projects": 54,
+    "overrun_projects": 129,
+    "overrun_rate": 52.4390243902439,
+    "total_contracted": 2562317000.0,
+    "total_actual": 2870894600.0,
+    "total_variance": 308577600.0,
+    "total_overrun_cost": 359466700.0,
+    "total_material_waste": 107330000.0,
+    "avg_waste_pct": 9.392666666666667,
+    "model_accuracy": 70.0,
+    "model_auc": 0.76,
+    "top_overrun_type": "Road Construction",
+    "top_overrun_region": "Palapye",
+    "top_overrun_manager": "PM_Segametsi"
+  },
+  "project_types": {
+    "Road Construction": {
+      "project_id": 49,
+      "will_overrun": 25,
+      "cost_variance_bwp": 101119600.0,
+      "overrun_pct": 15.56,
+      "overrun_rate": 51.02040816326531
+    },
+    "Commercial Building": {
+      "project_id": 61,
+      "will_overrun": 31,
+      "cost_variance_bwp": 81831000.0,
+      "overrun_pct": 14.65,
+      "overrun_rate": 50.81967213114754
+    },
+    "Government Office": {
+      "project_id": 52,
+      "will_overrun": 24,
+      "cost_variance_bwp": 45431800.0,
+      "overrun_pct": 12.17,
+      "overrun_rate": 46.15384615384615
+    },
+    "Residential Building": {
+      "project_id": 53,
+      "will_overrun": 24,
+      "cost_variance_bwp": 60149300.0,
+      "overrun_pct": 15.58,
+      "overrun_rate": 45.28301886792453
+    },
+    "Education Infrastructure": {
+      "project_id": 37,
+      "will_overrun": 11,
+      "cost_variance_bwp": 3971500.0,
+      "overrun_pct": 7.05,
+      "overrun_rate": 29.72972972972973
+    },
+    "Healthcare Facility": {
+      "project_id": 48,
+      "will_overrun": 14,
+      "cost_variance_bwp": 16074400.0,
+      "overrun_pct": 7.36,
+      "overrun_rate": 29.166666666666668
+    }
+  },
+  "regions": {
+    "Palapye": {
+      "project_id": 47,
+      "will_overrun": 24,
+      "cost_variance_bwp": 43347500.0,
+      "overrun_rate": 51.06382978723404
+    },
+    "Gaborone": {
+      "project_id": 60,
+      "will_overrun": 28,
+      "cost_variance_bwp": 70812600.0,
+      "overrun_rate": 46.666666666666664
+    },
+    "Maun": {
+      "project_id": 60,
+      "will_overrun": 26,
+      "cost_variance_bwp": 70793200.0,
+      "overrun_rate": 43.333333333333336
+    },
+    "Serowe": {
+      "project_id": 67,
+      "will_overrun": 26,
+      "cost_variance_bwp": 62957100.0,
+      "overrun_rate": 38.80597014925373
+    },
+    "Francistown": {
+      "project_id": 66,
+      "will_overrun": 25,
+      "cost_variance_bwp": 60667200.0,
+      "overrun_rate": 37.878787878787875
+    }
+  },
+  "managers": {
+    "PM_Segametsi": {
+      "project_id": 66,
+      "will_overrun": 40,
+      "cost_variance_bwp": 98666500.0,
+      "delay_months": 3.7,
+      "material_waste_pct": 9.58,
+      "quality_score": 67.36,
+      "overrun_rate": 60.60606060606061
+    },
+    "PM_Kebonye": {
+      "project_id": 79,
+      "will_overrun": 40,
+      "cost_variance_bwp": 102154100.0,
+      "delay_months": 3.71,
+      "material_waste_pct": 10.61,
+      "quality_score": 71.17,
+      "overrun_rate": 50.63291139240506
+    },
+    "PM_Ditiro": {
+      "project_id": 78,
+      "will_overrun": 27,
+      "cost_variance_bwp": 60126100.0,
+      "delay_months": 2.78,
+      "material_waste_pct": 9.26,
+      "quality_score": 81.49,
+      "overrun_rate": 34.61538461538461
+    },
+    "PM_Moeti": {
+      "project_id": 77,
+      "will_overrun": 22,
+      "cost_variance_bwp": 47630900.0,
+      "delay_months": 2.31,
+      "material_waste_pct": 8.12,
+      "quality_score": 86.97,
+      "overrun_rate": 28.57142857142857
+    }
+  },
+  "delays": {
+    "Weather conditions": {
+      "project_id": 19,
+      "delay_months": 6.42,
+      "will_overrun": 13,
+      "overrun_rate": 68.42105263157895,
+      "cost_variance_bwp": 44848700.0
+    },
+    "Labour disputes": {
+      "project_id": 22,
+      "delay_months": 5.59,
+      "will_overrun": 15,
+      "overrun_rate": 68.18181818181817,
+      "cost_variance_bwp": 53389700.0
+    },
+    "Equipment breakdown": {
+      "project_id": 23,
+      "delay_months": 5.09,
+      "will_overrun": 16,
+      "overrun_rate": 69.56521739130434,
+      "cost_variance_bwp": 50569100.0
+    },
+    "Design changes": {
+      "project_id": 22,
+      "delay_months": 4.77,
+      "will_overrun": 16,
+      "overrun_rate": 72.72727272727273,
+      "cost_variance_bwp": 37082700.0
+    },
+    "Scope creep": {
+      "project_id": 24,
+      "delay_months": 4.75,
+      "will_overrun": 18,
+      "overrun_rate": 75.0,
+      "cost_variance_bwp": 45926000.0
+    },
+    "Material delivery delays": {
+      "project_id": 21,
+      "delay_months": 4.67,
+      "will_overrun": 13,
+      "overrun_rate": 61.904761904761905,
+      "cost_variance_bwp": 24353500.0
+    },
+    "Subcontractor failure": {
+      "project_id": 34,
+      "delay_months": 4.47,
+      "will_overrun": 23,
+      "overrun_rate": 67.64705882352942,
+      "cost_variance_bwp": 49906200.0
+    },
+    "Cash flow constraints": {
+      "project_id": 25,
+      "delay_months": 4.04,
+      "will_overrun": 15,
+      "overrun_rate": 60.0,
+      "cost_variance_bwp": 33683600.0
+    }
+  },
+  "waste": {
+    "Government Office": {
+      "project_id": 52,
+      "material_waste_cost_bwp": 21181200.0,
+      "material_waste_pct": 10.85
+    },
+    "Residential Building": {
+      "project_id": 53,
+      "material_waste_cost_bwp": 18159800.0,
+      "material_waste_pct": 9.91
+    },
+    "Commercial Building": {
+      "project_id": 61,
+      "material_waste_cost_bwp": 27047400.0,
+      "material_waste_pct": 9.3
+    },
+    "Education Infrastructure": {
+      "project_id": 37,
+      "material_waste_cost_bwp": 4529700.0,
+      "material_waste_pct": 9.12
+    },
+    "Road Construction": {
+      "project_id": 49,
+      "material_waste_cost_bwp": 27256500.0,
+      "material_waste_pct": 8.84
+    },
+    "Healthcare Facility": {
+      "project_id": 48,
+      "material_waste_cost_bwp": 9155400.0,
+      "material_waste_pct": 8.14
+    }
+  },
+  "risk_projects": [
+    {
+      "project_id": "SCL-0202",
+      "project_type": "Road Construction",
+      "region": "Francistown",
+      "project_manager": "PM_Ditiro",
+      "contracted_budget_bwp": 20021000.0,
+      "overrun_probability": 0.9984761843987277,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0012",
+      "project_type": "Road Construction",
+      "region": "Francistown",
+      "project_manager": "PM_Kebonye",
+      "contracted_budget_bwp": 13590000.0,
+      "overrun_probability": 0.994024456693897,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0224",
+      "project_type": "Road Construction",
+      "region": "Maun",
+      "project_manager": "PM_Segametsi",
+      "contracted_budget_bwp": 14462000.0,
+      "overrun_probability": 0.9906982043985496,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0273",
+      "project_type": "Residential Building",
+      "region": "Francistown",
+      "project_manager": "PM_Ditiro",
+      "contracted_budget_bwp": 8761000.0,
+      "overrun_probability": 0.9883549857344299,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0079",
+      "project_type": "Road Construction",
+      "region": "Palapye",
+      "project_manager": "PM_Kebonye",
+      "contracted_budget_bwp": 16822000.0,
+      "overrun_probability": 0.9875490079461051,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0131",
+      "project_type": "Commercial Building",
+      "region": "Palapye",
+      "project_manager": "PM_Kebonye",
+      "contracted_budget_bwp": 6198000.0,
+      "overrun_probability": 0.9832927040056415,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0013",
+      "project_type": "Road Construction",
+      "region": "Serowe",
+      "project_manager": "PM_Moeti",
+      "contracted_budget_bwp": 4258000.0,
+      "overrun_probability": 0.9800225530792753,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0039",
+      "project_type": "Commercial Building",
+      "region": "Francistown",
+      "project_manager": "PM_Moeti",
+      "contracted_budget_bwp": 14682000.0,
+      "overrun_probability": 0.978253960904933,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0134",
+      "project_type": "Residential Building",
+      "region": "Serowe",
+      "project_manager": "PM_Ditiro",
+      "contracted_budget_bwp": 6302000.0,
+      "overrun_probability": 0.9587659409738779,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0146",
+      "project_type": "Residential Building",
+      "region": "Gaborone",
+      "project_manager": "PM_Kebonye",
+      "contracted_budget_bwp": 6062000.0,
+      "overrun_probability": 0.9548687438390963,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0097",
+      "project_type": "Residential Building",
+      "region": "Serowe",
+      "project_manager": "PM_Kebonye",
+      "contracted_budget_bwp": 11980000.0,
+      "overrun_probability": 0.9502708739967858,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0033",
+      "project_type": "Residential Building",
+      "region": "Palapye",
+      "project_manager": "PM_Ditiro",
+      "contracted_budget_bwp": 10743000.0,
+      "overrun_probability": 0.9464762370908036,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0094",
+      "project_type": "Road Construction",
+      "region": "Francistown",
+      "project_manager": "PM_Ditiro",
+      "contracted_budget_bwp": 14425000.0,
+      "overrun_probability": 0.9428434601018443,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0113",
+      "project_type": "Road Construction",
+      "region": "Francistown",
+      "project_manager": "PM_Kebonye",
+      "contracted_budget_bwp": 5581000.0,
+      "overrun_probability": 0.9378719896400274,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0151",
+      "project_type": "Government Office",
+      "region": "Palapye",
+      "project_manager": "PM_Moeti",
+      "contracted_budget_bwp": 14789000.0,
+      "overrun_probability": 0.9299024433461803,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0207",
+      "project_type": "Healthcare Facility",
+      "region": "Gaborone",
+      "project_manager": "PM_Moeti",
+      "contracted_budget_bwp": 1766000.0,
+      "overrun_probability": 0.9228488046916664,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0223",
+      "project_type": "Residential Building",
+      "region": "Gaborone",
+      "project_manager": "PM_Kebonye",
+      "contracted_budget_bwp": 9754000.0,
+      "overrun_probability": 0.8781513799727422,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0196",
+      "project_type": "Government Office",
+      "region": "Serowe",
+      "project_manager": "PM_Kebonye",
+      "contracted_budget_bwp": 4105000.0,
+      "overrun_probability": 0.8273364275583882,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0160",
+      "project_type": "Residential Building",
+      "region": "Serowe",
+      "project_manager": "PM_Kebonye",
+      "contracted_budget_bwp": 6519000.0,
+      "overrun_probability": 0.8011738075378088,
+      "risk_level": "Critical"
+    },
+    {
+      "project_id": "SCL-0286",
+      "project_type": "Healthcare Facility",
+      "region": "Francistown",
+      "project_manager": "PM_Kebonye",
+      "contracted_budget_bwp": 1808000.0,
+      "overrun_probability": 0.7969527038502966,
+      "risk_level": "High"
+    }
+  ]
+}

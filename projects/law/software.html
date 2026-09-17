@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeKeeper - Molao Legal Associates</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #f8f9fa; 
+            color: #1a1a2e;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #2d1b69 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sidebar-logo span { font-size: 2rem; }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+        
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(102, 126, 234, 0.3);
+        }
+        
+        .sidebar-nav .icon {
+            font-size: 1.25rem;
+            width: 28px;
+            text-align: center;
+        }
+        
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 1rem 0;
+        }
+        
+        .sidebar-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-content h1 { 
+            font-size: 1.75rem; 
+            font-weight: 600; 
+            color: #1a1a2e; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+        }
+        
+        .header-content p { 
+            color: #6c757d; 
+            margin-top: 0.25rem; 
+        }
+        
+        .header-badge {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+        }
+        
+        .section {
+            scroll-margin-top: 1rem;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .tool-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .tool-card h2 {
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.375rem;
+            font-weight: 500;
+            color: #495057;
+            font-size: 0.875rem;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .btn-calculate {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #2d1b69 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+        
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+        }
+        
+        .result-box {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .result-box h3 {
+            margin-bottom: 0.5rem;
+            color: #495057;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .result-details {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .result-detail-item {
+            background: white;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .result-detail-item label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .result-detail-item .value {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+        
+        .leakage-meter {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .leakage-meter .fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+        
+        .leakage-meter .fill.green { background: #4CAF50; }
+        .leakage-meter .fill.yellow { background: #ff9800; }
+        .leakage-meter .fill.red { background: #f44336; }
+        
+        .action-list {
+            margin-top: 1rem;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .action-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .action-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .action-list .priority {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .priority-high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .priority-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .priority-low {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+                padding: 1.5rem 1rem;
+            }
+            .main-content {
+                margin-left: 220px;
+                padding: 1.5rem;
+            }
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .sidebar-logo {
+                margin-bottom: 0;
+                font-size: 1.25rem;
+                margin-right: 1rem;
+            }
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+            .sidebar-nav li {
+                margin-bottom: 0;
+            }
+            .sidebar-nav a {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            .sidebar-divider, .sidebar-footer {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <span>⏱️</span> TimeKeeper
+        </div>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="#predict" class="active" onclick="switchSection('predict')">
+                    <span class="icon">🔮</span> Leakage Predictor
+                </a>
+            </li>
+            <li>
+                <a href="#history" onclick="switchSection('history')">
+                    <span class="icon">📋</span> History
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-footer">
+            <p>Molao Legal Associates</p>
+            <p>© 2026 • v2.0</p>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="header-content">
+                <h1>⏱️ TimeKeeper</h1>
+                <p>Predict revenue leakage and improve time recording</p>
+            </div>
+            <span class="header-badge">⚡ Powered by ML model</span>
+        </header>
+        
+        <div class="container">
+            <div id="loading" class="loading">
+                <h2>Loading leakage predictor...</h2>
+                <p>Please wait while we prepare your workspace.</p>
+            </div>
+            
+            <div id="toolContent" style="display: none;">
+                <!-- Section: Predict -->
+                <section id="predict" class="section active">
+                    <div class="section-title">🔮 Leakage Risk Predictor</div>
+                    
+                    <div class="tool-grid">
+                        <!-- Form -->
+                        <div class="tool-card">
+                            <h2>📊 Enter Matter Details</h2>
+                            
+                            <form id="leakageForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Practice Area</label>
+                                        <select id="practiceArea">
+                                            <option value="Commercial Law">Commercial Law</option>
+                                            <option value="Employment Law">Employment Law</option>
+                                            <option value="Litigation">Litigation</option>
+                                            <option value="Mining & Resources">Mining & Resources</option>
+                                            <option value="Property & Conveyancing">Property & Conveyancing</option>
+                                            <option value="Regulatory & Compliance">Regulatory & Compliance</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Partner</label>
+                                        <select id="partner">
+                                            <option value="Partner_Gaobuse">Partner_Gaobuse</option>
+                                            <option value="Partner_Molao">Partner_Molao</option>
+                                            <option value="Partner_Mmolawa">Partner_Mmolawa</option>
+                                            <option value="Partner_Setlhabi">Partner_Setlhabi</option>
+                                            <option value="Partner_Thapelo">Partner_Thapelo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Associate</label>
+                                        <select id="associate">
+                                            <option value="Associate_01">Associate_01</option>
+                                            <option value="Associate_02">Associate_02</option>
+                                            <option value="Associate_03">Associate_03</option>
+                                            <option value="Associate_04">Associate_04</option>
+                                            <option value="Associate_05">Associate_05</option>
+                                            <option value="Associate_06">Associate_06</option>
+                                            <option value="Associate_07">Associate_07</option>
+                                            <option value="Associate_08">Associate_08</option>
+                                            <option value="Associate_09">Associate_09</option>
+                                            <option value="Associate_10">Associate_10</option>
+                                            <option value="Associate_11">Associate_11</option>
+                                            <option value="Associate_12">Associate_12</option>
+                                            <option value="Associate_13">Associate_13</option>
+                                            <option value="Associate_14">Associate_14</option>
+                                            <option value="Associate_15">Associate_15</option>
+                                            <option value="Associate_16">Associate_16</option>
+                                            <option value="Associate_17">Associate_17</option>
+                                            <option value="Associate_18">Associate_18</option>
+                                            <option value="Associate_19">Associate_19</option>
+                                            <option value="Associate_20">Associate_20</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Client Type</label>
+                                        <select id="clientType">
+                                            <option value="Financial Institution">Financial Institution</option>
+                                            <option value="Government / Parastatal">Government / Parastatal</option>
+                                            <option value="High-Net-Worth Individual">High-Net-Worth Individual</option>
+                                            <option value="Large Corporate">Large Corporate</option>
+                                            <option value="Mining Company">Mining Company</option>
+                                            <option value="SME">SME</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Duration (days)</label>
+                                        <input type="number" id="duration" value="100" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Actual Hours Worked</label>
+                                        <input type="number" id="actualHours" value="50" min="1">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Recorded Hours</label>
+                                        <input type="number" id="recordedHours" value="40" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hourly Rate (P)</label>
+                                        <input type="number" id="hourlyRate" value="2800" min="1" step="100">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Disbursements (P)</label>
+                                    <input type="number" id="disbursements" value="0" min="0">
+                                </div>
+                                
+                                <button type="button" class="btn-calculate" onclick="predictLeakage()">
+                                    🔮 Predict Leakage Risk
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <!-- Results -->
+                        <div class="tool-card">
+                            <h2>📈 Leakage Risk Assessment</h2>
+                            
+                            <div class="result-box" id="resultPlaceholder">
+                                <p style="color: #6c757d; text-align: center;">
+                                    Enter matter details and click "Predict Leakage Risk" to get an assessment.
+                                </p>
+                            </div>
+                            
+                            <div class="result-box" id="resultContent" style="display: none;">
+                                <h3>⚠️ Leakage Risk Score</h3>
+                                <div class="result-value" id="leakageAmount">P0</div>
+                                <div style="font-size: 0.875rem; color: #6c757d;">Estimated revenue leakage</div>
+                                
+                                <div class="leakage-meter">
+                                    <div class="fill" id="leakageMeter" style="width: 0%;"></div>
+                                </div>
+                                
+                                <div style="margin-top: 0.5rem; display: flex; justify-content: space-between; font-size: 0.75rem; color: #6c757d;">
+                                    <span>Low Risk</span>
+                                    <span>High Risk</span>
+                                </div>
+                                
+                                <div class="result-details">
+                                    <div class="result-detail-item">
+                                        <label>Risk Level</label>
+                                        <div class="value" id="riskLevel">Low</div>
+                                    </div>
+                                    <div class="result-detail-item">
+                                        <label>Recording Rate</label>
+                                        <div class="value" id="recordingRate">0%</div>
+                                    </div>
+                                    <div class="result-detail-item">
+                                        <label>Potential Fees</label>
+                                        <div class="value" id="potentialFees">P0</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: 1.5rem;">
+                                    <h4 style="margin-bottom: 0.5rem; color: #495057;">🎯 Recommended Actions</h4>
+                                    <ul class="action-list" id="actionList">
+                                        <!-- Populated from JS -->
+                                    </ul>
+                                </div>
+                                
+                                <div style="margin-top: 1rem; text-align: right;">
+                                    <button onclick="saveToHistory()" style="background: #4CAF50; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">
+                                        💾 Save to History
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section: History -->
+                <section id="history" class="section">
+                    <div class="section-title">📋 Assessment History</div>
+                    
+                    <div class="tool-card">
+                        <div id="historyContent">
+                            <!-- Populated from localStorage -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Reference data for predictions
+        const partnerRisks = {
+            'Partner_Gaobuse': 0.15,
+            'Partner_Molao': 0.25,
+            'Partner_Mmolawa': 0.45,
+            'Partner_Setlhabi': 0.30,
+            'Partner_Thapelo': 0.20
+        };
+        
+        const practiceAreaRisks = {
+            'Commercial Law': 0.25,
+            'Employment Law': 0.40,
+            'Litigation': 0.30,
+            'Mining & Resources': 0.20,
+            'Property & Conveyancing': 0.15,
+            'Regulatory & Compliance': 0.25
+        };
+        
+        const clientTypeRisks = {
+            'Financial Institution': 0.15,
+            'Government / Parastatal': 0.25,
+            'High-Net-Worth Individual': 0.20,
+            'Large Corporate': 0.25,
+            'Mining Company': 0.20,
+            'SME': 0.35
+        };
+        
+        // History array
+        let assessmentHistory = [];
+        
+        async function loadData() {
+            try {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('toolContent').style.display = 'block';
+                
+                // Load history from localStorage
+                loadHistory();
+                
+            } catch (error) {
+                document.getElementById('loading').innerHTML = `
+                    <h2 style="color: #f44336;">❌ Error loading data</h2>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+        
+        function predictLeakage() {
+            // Get form values
+            const practiceArea = document.getElementById('practiceArea').value;
+            const partner = document.getElementById('partner').value;
+            const associate = document.getElementById('associate').value;
+            const clientType = document.getElementById('clientType').value;
+            const duration = parseFloat(document.getElementById('duration').value) || 0;
+            const actualHours = parseFloat(document.getElementById('actualHours').value) || 0;
+            const recordedHours = parseFloat(document.getElementById('recordedHours').value) || 0;
+            const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+            const disbursements = parseFloat(document.getElementById('disbursements').value) || 0;
+            
+            // Calculate recording rate
+            const recordingRate = actualHours > 0 ? (recordedHours / actualHours) : 0;
+            
+            // Calculate potential fees
+            const potentialFees = actualHours * hourlyRate;
+            const billedFees = recordedHours * hourlyRate;
+            
+            // Calculate leakage
+            let leakage = potentialFees - billedFees;
+            
+            // Apply risk factors
+            let riskMultiplier = 1.0;
+            
+            // Partner risk
+            riskMultiplier += (partnerRisks[partner] || 0.25) * 0.3;
+            
+            // Practice area risk
+            riskMultiplier += (practiceAreaRisks[practiceArea] || 0.25) * 0.2;
+            
+            // Client type risk
+            riskMultiplier += (clientTypeRisks[clientType] || 0.25) * 0.15;
+            
+            // Duration risk
+            if (duration > 200) riskMultiplier += 0.1;
+            else if (duration > 100) riskMultiplier += 0.05;
+            
+            // Recording rate impact
+            if (recordingRate < 0.7) riskMultiplier += 0.3;
+            else if (recordingRate < 0.8) riskMultiplier += 0.15;
+            else if (recordingRate < 0.9) riskMultiplier += 0.05;
+            else riskMultiplier -= 0.1;
+            
+            // Apply risk multiplier to leakage
+            leakage = leakage * riskMultiplier;
+            
+            // Add disbursements
+            leakage += disbursements * 0.1; // 10% of disbursements at risk
+            
+            // Round to nearest 100
+            leakage = Math.round(leakage / 100) * 100;
+            
+            // Determine risk level
+            let riskLevel, meterColor;
+            const leakagePct = potentialFees > 0 ? (leakage / potentialFees) : 0;
+            
+            if (leakagePct > 0.3) {
+                riskLevel = 'Critical';
+                meterColor = 'red';
+            } else if (leakagePct > 0.15) {
+                riskLevel = 'High';
+                meterColor = 'red';
+            } else if (leakagePct > 0.05) {
+                riskLevel = 'Medium';
+                meterColor = 'yellow';
+            } else {
+                riskLevel = 'Low';
+                meterColor = 'green';
+            }
+            
+            // Display results
+            document.getElementById('resultPlaceholder').style.display = 'none';
+            document.getElementById('resultContent').style.display = 'block';
+            
+            document.getElementById('leakageAmount').textContent = 'P' + leakage.toLocaleString();
+            document.getElementById('riskLevel').textContent = riskLevel;
+            document.getElementById('recordingRate').textContent = (recordingRate * 100).toFixed(0) + '%';
+            document.getElementById('potentialFees').textContent = 'P' + potentialFees.toLocaleString();
+            
+            const meter = document.getElementById('leakageMeter');
+            meter.style.width = Math.min(leakagePct * 100, 100) + '%';
+            meter.className = 'fill ' + meterColor;
+            
+            // Generate actions
+            const actions = [];
+            if (recordingRate < 0.8) {
+                actions.push({
+                    priority: 'high',
+                    text: 'Improve time recording - only ' + (recordingRate * 100).toFixed(0) + '% of hours recorded'
+                });
+            }
+            if (partnerRisks[partner] > 0.3) {
+                actions.push({
+                    priority: 'high',
+                    text: 'Review partner time recording practices - this partner has historically high leakage'
+                });
+            }
+            if (practiceAreaRisks[practiceArea] > 0.3) {
+                actions.push({
+                    priority: 'medium',
+                    text: 'Practice area review - ' + practiceArea + ' has above-average leakage rates'
+                });
+            }
+            if (duration > 200) {
+                actions.push({
+                    priority: 'medium',
+                    text: 'Long-duration matter - consider interim billing to reduce leakage risk'
+                });
+            }
+            if (clientTypeRisks[clientType] > 0.3) {
+                actions.push({
+                    priority: 'medium',
+                    text: 'Client type risk - ' + clientType + ' clients have higher leakage rates'
+                });
+            }
+            if (actions.length === 0) {
+                actions.push({
+                    priority: 'low',
+                    text: 'Low risk - continue monitoring time recording'
+                });
+            }
+            
+            // Populate actions
+            const actionList = document.getElementById('actionList');
+            actionList.innerHTML = actions.map(a => `
+                <li>
+                    <span class="priority priority-${a.priority}">${a.priority}</span>
+                    ${a.text}
+                </li>
+            `).join('');
+            
+            // Store for history
+            window.currentAssessment = {
+                date: new Date().toLocaleString(),
+                practiceArea: practiceArea,
+                partner: partner,
+                actualHours: actualHours,
+                recordedHours: recordedHours,
+                recordingRate: (recordingRate * 100).toFixed(0) + '%',
+                leakage: 'P' + leakage.toLocaleString(),
+                riskLevel: riskLevel
+            };
+        }
+        
+        function saveToHistory() {
+            if (window.currentAssessment) {
+                assessmentHistory.unshift(window.currentAssessment);
+                
+                if (assessmentHistory.length > 50) {
+                    assessmentHistory = assessmentHistory.slice(0, 50);
+                }
+                
+                localStorage.setItem('leakageAssessments', JSON.stringify(assessmentHistory));
+                renderHistory();
+                
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Saved!';
+                btn.style.background = '#28a745';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#4CAF50';
+                }, 2000);
+            }
+        }
+        
+        function loadHistory() {
+            const saved = localStorage.getItem('leakageAssessments');
+            if (saved) {
+                try {
+                    assessmentHistory = JSON.parse(saved);
+                } catch (e) {
+                    assessmentHistory = [];
+                }
+            }
+            renderHistory();
+        }
+        
+        function renderHistory() {
+            const container = document.getElementById('historyContent');
+            
+            if (assessmentHistory.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #6c757d;">
+                        <p style="font-size: 3rem; margin-bottom: 1rem;">📭</p>
+                        <h3>No assessments saved yet</h3>
+                        <p>Your leakage risk assessments will appear here.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <p style="color: #6c757d; font-size: 0.875rem;">${assessmentHistory.length} assessments saved</p>
+                    <button onclick="clearHistory()" style="background: #f44336; color: white; border: none; padding: 0.375rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem;">
+                        Clear All
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Date</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Practice Area</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Partner</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Recording Rate</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Leakage</th>
+                                <th style="background: #f8f9fa; padding: 0.75rem 1rem; text-align: left; font-weight: 600;">Risk Level</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${assessmentHistory.map(item => `
+                                <tr>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">${item.date}</td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">${item.practiceArea}</td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">${item.partner}</td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">${item.recordingRate}</td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0; font-weight: 600;">${item.leakage}</td>
+                                    <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0;">
+                                        <span class="badge ${item.riskLevel === 'Critical' ? 'badge-critical' : item.riskLevel === 'High' ? 'badge-high' : item.riskLevel === 'Medium' ? 'badge-medium' : 'badge-low'}">
+                                            ${item.riskLevel}
+                                        </span>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        
+        function clearHistory() {
+            if (confirm('Clear all assessment history?')) {
+                assessmentHistory = [];
+                localStorage.removeItem('leakageAssessments');
+                renderHistory();
+            }
+        }
+        
+        function switchSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            document.querySelector(`.sidebar-nav a[href="#${sectionId}"]`).classList.add('active');
+        }
+        
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>
