@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 294 52" role="img" aria-labelledby="title desc">
+  <title id="title">CivicTrack</title>
+  <desc id="desc">CivicTrack public service routing wordmark</desc>
+  <rect x="0" y="5" width="5" height="34" rx="1" fill="#ef3f2f"/>
+  <text x="19" y="29" fill="#071b3c" font-family="Red Hat Display, Arial, sans-serif" font-size="25" font-weight="800" letter-spacing="-0.7">CivicTrack</text>
+  <text x="20" y="45" fill="#667084" font-family="Stack Sans Text, Arial, sans-serif" font-size="7.5" font-weight="700" letter-spacing="2.1">PUBLIC SERVICE ROUTING</text>
+</svg>

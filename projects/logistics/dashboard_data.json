@@ -1,0 +1,644 @@
+{
+    "pageTitle":  "RouteIQ Fleet and Delivery Report",
+    "theme":  {
+                  "primary":  "#1668b8",
+                  "primary2":  "#44a4d8",
+                  "accent":  "#179b65",
+                  "danger":  "#d94f47",
+                  "warning":  "#e7aa2e"
+              },
+    "brand":  {
+                  "name":  "RouteIQ",
+                  "tag":  "Fleet and delivery report",
+                  "icon":  "truck"
+              },
+    "hero":  {
+                 "eyebrow":  "Fleet, routes, deliveries and service",
+                 "title":  "Fleet and Delivery Overview",
+                 "subtitle":  "Review deliveries, delays, fuel costs and vehicle use across routes and distribution hubs.",
+                 "image":  "assets/routeiq-freight-hero.png",
+                 "motto":  "Move\u003cbr\u003esmarter\u003cbr\u003eevery day",
+                 "date":  "",
+                 "tabs":  [
+                              "Overview",
+                              "Needs attention"
+                          ]
+             },
+    "promo":  {
+                  "image":  "assets/gaborone-local-bus.png",
+                  "title":  "A more connected\u003cbr\u003edelivery network.",
+                  "sub":  "Operational signals for faster, more reliable decisions."
+              },
+    "filters":  [
+                    {
+                        "label":  "Distribution hub",
+                        "column":  0,
+                        "value":  "All hubs",
+                        "options":  [
+                                        "All hubs",
+                                        "Gaborone",
+                                        "Francistown",
+                                        "Maun",
+                                        "Palapye",
+                                        "Kanye",
+                                        "Kasane"
+                                    ]
+                    },
+                    {
+                        "label":  "Status",
+                        "column":  7,
+                        "value":  "All statuses",
+                        "options":  [
+                                        "All statuses",
+                                        "Excellent",
+                                        "Good",
+                                        "Watch"
+                                    ]
+                    }
+                ],
+    "kpis":  [
+                 {
+                     "icon":  "truck",
+                     "label":  "Total deliveries",
+                     "value":  "12,428",
+                     "delta":  "12%",
+                     "note":  "from the previous month"
+                 },
+                 {
+                     "icon":  "clock",
+                     "label":  "On-time rate",
+                     "value":  "93.4%",
+                     "delta":  "2.8 pp",
+                     "note":  ""
+                 },
+                 {
+                     "icon":  "stopwatch",
+                     "label":  "Average delivery time",
+                     "value":  "28.6 hrs",
+                     "delta":  "8%",
+                     "note":  ""
+                 },
+                 {
+                     "icon":  "fuel",
+                     "label":  "Fuel cost / shipment",
+                     "value":  "P245",
+                     "delta":  "6%",
+                     "note":  ""
+                 },
+                 {
+                     "icon":  "utilization",
+                     "label":  "Vehicle use",
+                     "value":  "78%",
+                     "delta":  "5 pp",
+                     "note":  ""
+                 },
+                 {
+                     "icon":  "alert",
+                     "label":  "Delayed shipments",
+                     "value":  "820",
+                     "delta":  "22%",
+                     "note":  ""
+                 },
+                 {
+                     "icon":  "truck",
+                     "label":  "On the road",
+                     "value":  "11%",
+                     "delta":  "4 pp",
+                     "note":  ""
+                 },
+                 {
+                     "icon":  "check",
+                     "label":  "Completed",
+                     "value":  "89%",
+                     "delta":  "4 pp",
+                     "note":  ""
+                 }
+             ],
+    "insights":  [
+                     {
+                         "icon":  "trophy",
+                         "label":  "Best-performing hub",
+                         "title":  "Gaborone",
+                         "meta":  "96.2% on-time rate",
+                         "bg":  "#e9f7ef",
+                         "color":  "#179b65",
+                         "badge":  "Top performer",
+                         "badgeBg":  "#e4f6eb",
+                         "badgeColor":  "#167c50"
+                     },
+                     {
+                         "icon":  "alert",
+                         "label":  "Highest-delay corridor",
+                         "title":  "Gaborone → Maun",
+                         "meta":  "12.4% delay rate",
+                         "bg":  "#fff0ee",
+                         "color":  "#d94f47",
+                         "badge":  "Needs attention",
+                         "badgeBg":  "#fee9e6",
+                         "badgeColor":  "#bd433d"
+                     },
+                     {
+                         "icon":  "leaf",
+                         "label":  "Most efficient fleet",
+                         "title":  "Light Commercial",
+                         "meta":  "18% lower fuel cost",
+                         "bg":  "#ecf5ff",
+                         "color":  "#1668b8",
+                         "badge":  "Best efficiency",
+                         "badgeBg":  "#e7f1fb",
+                         "badgeColor":  "#165f9f"
+                     }
+                 ],
+    "charts":  {
+                   "a":  {
+                             "title":  "Deliveries by Distribution Hub",
+                             "type":  "bar",
+                             "data":  {
+                                          "labels":  [
+                                                         "Gaborone",
+                                                         "Francistown",
+                                                         "Maun",
+                                                         "Palapye",
+                                                         "Kanye",
+                                                         "Kasane"
+                                                     ],
+                                          "datasets":  [
+                                                           {
+                                                               "data":  [
+                                                                            3420,
+                                                                            2184,
+                                                                            1982,
+                                                                            1476,
+                                                                            1268,
+                                                                            1102
+                                                                        ],
+                                                               "backgroundColor":  [
+                                                                                       "#2580cc",
+                                                                                       "#358bd0",
+                                                                                       "#4696d5",
+                                                                                       "#61a6dc",
+                                                                                       "#7cb7e3",
+                                                                                       "#9bc8ea"
+                                                                                   ],
+                                                               "borderRadius":  5,
+                                                               "barThickness":  14
+                                                           }
+                                                       ]
+                                      },
+                             "options":  {
+                                             "indexAxis":  "y",
+                                             "plugins":  {
+                                                             "legend":  {
+                                                                            "display":  false
+                                                                        },
+                                                             "datalabels":  {
+                                                                                "anchor":  "end",
+                                                                                "align":  "right",
+                                                                                "color":  "#41526d",
+                                                                                "font":  {
+                                                                                             "size":  8,
+                                                                                             "weight":  "600"
+                                                                                         }
+                                                                            }
+                                                         },
+                                             "scales":  {
+                                                            "y":  {
+                                                                      "grid":  {
+                                                                                   "display":  false
+                                                                               }
+                                                                  }
+                                                        }
+                                         }
+                         },
+                   "b":  {
+                             "title":  "Deliveries by Distance Band",
+                             "type":  "bar",
+                             "data":  {
+                                          "labels":  [
+                                                         "0–100",
+                                                         "101–250",
+                                                         "251–500",
+                                                         "501–750",
+                                                         "751–1,000"
+                                                     ],
+                                          "datasets":  [
+                                                           {
+                                                               "data":  [
+                                                                            2480,
+                                                                            3120,
+                                                                            2684,
+                                                                            1490,
+                                                                            654
+                                                                        ],
+                                                               "backgroundColor":  [
+                                                                                       "#35a97d",
+                                                                                       "#31a576",
+                                                                                       "#46b48a",
+                                                                                       "#73c8a8",
+                                                                                       "#98d9c1"
+                                                                                   ],
+                                                               "borderRadius":  7
+                                                           }
+                                                       ]
+                                      },
+                             "options":  {
+                                             "plugins":  {
+                                                             "legend":  {
+                                                                            "display":  false
+                                                                        },
+                                                             "datalabels":  {
+                                                                                "anchor":  "end",
+                                                                                "align":  "top",
+                                                                                "font":  {
+                                                                                             "size":  8,
+                                                                                             "weight":  "600"
+                                                                                         },
+                                                                                "color":  "#40516b"
+                                                                            }
+                                                         },
+                                             "scales":  {
+                                                            "x":  {
+                                                                      "grid":  {
+                                                                                   "display":  false
+                                                                               }
+                                                                  },
+                                                            "y":  {
+                                                                      "beginAtZero":  true
+                                                                  }
+                                                        }
+                                         }
+                         },
+                   "c":  {
+                             "title":  "Delivery Time vs. Distance",
+                             "type":  "scatter",
+                             "data":  {
+                                          "datasets":  [
+                                                           {
+                                                               "label":  "Routes",
+                                                               "data":  [
+                                                                            {
+                                                                                "x":  65,
+                                                                                "y":  8
+                                                                            },
+                                                                            {
+                                                                                "x":  120,
+                                                                                "y":  11
+                                                                            },
+                                                                            {
+                                                                                "x":  210,
+                                                                                "y":  15
+                                                                            },
+                                                                            {
+                                                                                "x":  285,
+                                                                                "y":  20
+                                                                            },
+                                                                            {
+                                                                                "x":  355,
+                                                                                "y":  24
+                                                                            },
+                                                                            {
+                                                                                "x":  430,
+                                                                                "y":  29
+                                                                            },
+                                                                            {
+                                                                                "x":  510,
+                                                                                "y":  34
+                                                                            },
+                                                                            {
+                                                                                "x":  600,
+                                                                                "y":  41
+                                                                            },
+                                                                            {
+                                                                                "x":  690,
+                                                                                "y":  45
+                                                                            },
+                                                                            {
+                                                                                "x":  780,
+                                                                                "y":  50
+                                                                            },
+                                                                            {
+                                                                                "x":  860,
+                                                                                "y":  54
+                                                                            },
+                                                                            {
+                                                                                "x":  940,
+                                                                                "y":  61
+                                                                            },
+                                                                            {
+                                                                                "x":  1040,
+                                                                                "y":  66
+                                                                            },
+                                                                            {
+                                                                                "x":  1120,
+                                                                                "y":  72
+                                                                            },
+                                                                            {
+                                                                                "x":  1240,
+                                                                                "y":  83
+                                                                            }
+                                                                        ],
+                                                               "backgroundColor":  "#2f82ca",
+                                                               "pointRadius":  2.5
+                                                           },
+                                                           {
+                                                               "type":  "line",
+                                                               "label":  "Trend",
+                                                               "data":  [
+                                                                            {
+                                                                                "x":  0,
+                                                                                "y":  4
+                                                                            },
+                                                                            {
+                                                                                "x":  1250,
+                                                                                "y":  74
+                                                                            }
+                                                                        ],
+                                                               "borderColor":  "#6fa8d8",
+                                                               "borderDash":  [
+                                                                                  4,
+                                                                                  4
+                                                                              ],
+                                                               "pointRadius":  0,
+                                                               "borderWidth":  1.5
+                                                           }
+                                                       ]
+                                      },
+                             "options":  {
+                                             "plugins":  {
+                                                             "legend":  {
+                                                                            "display":  false
+                                                                        },
+                                                             "datalabels":  {
+                                                                                "display":  false
+                                                                            }
+                                                         },
+                                             "scales":  {
+                                                            "x":  {
+                                                                      "type":  "linear",
+                                                                      "min":  0,
+                                                                      "max":  1250,
+                                                                      "title":  {
+                                                                                    "display":  true,
+                                                                                    "text":  "Distance (km)",
+                                                                                    "font":  {
+                                                                                                 "size":  8
+                                                                                             }
+                                                                                }
+                                                                  },
+                                                            "y":  {
+                                                                      "min":  0,
+                                                                      "max":  96,
+                                                                      "title":  {
+                                                                                    "display":  true,
+                                                                                    "text":  "Delivery time (hours)",
+                                                                                    "font":  {
+                                                                                                 "size":  8
+                                                                                             }
+                                                                                }
+                                                                  }
+                                                        }
+                                         }
+                         },
+                   "d":  {
+                             "title":  "Weekly deliveries and on-time service",
+                             "type":  "bar",
+                             "data":  {
+                                          "labels":  [
+                                                         "Jan 6",
+                                                         "Jan 13",
+                                                         "Jan 20",
+                                                         "Jan 27",
+                                                         "Feb 3",
+                                                         "Feb 10",
+                                                         "Feb 17",
+                                                         "Feb 24",
+                                                         "Mar 3",
+                                                         "Mar 10",
+                                                         "Mar 17",
+                                                         "Mar 24"
+                                                     ],
+                                          "datasets":  [
+                                                           {
+                                                               "type":  "bar",
+                                                               "label":  "Shipments",
+                                                               "data":  [
+                                                                            860,
+                                                                            1040,
+                                                                            1100,
+                                                                            1055,
+                                                                            1190,
+                                                                            1218,
+                                                                            1094,
+                                                                            1160,
+                                                                            1204,
+                                                                            1320,
+                                                                            1286,
+                                                                            1452
+                                                                        ],
+                                                               "backgroundColor":  "#3d86cf",
+                                                               "borderRadius":  2
+                                                           },
+                                                           {
+                                                               "type":  "line",
+                                                               "label":  "On-time rate",
+                                                               "data":  [
+                                                                            91.2,
+                                                                            93.4,
+                                                                            92.1,
+                                                                            94.8,
+                                                                            92.5,
+                                                                            93.1,
+                                                                            92.7,
+                                                                            94.0,
+                                                                            95.6,
+                                                                            94.9,
+                                                                            96.1,
+                                                                            95.7
+                                                                        ],
+                                                               "borderColor":  "#179b65",
+                                                               "backgroundColor":  "#179b65",
+                                                               "yAxisID":  "y1",
+                                                               "pointRadius":  2,
+                                                               "tension":  0.25
+                                                           }
+                                                       ]
+                                      },
+                             "options":  {
+                                             "plugins":  {
+                                                             "legend":  {
+                                                                            "position":  "top"
+                                                                        },
+                                                             "datalabels":  {
+                                                                                "display":  false
+                                                                            }
+                                                         },
+                                             "scales":  {
+                                                            "x":  {
+                                                                      "grid":  {
+                                                                                   "display":  false
+                                                                               }
+                                                                  },
+                                                            "y":  {
+                                                                      "beginAtZero":  true
+                                                                  },
+                                                            "y1":  {
+                                                                       "position":  "right",
+                                                                       "min":  60,
+                                                                       "max":  100,
+                                                                       "grid":  {
+                                                                                    "drawOnChartArea":  false
+                                                                                }
+                                                                   }
+                                                        }
+                                         }
+                         },
+                   "e":  {
+                             "title":  "Shipment Status",
+                             "type":  "doughnut",
+                             "data":  {
+                                          "labels":  [
+                                                         "Completed",
+                                                         "In transit",
+                                                         "Delayed",
+                                                         "Cancelled"
+                                                     ],
+                                          "datasets":  [
+                                                           {
+                                                               "data":  [
+                                                                            81,
+                                                                            11,
+                                                                            6,
+                                                                            2
+                                                                        ],
+                                                               "backgroundColor":  [
+                                                                                       "#20ad70",
+                                                                                       "#2a78c2",
+                                                                                       "#84b3df",
+                                                                                       "#9ba5b2"
+                                                                                   ],
+                                                               "borderWidth":  2,
+                                                               "borderColor":  "#fff"
+                                                           }
+                                                       ]
+                                      },
+                             "options":  {
+                                             "cutout":  "64%",
+                                             "plugins":  {
+                                                             "legend":  {
+                                                                            "position":  "right"
+                                                                        },
+                                                             "datalabels":  {
+                                                                                "display":  false
+                                                                            },
+                                                             "centerText":  {
+                                                                                "text":  "12,428",
+                                                                                "sub":  "Deliveries"
+                                                                            }
+                                                         },
+                                             "scales":  {
+
+                                                        }
+                                         }
+                         }
+               },
+    "table":  {
+                  "title":  "Hub Performance",
+                  "date":  "",
+                  "columns":  [
+                                  "Distribution hub",
+                                  "Deliveries",
+                                  "Average delivery time",
+                                  "On-time %",
+                                  "Fuel cost per delivery",
+                                  "Delay %",
+                                  "Vehicle use",
+                                  "Status"
+                              ],
+                  "rows":  [
+                               [
+                                   "Gaborone",
+                                   "3,420",
+                                   "24.1 hrs",
+                                   "96.2%",
+                                   "P221",
+                                   "3.8%",
+                                   "82%",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Excellent",
+                                       "color":  "#18a569"
+                                   }
+                               ],
+                               [
+                                   "Francistown",
+                                   "2,184",
+                                   "27.6 hrs",
+                                   "92.1%",
+                                   "P248",
+                                   "7.9%",
+                                   "76%",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Good",
+                                       "color":  "#18a569"
+                                   }
+                               ],
+                               [
+                                   "Maun",
+                                   "1,982",
+                                   "30.2 hrs",
+                                   "90.4%",
+                                   "P263",
+                                   "9.6%",
+                                   "71%",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Good",
+                                       "color":  "#18a569"
+                                   }
+                               ],
+                               [
+                                   "Palapye",
+                                   "1,476",
+                                   "32.8 hrs",
+                                   "88.7%",
+                                   "P289",
+                                   "11.3%",
+                                   "68%",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Watch",
+                                       "color":  "#e7aa2e"
+                                   }
+                               ],
+                               [
+                                   "Kanye",
+                                   "1,268",
+                                   "26.5 hrs",
+                                   "93.9%",
+                                   "P251",
+                                   "6.1%",
+                                   "77%",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Good",
+                                       "color":  "#18a569"
+                                   }
+                               ],
+                               [
+                                   "Kasane",
+                                   "1,102",
+                                   "31.4 hrs",
+                                   "89.8%",
+                                   "P276",
+                                   "10.2%",
+                                   "69%",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Watch",
+                                       "color":  "#e7aa2e"
+                                   }
+                               ]
+                           ]
+              }
+}

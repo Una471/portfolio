@@ -1,341 +1,288 @@
-"""
-KGOSI MINING SOLUTIONS - OPERATIONS DASHBOARD
-Simple, clear report for management staff. No technical jargon.
-Run: streamlit run 03_dashboard.py --server.port 8501
-"""
+
+PAGE_TITLE="Kgosi Mining | Operations"
+ACCENT="#176b4a"; ACCENT_DARK="#0d4b35"; ACCENT2="#c78d4a"; SOFT="#e9f3ee"
+OVERVIEW_URL="https://una471.github.io/portfolio/projects/mining/overview.html"; OVERVIEW_LABEL="Overview"; SOFTWARE_URL="https://machinery-system.streamlit.app/?view=software"; 
+HERO_IMAGE="mining-hero.webp"; SEARCH_TEXT="Search machines, operators, sites or reports..."
 
 import streamlit as st
-from pathlib import Path
 import pandas as pd
+import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+from pathlib import Path
+import base64
 
-BASE_DIR = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent
+st.set_page_config(page_title=PAGE_TITLE, page_icon=None, layout="wide", initial_sidebar_state="expanded")
 
+def _img_data(name):
+    p = ROOT / "assets" / name
+    if not p.exists():
+        return ""
+    mime = "image/webp" if p.suffix.lower()==".webp" else "image/png"
+    return f"data:{mime};base64," + base64.b64encode(p.read_bytes()).decode()
 
-st.markdown("""
+HERO = _img_data(HERO_IMAGE)
+
+STYLE = f"""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;600;700;800&family=Stack+Sans+Text:wght@400;500;600;700&display=swap');
-html,body,[class*="css"]{font-family:'Inter',sans-serif;background:#f5f6fa;color:#15151f;}
-.topbar{background:linear-gradient(135deg,#15151f,#20202c);color:white;padding:1.4rem 2rem;border-radius:12px;margin-bottom:1.5rem;}
-.topbar h1{margin:0;font-size:1.5rem;font-weight:700;}
-.topbar p{margin:.3rem 0 0 0;opacity:.6;font-size:.85rem;}
-.kcard{background:white;border-radius:12px;padding:1.2rem 1.4rem;box-shadow:0 2px 8px rgba(0,0,0,.07);border-left:5px solid #e0e0e0;}
-.kcard.red{border-left-color:#e74c3c;} .kcard.orange{border-left-color:#e67e22;}
-.kcard.green{border-left-color:#27ae60;} .kcard.blue{border-left-color:#e19a3b;}
-.kval{font-size:1.9rem;font-weight:700;line-height:1.1;}
-.klbl{font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;color:#888;margin-top:.3rem;}
-.ksub{font-size:.78rem;color:#666;margin-top:.3rem;}
-.ccard{background:white;border-radius:12px;padding:1.2rem 1.4rem;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:1rem;}
-.ctitle{font-size:.95rem;font-weight:600;color:#15151f;margin-bottom:.2rem;}
-.csub{font-size:.78rem;color:#888;margin-bottom:.7rem;}
-.ar{background:#fdf2f2;border:1px solid #f5c6cb;border-radius:8px;padding:.9rem;margin-bottom:.5rem;}
-.ao{background:#fff8f0;border:1px solid #fcd5a5;border-radius:8px;padding:.9rem;margin-bottom:.5rem;}
-.ag{background:#f0faf4;border:1px solid #b7dfca;border-radius:8px;padding:.9rem;margin-bottom:.5rem;}
-section[data-testid="stSidebar"]{background:#15151f!important;}
-section[data-testid="stSidebar"] *{color:white!important;}
-#MainMenu,footer,header{visibility:hidden;}
-/* Professional analytics console */
-:root{--dash-bg:#0d0d14;--dash-side:#15151f;--dash-card:#1a1a24;--dash-card-2:#20202c;--dash-line:#2c2c3a;--dash-text:#f5f5f7;--dash-muted:#9a9aaa;--dash-accent:#e19a3b;--dash-soft:#f1c47f}
-html,body,[class*="css"],.stApp{font-family:'Stack Sans Text','Red Hat Display','Segoe UI',sans-serif!important;background:var(--dash-bg)!important;color:var(--dash-text)!important}.stApp{background:radial-gradient(circle at 86% 0%,rgba(225,154,59,.08),transparent 30%),var(--dash-bg)!important}.block-container{max-width:1500px;padding:1.25rem 2rem 3rem!important}h1,h2,h3,h4,p,label,span{color:var(--dash-text)}h1,h2,h3,h4{font-family:'Red Hat Display','Segoe UI',sans-serif!important;letter-spacing:-.025em}
-section[data-testid="stSidebar"]{width:228px!important;background:var(--dash-side)!important;border-right:1px solid var(--dash-line)!important}section[data-testid="stSidebar"]>div{padding:1.3rem .85rem!important}section[data-testid="stSidebar"] h3{font-size:1.05rem!important;margin:.2rem .55rem 0!important;color:#fff!important}section[data-testid="stSidebar"] p{color:var(--dash-muted)!important;font-size:.72rem!important}section[data-testid="stSidebar"] hr{border-color:var(--dash-line)!important;margin:1rem 0!important}section[data-testid="stSidebar"] div[role="radiogroup"]{gap:.3rem}section[data-testid="stSidebar"] div[role="radiogroup"] label{padding:.65rem .7rem!important;border-radius:7px!important;background:transparent!important;margin:0!important;transition:background .16s ease}section[data-testid="stSidebar"] div[role="radiogroup"] label:hover{background:var(--dash-card-2)!important}section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked){background:var(--dash-accent)!important}section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p{color:#101018!important;font-weight:700!important}section[data-testid="stSidebar"] div[role="radiogroup"] label>div:first-child{display:none}section[data-testid="stSidebar"] [data-baseweb="select"]>div{background:var(--dash-card)!important;border-color:var(--dash-line)!important;color:#fff!important;border-radius:7px!important}section[data-testid="stSidebar"] svg{fill:var(--dash-muted)!important}
-.topbar{position:relative;background:transparent!important;border:0!important;border-bottom:1px solid var(--dash-line)!important;border-radius:0!important;box-shadow:none!important;padding:.4rem 0 1rem!important;margin-bottom:1.1rem!important}.topbar:before{content:'ANALYTICS';display:block;color:var(--dash-accent);font-size:.58rem;letter-spacing:.18em;font-weight:700;margin-bottom:.45rem}.topbar h1{font-size:1.65rem!important;color:#fff!important}.topbar p{color:var(--dash-muted)!important;opacity:1!important;font-size:.73rem!important}
-.kcard{min-height:118px;background:var(--dash-card)!important;border:1px solid var(--dash-line)!important;border-left:1px solid var(--dash-line)!important;border-top:3px solid var(--dash-accent)!important;border-radius:8px!important;box-shadow:none!important;padding:1rem 1.05rem!important;color:var(--dash-text)!important}.kcard.red{border-top-color:#ff6b6b!important}.kcard.orange{border-top-color:#f4a261!important}.kcard.green{border-top-color:#59d98e!important}.kcard.blue,.kcard.gold{border-top-color:var(--dash-accent)!important}.kval{font-family:'Red Hat Display','Segoe UI',sans-serif!important;font-size:1.75rem!important;color:#fff!important;font-variant-numeric:tabular-nums}.klbl{color:#d7d7df!important;font-size:.62rem!important;letter-spacing:.1em!important}.ksub{color:var(--dash-muted)!important;font-size:.66rem!important}
-.ccard{background:var(--dash-card)!important;border:1px solid var(--dash-line)!important;border-radius:8px!important;box-shadow:none!important;padding:1rem!important}.ctitle{color:#fff!important;font-size:.86rem!important}.csub{color:var(--dash-muted)!important;font-size:.68rem!important}.ar,.ao,.ag{background:var(--dash-card)!important;border:1px solid var(--dash-line)!important;border-left:3px solid var(--dash-accent)!important;border-radius:7px!important;color:#dcdce4!important;line-height:1.5!important}.ar{border-left-color:#ff6b6b!important}.ao{border-left-color:#f4a261!important}.ag{border-left-color:#59d98e!important}.ar *,.ao *,.ag *{color:inherit!important}.ar b,.ao b,.ag b{color:#fff!important}
-[data-testid="stPlotlyChart"]{background:var(--dash-card)!important;border:1px solid var(--dash-line);border-radius:8px;padding:.35rem}[data-testid="stDataFrame"]{border:1px solid var(--dash-line);border-radius:8px;overflow:hidden}.stSelectbox label p,.stMultiSelect label p,.stSlider label p{color:#d7d7df!important}.stAlert{background:var(--dash-card-2)!important;border-color:var(--dash-line)!important}.stAlert *{color:#eeeef3!important}hr{border-color:var(--dash-line)!important}#MainMenu,footer,header{visibility:hidden}@media(max-width:900px){.block-container{padding:1rem!important}.kcard{min-height:auto}section[data-testid="stSidebar"]{width:250px!important}}
-section[data-testid='stSidebar'] h3:before{content:'';display:inline-block;width:9px;height:9px;background:var(--dash-accent);transform:rotate(45deg);margin-right:.55rem;border-radius:2px}.modebar{display:none!important}[data-testid='stPlotlyChart']:hover{border-color:rgba(255,255,255,.2)}[data-testid='stDataFrame']{background:var(--dash-card)!important}
-/* Reference dashboard rebuild */
-:root{--canvas:#0c0c13;--sidebar:#171720;--panel:#1b1b25;--panel-hover:#20202c;--stroke:#2b2b38;--ink:#f7f7fa;--muted:#a8a8b7}
-html,body,.stApp,[class*="css"]{font-family:"Stack Sans Text","Segoe UI",Arial,sans-serif!important}.stApp{background:var(--canvas)!important}.block-container{max-width:1440px!important;padding:1.65rem 2.25rem 3rem!important}
-section[data-testid="stSidebar"]{width:205px!important;background:var(--sidebar)!important;border-right:1px solid var(--stroke)!important}section[data-testid="stSidebar"]>div{padding:2.1rem 1rem!important}section[data-testid="stSidebar"] h3{font-family:"Stack Sans Text","Segoe UI",sans-serif!important;font-size:1.12rem!important;font-weight:720!important;line-height:1.18!important;letter-spacing:-.02em!important;margin:1.8rem .45rem .3rem!important}section[data-testid="stSidebar"] h3:before{width:8px!important;height:8px!important;margin-right:.55rem!important;border-radius:1px!important}section[data-testid="stSidebar"] p{font-size:.75rem!important;line-height:1.45!important;color:#aaaaba!important}section[data-testid="stSidebar"] hr{margin:1.15rem .25rem!important;border-color:var(--stroke)!important}section[data-testid="stSidebar"] div[role="radiogroup"]{gap:.28rem!important}section[data-testid="stSidebar"] div[role="radiogroup"] label{min-height:39px!important;padding:.6rem .72rem!important;border-radius:7px!important}section[data-testid="stSidebar"] div[role="radiogroup"] label p{font-size:.76rem!important;line-height:1.15!important;color:#bcbccc!important}section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked){background:var(--dash-accent)!important;box-shadow:0 5px 18px color-mix(in srgb,var(--dash-accent) 22%,transparent)!important}section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p{color:#fff!important;font-weight:700!important}section[data-testid="stSidebar"] [data-baseweb="select"]>div{min-height:42px!important;border-radius:7px!important}
-.topbar{padding:.1rem 0 1rem!important;margin:0 0 1.2rem!important;border-bottom:1px solid var(--stroke)!important}.topbar:before{display:none!important}.topbar h1{font-family:"Stack Sans Text","Segoe UI",sans-serif!important;font-size:1.65rem!important;font-weight:680!important;letter-spacing:-.035em!important;line-height:1.15!important}.topbar p{font-size:.78rem!important;line-height:1.5!important;margin-top:.5rem!important;color:var(--muted)!important}
-[data-testid="stHorizontalBlock"]{gap:.78rem!important}.kcard{min-height:128px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;padding:1.05rem 1.1rem!important;background:var(--panel)!important;border:1px solid var(--stroke)!important;border-top:1px solid var(--stroke)!important;border-radius:9px!important;position:relative!important;overflow:hidden!important}.kcard:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--dash-accent)}.kcard.red:before{background:#ff6969}.kcard.orange:before{background:#f0a34a}.kcard.green:before{background:#48cf8b}.kval{font-family:"Stack Sans Text","Segoe UI",sans-serif!important;font-size:1.85rem!important;font-weight:690!important;line-height:1!important;letter-spacing:-.045em!important}.klbl{margin-top:.7rem!important;font-size:.72rem!important;font-weight:680!important;line-height:1.25!important;letter-spacing:0!important;text-transform:none!important;color:#ededf2!important}.ksub{margin-top:.32rem!important;font-size:.68rem!important;line-height:1.35!important;color:var(--muted)!important}
-.ccard{padding:1rem 1.05rem!important;margin:0 0 .7rem!important;background:var(--panel)!important;border:1px solid var(--stroke)!important;border-radius:9px 9px 0 0!important}.ctitle{font-size:.88rem!important;font-weight:680!important;line-height:1.3!important;letter-spacing:-.01em!important}.csub{margin-top:.35rem!important;font-size:.7rem!important;line-height:1.4!important;color:var(--muted)!important}[data-testid="stPlotlyChart"]{margin-top:-.72rem!important;padding:.35rem!important;background:var(--panel)!important;border:1px solid var(--stroke)!important;border-top:0!important;border-radius:0 0 9px 9px!important}.modebar{display:none!important}
-h1,h2,h3,h4{font-family:"Stack Sans Text","Segoe UI",sans-serif!important}h2{font-size:1.35rem!important;font-weight:680!important;letter-spacing:-.025em!important;margin-top:1.4rem!important}p,li,label,[data-testid="stMarkdownContainer"]{line-height:1.5}.ar,.ao,.ag{padding:1rem!important;border-radius:8px!important;font-size:.76rem!important;line-height:1.55!important;background:var(--panel)!important}.stDataFrame,[data-testid="stDataFrame"]{font-size:.78rem!important;background:var(--panel)!important;border-color:var(--stroke)!important}.stAlert{border-radius:8px!important}.stSelectbox label p,.stMultiSelect label p,.stSlider label p{font-size:.72rem!important;text-transform:none!important;letter-spacing:0!important}
-@media(max-width:900px){section[data-testid="stSidebar"]{width:245px!important}.block-container{padding:1rem!important}[data-testid="stHorizontalBlock"]{gap:.55rem!important}.kcard{min-height:105px!important}}
-/* Single viewport dashboard proportions */
-.block-container{max-width:none!important;padding:.8rem 1.55rem 1.3rem!important}.topbar{padding:0 0 .65rem!important;margin:0 0 .72rem!important}.topbar h1{font-size:1.38rem!important;line-height:1.1!important}.topbar p{font-size:.7rem!important;margin-top:.32rem!important}.topbar a,.topbar svg,a.header-anchor,[data-testid="stHeaderActionElements"]{display:none!important}
-[data-testid="stHorizontalBlock"]{gap:.62rem!important}.kcard{min-height:88px!important;padding:.72rem .82rem!important;border-radius:8px!important}.kval{font-size:1.48rem!important}.klbl{font-size:.65rem!important;margin-top:.46rem!important}.ksub{font-size:.59rem!important;margin-top:.2rem!important}.ccard{padding:.68rem .8rem!important;margin:0 0 .55rem!important;min-height:48px!important}.ctitle{font-size:.75rem!important}.csub{font-size:.61rem!important;margin-top:.2rem!important}[data-testid="stPlotlyChart"]{margin-top:-.57rem!important;padding:.15rem!important}h2{font-size:1.12rem!important;margin:.75rem 0 .5rem!important}.ar,.ao,.ag{padding:.68rem .75rem!important;font-size:.67rem!important;line-height:1.4!important;margin-bottom:.35rem!important}hr{margin:.72rem 0!important}
-section[data-testid="stSidebar"]{width:184px!important}section[data-testid="stSidebar"]>div{padding:1rem .75rem!important}section[data-testid="stSidebar"] h3{font-size:.93rem!important;margin:1rem .38rem .18rem!important}section[data-testid="stSidebar"] p{font-size:.62rem!important}section[data-testid="stSidebar"] hr{margin:.72rem .2rem!important}section[data-testid="stSidebar"] div[role="radiogroup"]{gap:.16rem!important}section[data-testid="stSidebar"] div[role="radiogroup"] label{min-height:32px!important;padding:.42rem .58rem!important}section[data-testid="stSidebar"] div[role="radiogroup"] label p{font-size:.64rem!important}section[data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1) p:before{content:"▦";margin-right:.5rem}section[data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2) p:before{content:"◫";margin-right:.5rem}section[data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3) p:before{content:"▤";margin-right:.5rem}section[data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4) p:before{content:"◎";margin-right:.5rem}section[data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5) p:before{content:"⌁";margin-right:.5rem}section[data-testid="stSidebar"] [data-baseweb="select"]>div{min-height:34px!important;font-size:.65rem!important}
-[data-testid="stDataFrame"]{font-size:.68rem!important}@media(max-width:900px){.block-container{padding:.75rem!important}section[data-testid="stSidebar"]{width:235px!important}}
-.csub{display:none!important}
-/* Reference composition final */
-.block-container{padding:1.35rem 2rem 2rem!important}.topbar{padding:.2rem 0 .8rem!important;margin-bottom:1rem!important}.topbar h1{font-size:1.65rem!important}.topbar p{font-size:.78rem!important}.kcard{min-height:112px!important;padding:1rem 1.05rem!important;border:0!important;border-radius:9px!important;background:#1c1c27!important}.kcard:before{display:none!important}.kval{font-size:1.72rem!important}.klbl{font-size:.73rem!important;margin-top:.65rem!important}.ksub{font-size:.66rem!important}.ccard{min-height:auto!important;padding:.85rem 1rem!important;border:0!important;border-radius:9px 9px 0 0!important;background:#1c1c27!important}.ctitle{font-size:.86rem!important}[data-testid="stPlotlyChart"]{border:0!important;border-radius:0 0 9px 9px!important;background:#1c1c27!important;padding:.25rem .6rem!important}section[data-testid="stSidebar"]{width:220px!important}section[data-testid="stSidebar"]>div{padding:1.5rem 1rem!important}section[data-testid="stSidebar"] h3{font-size:1.05rem!important}section[data-testid="stSidebar"] p{font-size:.7rem!important}section[data-testid="stSidebar"] div[role="radiogroup"] label{min-height:38px!important;padding:.58rem .7rem!important}section[data-testid="stSidebar"] div[role="radiogroup"] label p{font-size:.72rem!important}section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked){background:#f5f5f7!important;box-shadow:none!important}section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p{color:#14141d!important}div[data-testid="stVerticalBlock"]{gap:.55rem!important}[data-testid="stExpander"]{border:1px solid #2b2b38!important;background:#171720!important;border-radius:8px!important}
-/* Accessible colour and interaction */
-.kcard{transition:transform .16s ease,background .16s ease!important;border-top:2px solid var(--dash-accent)!important}.kcard:hover{transform:translateY(-2px)!important;background:#22222e!important}.kcard.red{border-top-color:#ff6b72!important}.kcard.orange{border-top-color:#f3b64b!important}.kcard.green{border-top-color:#4fcf91!important}.kcard.blue,.kcard.gold{border-top-color:var(--dash-accent)!important}[data-testid="stPlotlyChart"]{transition:background .16s ease!important}[data-testid="stPlotlyChart"]:hover{background:#1e1e2a!important}.stSelectbox [data-baseweb="select"]>div:focus-within{border-color:var(--dash-accent)!important}
-/* Power BI KPI cards */
-.kcard{min-height:108px!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;background:#191922!important;border:1px solid #30303c!important;border-radius:5px!important;padding:.9rem 1rem .82rem!important;box-shadow:0 1px 2px rgba(0,0,0,.16)!important;transform:none!important;transition:background .12s ease,border-color .12s ease!important}.kcard:hover{transform:none!important;background:#1d1d27!important;border-color:#414152!important}.kcard:before,.kcard:after{display:none!important}.klbl{order:1!important;display:flex!important;align-items:center!important;gap:.48rem!important;margin:0!important;color:#c9c9d3!important;font-size:.7rem!important;font-weight:560!important;line-height:1.25!important;letter-spacing:0!important;text-transform:none!important}.klbl:before{content:"";width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:var(--dash-accent)}.kcard.red .klbl:before{background:#f06b72}.kcard.orange .klbl:before{background:#e9aa49}.kcard.green .klbl:before{background:#4bc589}.kcard.blue .klbl:before,.kcard.gold .klbl:before{background:var(--dash-accent)}.kval{order:2!important;margin:.5rem 0 0!important;color:#f8f8fb!important;font-family:"Stack Sans Text","Segoe UI",sans-serif!important;font-size:1.72rem!important;font-weight:650!important;line-height:1!important;letter-spacing:-.035em!important;font-variant-numeric:tabular-nums!important;white-space:nowrap!important}.ksub{order:3!important;margin-top:auto!important;padding-top:.5rem!important;color:#8f8f9e!important;font-size:.61rem!important;font-weight:450!important;line-height:1.2!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
-.cross-app-link{position:fixed;top:1rem;right:1.7rem;z-index:9999;display:inline-flex;align-items:center;justify-content:center;padding:.55rem .85rem;background:#f5f5f7;color:#15151f!important;border:1px solid #f5f5f7;border-radius:5px;font:600 .72rem "Stack Sans Text","Segoe UI",sans-serif;text-decoration:none!important;box-shadow:0 2px 8px rgba(0,0,0,.18)}.cross-app-link:hover{background:var(--dash-accent);border-color:var(--dash-accent);color:#fff!important}</style>
-""", unsafe_allow_html=True)
+:root{{--bg:#e7e8ea;--shell:#f7f7f6;--panel:#fff;--line:#e7e7e5;--ink:#2d2e30;--muted:#85888d;--accent:{ACCENT};--accent2:{ACCENT2};--soft:{SOFT};--danger:#d75555;--warn:#c88a32;--good:#16865c;}}
+html,body,[class*="css"],.stApp{{font-family:"Segoe UI Variable","Segoe UI",Arial,sans-serif!important;color:var(--ink)!important}}
+.stApp{{background:var(--bg)!important}}
+header[data-testid="stHeader"]{{display:none!important}} #MainMenu,footer,[data-testid="stToolbar"]{{display:none!important}}
+.block-container{{max-width:1480px!important;margin:18px auto!important;padding:14px 18px 24px!important;background:var(--shell)!important;border:1px solid #d9d9da!important;border-radius:22px!important;box-shadow:0 2px 10px rgba(40,40,45,.06)!important}}
+section[data-testid="stSidebar"]{{width:248px!important;background:#f5f5f4!important;border-right:1px solid #dededc!important}}
+section[data-testid="stSidebar"]>div{{padding:26px 16px 18px!important}}
+section[data-testid="stSidebar"] h2{{font-size:1.02rem!important;margin:.2rem 8px .1rem!important;letter-spacing:-.02em!important}}
+section[data-testid="stSidebar"] .stCaption,section[data-testid="stSidebar"] p{{font-size:.71rem!important;color:#85888b!important}}
+section[data-testid="stSidebar"] hr{{border:0!important;border-top:1px solid #ddd!important;margin:1rem 8px!important}}
+section[data-testid="stSidebar"] div[role="radiogroup"]{{gap:.05rem!important}}
+section[data-testid="stSidebar"] div[role="radiogroup"] label{{min-height:38px!important;padding:.56rem .78rem!important;border-radius:8px!important;margin:0!important;background:transparent!important}}
+section[data-testid="stSidebar"] div[role="radiogroup"] label>div:first-child{{display:none!important}}
+section[data-testid="stSidebar"] div[role="radiogroup"] label p{{font-size:.76rem!important;color:#74777a!important;font-weight:500!important}}
+section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked){{background:var(--soft)!important;box-shadow:inset 3px 0 0 var(--accent)!important}}
+section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p{{color:#252726!important;font-weight:700!important}}
+section[data-testid="stSidebar"] [data-baseweb="select"]>div{{min-height:39px!important;background:#fff!important;border:1px solid #dededc!important;border-radius:9px!important}}
+section[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p{{font-size:.68rem!important;color:#85888b!important;font-weight:500!important}}
+.utilitybar{{height:58px;display:flex;align-items:center;gap:12px;background:#f0f0ef;border:1px solid #ededeb;border-radius:14px;padding:8px 12px;margin:0 0 10px}}
+.searchbox{{width:min(340px,42vw);height:38px;background:#fff;border:1px solid #ececea;border-radius:20px;color:#999b9d;font-size:.72rem;display:flex;align-items:center;padding:0 14px}}
+.searchbox:before{{content:'⌕';font-size:1.03rem;color:#717476;margin-right:8px}} .utility-spacer{{flex:1}} .utility-icon{{width:36px;height:36px;background:#fff;border:1px solid #ececea;border-radius:50%;display:grid;place-items:center;color:#6e7270;font-size:.72rem}} .user-chip{{display:flex;align-items:center;gap:8px}} .avatar{{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:.66rem;font-weight:700}} .user-name{{font-size:.72rem;font-weight:700;color:#2f3130}} .user-role{{font-size:.61rem;color:#949695;margin-top:3px}}
+.hero{{position:relative;min-height:110px;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#fff;margin-bottom:10px;padding:18px 20px}} .hero:after{{content:'';position:absolute;inset:0 0 0 52%;background-image:linear-gradient(90deg,rgba(255,255,255,.98),rgba(255,255,255,.35)),url('{HERO}');background-size:cover;background-position:center;opacity:.42}} .hero>*{{position:relative;z-index:1}} .hero h1{{font-size:1.48rem!important;line-height:1.05!important;letter-spacing:-.035em!important;margin:0!important;color:#2c2e2f!important}} .hero p{{font-size:.74rem!important;color:#85888b!important;margin:.45rem 0 0!important;max-width:670px;line-height:1.35}}
+.section-title{{font-size:.82rem;font-weight:700;color:#343637;margin:.2rem 0 .6rem}} .kcard{{height:112px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.9rem .9rem .75rem;display:flex;flex-direction:column}} .kcard.primary{{background:linear-gradient(145deg,{ACCENT_DARK},{ACCENT});border-color:{ACCENT};}} .klabel{{font-size:.68rem;font-weight:700;color:#3d3f40;line-height:1.15;min-height:26px}} .kcard.primary .klabel{{color:#e8f6f0}} .kvalue{{font-size:1.72rem;font-weight:700;letter-spacing:-.045em;line-height:1;margin-top:.35rem;color:#292b2c;white-space:nowrap}} .kcard.primary .kvalue{{color:#fff}} .ksub{{font-size:.62rem;color:#16865c;margin-top:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}} .kcard.primary .ksub{{color:#d8f5e8}}
+.panel-title{{font-size:.79rem;font-weight:700;color:#343637;margin:0 0 .1rem}} .panel-sub{{font-size:.63rem;color:#949698;margin:0 0 .35rem}}
+[data-testid="stPlotlyChart"]{{background:#fff!important;border:1px solid var(--line)!important;border-radius:14px!important;padding:.35rem .45rem .2rem!important;box-shadow:none!important}}
+[data-testid="stDataFrame"],[data-testid="stTable"]{{border:1px solid var(--line)!important;border-radius:12px!important;overflow:hidden!important;background:#fff!important}}
+div[data-testid="stVerticalBlock"]{{gap:.58rem!important}} div[data-testid="stHorizontalBlock"]{{gap:.65rem!important}}
+.stButton>button{{height:34px!important;border-radius:18px!important;border:1px solid var(--accent)!important;background:#fff!important;color:var(--accent)!important;font-size:.69rem!important;font-weight:650!important}}
+.side-promo{{height:160px;margin:1rem .1rem 0;border-radius:13px;padding:1rem;display:flex;align-items:flex-end;background:linear-gradient(180deg,rgba(15,25,20,.1),rgba(15,25,20,.72)),url('{HERO}');background-size:cover;background-position:center;color:#fff}} .side-promo strong{{display:block;font-size:.9rem;line-height:1.14;margin-bottom:.4rem;color:#fff}} .side-promo span{{font-size:.63rem;color:#e5eee9;line-height:1.3}}
+.small-note{{font-size:.64rem;color:#8f9294}} .status-pill{{display:inline-block;padding:.16rem .48rem;border-radius:999px;background:#edf6f1;color:#1a7655;font-size:.62rem;font-weight:700}}
+@media(max-width:1000px){{.block-container{{margin:0!important;border-radius:0!important;padding:10px!important}}section[data-testid="stSidebar"]{{width:232px!important}}.hero:after{{display:none}}.kvalue{{font-size:1.45rem}}}}
+.sidebar-brand{{display:flex;align-items:center;gap:10px;margin:0 4px 18px;padding:0 4px 17px;border-bottom:1px solid #d9d9d7}}
+.sidebar-brand>span{{display:grid;width:36px;height:36px;place-items:center;border-radius:7px;background:var(--accent);color:#fff;font-size:.66rem;font-weight:800;letter-spacing:.02em}}
+.sidebar-brand strong{{display:block;color:var(--ink);font-size:.88rem;line-height:1.15}}
+.sidebar-brand small{{display:block;margin-top:3px;color:var(--muted);font-size:.61rem}}
+div[data-testid="stTextInput"]{{max-width:520px}}
+div[data-testid="stTextInput"] input{{height:38px!important;border:1px solid #ececea!important;border-radius:20px!important;background:#fff!important;color:var(--ink)!important;font-size:.72rem!important}}
+div[data-testid="stTextInput"] input:focus{{border-color:var(--accent)!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 18%,transparent)!important}}
+.profile-chip{{height:40px;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding-right:4px}}
+.profile-chip>span{{display:grid;width:31px;height:31px;place-items:center;border-radius:50%;background:var(--accent);color:#fff;font-size:.61rem;font-weight:800}}
+.profile-chip strong{{display:block;font-size:.65rem;color:var(--ink)}}
+.profile-chip small{{display:block;margin-top:2px;font-size:.57rem;color:var(--muted)}}
+/* Cohesive project-specific dashboard finish */
+.stApp{{background:color-mix(in srgb,var(--soft) 46%,#dfe3e5)!important}}
+.block-container{{background:color-mix(in srgb,var(--soft) 28%,#f7f7f6)!important;border-color:color-mix(in srgb,var(--accent) 12%,#d9d9da)!important}}
+section[data-testid="stSidebar"]{{background:color-mix(in srgb,var(--soft) 72%,#f4f4f2)!important;border-right-color:color-mix(in srgb,var(--accent) 14%,#d8d8d6)!important}}
+section[data-testid="stSidebar"] [data-baseweb="select"]>div{{background:color-mix(in srgb,var(--soft) 35%,#fff)!important;border-color:color-mix(in srgb,var(--accent) 18%,#d7d7d5)!important;color:var(--ink)!important}}
+section[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p{{color:color-mix(in srgb,var(--ink) 70%,var(--muted))!important;font-weight:650!important}}
+.hero{{min-height:126px!important;background-image:linear-gradient(90deg,rgba(18,23,22,.86),rgba(18,23,22,.62) 52%,rgba(18,23,22,.25)),url('{HERO}')!important;background-size:cover!important;background-position:center!important;border-color:color-mix(in srgb,var(--accent) 18%,#d6d6d4)!important}}
+.hero:after{{display:none!important}}
+.hero h1{{color:#fff!important;text-shadow:0 1px 8px rgba(0,0,0,.24)}}
+.hero p{{color:rgba(255,255,255,.88)!important}}
+.kcard,.kcard.primary{{height:108px!important;background:color-mix(in srgb,var(--soft) 24%,#fff)!important;border:1px solid color-mix(in srgb,var(--accent) 15%,#dededc)!important;border-top:3px solid color-mix(in srgb,var(--accent) 72%,#fff)!important}}
+.kcard.primary .klabel,.kcard .klabel{{color:color-mix(in srgb,var(--ink) 82%,var(--accent))!important}}
+.kcard.primary .kvalue,.kcard .kvalue{{color:var(--ink)!important}}
+.kcard.primary .ksub,.kcard .ksub{{color:color-mix(in srgb,var(--accent) 68%,var(--muted))!important}}
+[data-testid="stPlotlyChart"]{{background:color-mix(in srgb,var(--soft) 15%,#fff)!important;border-color:color-mix(in srgb,var(--accent) 12%,#dededc)!important}}
+[data-testid="stDataFrame"],[data-testid="stTable"]{{background:color-mix(in srgb,var(--soft) 15%,#fff)!important;border-color:color-mix(in srgb,var(--accent) 12%,#dededc)!important}}
+.panel-title{{margin:.48rem 0 .08rem!important;color:var(--ink)!important}}
+.panel-sub{{margin:0 0 .42rem!important;color:var(--muted)!important}}
+.modebar{{display:none!important}}
+.side-promo{{display:none!important}}
+.sidebar-brand{{border-bottom-color:color-mix(in srgb,var(--accent) 18%,#d7d7d5)!important}}
+.sidebar-brand>span{{background:transparent!important;color:var(--accent)!important;width:38px;height:38px;border-radius:0!important}}
+.sidebar-brand.health>span{{position:relative;font-size:0}}
+.sidebar-brand.health>span:before,.sidebar-brand.health>span:after{{content:'';position:absolute;width:19px;height:28px;border-radius:100% 0 100% 0;background:var(--accent);transform:rotate(-35deg);left:3px;top:5px}}
+.sidebar-brand.health>span:after{{left:16px;transform:scaleX(-1) rotate(-35deg);background:var(--accent2)}}
+.sidebar-brand.mining>span{{font-size:0;border-left:3px solid var(--accent2)!important;transform:skewX(-12deg);position:relative}}
+.sidebar-brand.mining>span:before{{content:'≡';font-size:2rem;font-weight:900;line-height:1;color:var(--accent2);position:absolute;left:6px;top:0}}
+.sidebar-brand.loan>span{{border:2px solid var(--accent)!important;border-radius:50%!important;font-size:.58rem!important;font-weight:800!important}}
+.sidebar-brand.retail>span{{display:none!important}}
+.sidebar-brand.retail strong{{font-weight:850!important;letter-spacing:.07em!important;text-transform:uppercase}}
+.sidebar-brand.tourism>span{{display:none!important}}
+.sidebar-brand.tourism>div{{border-left:4px solid var(--accent2);padding-left:10px}}
+/* Image-backed navigation and high-contrast light report */
+section[data-testid="stSidebar"]>div:first-child{{min-height:100vh!important;padding:10px 14px 18px!important;background-image:linear-gradient(rgba(12,22,20,.78),rgba(12,22,20,.88)),url('{HERO}')!important;background-size:cover!important;background-position:center!important}}
+section[data-testid="stSidebar"] h1,section[data-testid="stSidebar"] h2,section[data-testid="stSidebar"] h3,section[data-testid="stSidebar"] p,section[data-testid="stSidebar"] .stCaption{{color:rgba(255,255,255,.88)!important}}
+section[data-testid="stSidebar"] hr{{border-top-color:rgba(255,255,255,.22)!important}}
+section[data-testid="stSidebar"] div[role="radiogroup"] label p{{color:rgba(255,255,255,.76)!important}}
+section[data-testid="stSidebar"] div[role="radiogroup"] label:hover{{background:rgba(255,255,255,.10)!important}}
+section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked){{background:rgba(255,255,255,.16)!important;box-shadow:inset 3px 0 0 color-mix(in srgb,var(--accent2) 70%,#fff)!important}}
+section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p{{color:#fff!important}}
+section[data-testid="stSidebar"] [data-baseweb="select"]>div{{background:rgba(255,255,255,.92)!important;border-color:rgba(255,255,255,.34)!important;color:#202523!important}}
+section[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] p{{color:#fff!important}}
+.sidebar-brand{{margin:0 2px 12px!important;padding:0 2px 12px!important;border-bottom-color:rgba(255,255,255,.24)!important}}
+.sidebar-brand strong{{color:#fff!important;text-shadow:0 1px 6px rgba(0,0,0,.35)}}
+.sidebar-brand small{{color:rgba(255,255,255,.72)!important}}
+.sidebar-brand>span{{color:#fff!important}}
+.sidebar-brand.loan>span{{border-color:#fff!important}}
+.sidebar-brand.health>span:before{{background:#fff!important}}
+.sidebar-brand.health>span:after{{background:color-mix(in srgb,var(--accent2) 72%,#fff)!important}}
+.sidebar-brand.mining>span{{border-left-color:var(--accent2)!important}}
+section[data-testid="stSidebarCollapseButton"] button{{color:#fff!important;background:rgba(0,0,0,.18)!important}}
+.kcard,.kcard.primary{{border:0!important;border-top:0!important;background:linear-gradient(140deg,color-mix(in srgb,var(--accent) 88%,#21302b),color-mix(in srgb,var(--accent2) 62%,var(--accent)))!important;box-shadow:0 3px 10px rgba(24,34,31,.12)!important}}
+.kcard .klabel,.kcard.primary .klabel{{color:rgba(255,255,255,.84)!important}}
+.kcard .kvalue,.kcard.primary .kvalue{{color:#fff!important;text-shadow:0 1px 5px rgba(0,0,0,.18)}}
+.kcard .ksub,.kcard.primary .ksub{{color:rgba(255,255,255,.76)!important}}
+[data-testid="stPlotlyChart"]{{background:#fff!important;border:1px solid color-mix(in srgb,var(--accent) 10%,#d9dddb)!important}}
+[data-testid="stDataFrame"]{{background:#fff!important;border:1px solid color-mix(in srgb,var(--accent) 12%,#d5d9d7)!important}}
+[data-testid="stDataFrame"] button{{color:#26312c!important}}
+/* Exact software-brand lockup and sidebar action */
+section[data-testid="stSidebar"] [data-testid="stSidebarContent"]{{padding-top:0!important}}
+section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"]{{padding-top:8px!important}}
+.sidebar-brand{{margin-top:0!important;align-items:center!important}}
+.sidebar-brand.loan>span{{display:none!important}}
+.sidebar-brand.loan strong{{font-weight:780!important;letter-spacing:-.02em}}
+.sidebar-brand.retail strong{{font-weight:900!important;letter-spacing:.09em!important}}
+.sidebar-brand.tourism strong{{letter-spacing:-.025em!important}}
+.sidebar-brand.mining>span:before{{content:''!important;position:absolute!important;left:7px!important;top:7px!important;width:28px!important;height:3px!important;background:var(--accent2)!important;box-shadow:-2px 9px 0 var(--accent2),-5px 18px 0 var(--accent2)!important}}
+section[data-testid="stSidebar"] .stLinkButton a{{min-height:38px!important;border:1px solid rgba(255,255,255,.55)!important;background:rgba(255,255,255,.15)!important;color:#fff!important;border-radius:7px!important;font-weight:750!important}}
+section[data-testid="stSidebar"] .stLinkButton a:hover{{background:#fff!important;color:var(--accent)!important}}
+/* Top-aligned identity and report actions */
+.sidebar-brand{{position:relative!important;left:-24px!important;top:-6px!important;width:calc(100% + 24px)!important;margin-bottom:2px!important;padding:8px 0 12px 8px!important}}
+.report-actions-spacer{{flex:1}}
+div[data-testid="stHorizontalBlock"]:has(#top_overview){{margin:0 0 .1rem!important}}
+.stButton>button,.stLinkButton>a{{font-weight:700!important}}
+</style>
+"""
+st.markdown(STYLE, unsafe_allow_html=True)
 
-def load():
-    df   = pd.read_csv(BASE_DIR / "equipment_data.csv", parse_dates=["date"])
-    risk = pd.read_csv(BASE_DIR / "risk_scores.csv")
-    return df, risk
+def kcard(label, value, sub="", primary=False):
+    return f'<div class="kcard {"primary" if primary else ""}"><div class="klabel">{label}</div><div class="kvalue">{value}</div><div class="ksub">{sub}</div></div>'
 
-df, risk = load()
+def sidebar_brand(mark, name, tag):
+    st.markdown(f'<div class="sidebar-brand {mark.lower()}"><span>{mark}</span><div><strong>{name}</strong><small>{tag}</small></div></div>', unsafe_allow_html=True)
 
-with st.sidebar:
-    st.markdown("###  Kgosi Mining")
-    st.markdown("Operations Dashboard")
-    st.markdown("---")
-    page = st.radio("Go to", [
-        "  Overview",
-        "  Costs & Repairs",
-        "  Fuel Usage",
-        "  Safety Alerts",
-        "  Staff Report",
-    ])
-    st.markdown("---")
-    sel_t = st.selectbox("Filter: Machine Type", ["All Types"] + sorted(df["machine_type"].unique().tolist()))
-    sel_s = st.selectbox("Filter: Site",         ["All Sites"] + sorted(df["site"].unique().tolist()))
-    st.markdown("---")
-    st.caption("Period: Jul  to  Dec 2025")
+def _open_overview():
+    st.session_state["active_report_page"] = OVERVIEW_LABEL
 
-dff = df.copy()
-if sel_t != "All Types": dff = dff[dff["machine_type"] == sel_t]
-if sel_s != "All Sites":  dff = dff[dff["site"] == sel_s]
+def _open_section():
+    selected = st.session_state.get("section_nav")
+    if selected:
+        st.session_state["active_report_page"] = selected
 
-def kcard(color, val, lbl, sub=""):
-    return f'<div class="kcard {color}"><div class="klbl">{lbl}</div><div class="kval">{val}</div>{"<div class=ksub>"+sub+"</div>" if sub else ""}</div>'
+def sidebar_navigation(options):
+    st.radio("Go to", options, index=None, key="section_nav", on_change=_open_section, label_visibility="collapsed")
+    return st.session_state.get("active_report_page", OVERVIEW_LABEL)
 
-def wchart(fig, h=230):
-    palette = ['#E2A63A','#D36D48','#6C83A8','#56B78B']
-    for i, trace in enumerate(fig.data):
-        if trace.type == "bar":
-            point_count = len(trace.x) if trace.x is not None else len(trace.y)
-            trace.marker.color = ([palette[j % len(palette)] for j in range(point_count)]
-                                  if len(fig.data) == 1 else palette[i % len(palette)])
-            trace.marker.line = dict(width=0)
-            trace.opacity = 0.94
-            trace.hovertemplate = "%{x}<br><b>%{y}</b><extra></extra>"
-        elif trace.type in ("scatter", "scattergl"):
-            trace.line.color = palette[i % len(palette)]
-            trace.line.width = 2.5
-            if getattr(trace, "marker", None):
-                trace.marker.color = palette[i % len(palette)]
-                trace.marker.size = 6
-        elif trace.type == "pie":
-            trace.marker.colors = palette
-            trace.textinfo = "percent"
-            trace.textposition = "outside"
-    fig.update_layout(plot_bgcolor="#1b1b25", paper_bgcolor="#1b1b25", font_color="#d8d8e2",
-                      font=dict(family="Stack Sans Text, Segoe UI, sans-serif", size=11), height=h,
-                      margin=dict(t=12,b=18,l=8,r=8), coloraxis_showscale=False, hovermode="closest",
-                      legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1,
-                                  font=dict(size=10), bgcolor="rgba(0,0,0,0)"),
-                      hoverlabel=dict(bgcolor="#272735", bordercolor="#3a3a4a", font=dict(color="#ffffff",size=12)))
-    fig.update_xaxes(showgrid=False, linecolor="#343443", tickfont=dict(color="#a8a8b7",size=10), title=None, automargin=True, zeroline=False)
-    fig.update_yaxes(gridcolor="#2b2b38", linecolor="#343443", tickfont=dict(color="#a8a8b7",size=10), title=None, automargin=True, zeroline=False)
+def utilitybar(role):
+    spacer, overview_col, software_col = st.columns([6, 1.05, 1.25])
+    with overview_col:
+        st.link_button("Overview", OVERVIEW_URL, use_container_width=True)
+    with software_col:
+        st.link_button("Open software", SOFTWARE_URL, use_container_width=True)
+    return ""
+
+def apply_search(frame, query):
+    if not query or frame.empty:
+        return frame
+    matches = frame.astype(str).apply(lambda column: column.str.contains(query, case=False, regex=False, na=False)).any(axis=1)
+    return frame.loc[matches]
+
+
+def hero(title, subtitle):
+    st.markdown(f'<div class="hero"><h1>{title}</h1><p>{subtitle}</p></div>', unsafe_allow_html=True)
+
+def panel_head(title, sub=""):
+    st.markdown(f'<div class="panel-title">{title}</div><div class="panel-sub">{sub}</div>', unsafe_allow_html=True)
+
+def chart_style(fig, height=270, legend=True):
+    fig.update_layout(height=height, margin=dict(l=12,r=12,t=22,b=10), paper_bgcolor="#ffffff", plot_bgcolor="#ffffff", font=dict(family="Segoe UI, Arial",size=11,color="#303634"), showlegend=legend, legend=dict(orientation="h",yanchor="bottom",y=1.01,xanchor="right",x=1,font=dict(size=9)), hoverlabel=dict(bgcolor="#2f3332",font=dict(color="#fff",size=10)), coloraxis_showscale=False)
+    fig.update_xaxes(showgrid=False,linecolor="#cfd5d2",tickfont=dict(size=10,color="#424946"),title_font=dict(size=9),zeroline=False)
+    fig.update_yaxes(gridcolor="#e2e6e4",linecolor="#cfd5d2",tickfont=dict(size=10,color="#424946"),title_font=dict(size=9),zeroline=False)
     return fig
 
-#  PAGE 1: OVERVIEW 
-if page == "  Overview":
-    st.markdown('<div class="topbar"><h1> Operations Overview</h1><p>Kgosi Mining Solutions  |  July  to  December 2025</p></div>', unsafe_allow_html=True)
+@st.cache_data
+def load_data():
+    eq=pd.read_csv(ROOT/"equipment_data.csv",parse_dates=["date"])
+    risk=pd.read_csv(ROOT/"risk_scores.csv")
+    return eq,risk
+eq,risk=load_data()
+with st.sidebar:
+    sidebar_brand("KM", "KGOSI MINING", "Fleet intelligence & maintenance")
+    st.divider()
+    page=st.radio("Go to",["Overview","Costs & Repairs","Fuel Usage","Safety Alerts","Staff Report"],index=0,label_visibility="collapsed")
+    st.divider()
+    machine_types=["All Machine Types"]+sorted(eq.machine_type.dropna().unique().tolist())
+    sites=["All Sites"]+sorted(eq.site.dropna().unique().tolist())
+    machine_sel=st.selectbox("Machine Type",machine_types,index=0)
+    site_sel=st.selectbox("Site",sites,index=0)
+    st.divider(); st.caption("Period: Jul to Dec 2025")
+    st.markdown('<div class="side-promo"><div><strong>Efficient operations. Stronger tomorrow.</strong><span>Fleet health, cost discipline and safer mining.</span></div></div>',unsafe_allow_html=True)
 
-    bd = dff[dff["breakdown"]==1]
-    idle_waste = dff["idle_hours"].sum()*35*14.5*0.35
-    c1,c2,c3,c4,c5 = st.columns(5)
-    c1.markdown(kcard("red",    f"P{dff['repair_cost_bwp'].sum()/1e6:.1f}M", "Spent on Repairs",      "Jul to Dec 2025"), unsafe_allow_html=True)
-    c2.markdown(kcard("orange", f"P{dff['fuel_cost_bwp'].sum()/1e6:.1f}M",   "Total Fuel Costs",      "Jul to Dec 2025"), unsafe_allow_html=True)
-    c3.markdown(kcard("red",    f"P{idle_waste/1e3:.0f}K",                    "Fuel Wasted on Idle",   "Zero production benefit"), unsafe_allow_html=True)
-    c4.markdown(kcard("red",    f"{dff['breakdown'].sum()}",                   "Breakdowns",            f"Avg P{bd['repair_cost_bwp'].mean():,.0f} each" if len(bd) else ""), unsafe_allow_html=True)
-    c5.markdown(kcard("green",  f"{(risk['risk_level']=='Low').sum()} / 80",  "Machines Healthy",      f"{(risk['risk_level']!='Low').sum()} need attention"), unsafe_allow_html=True)
+df=eq.copy()
+if machine_sel!="All Machine Types": df=df[df.machine_type==machine_sel]
+if site_sel!="All Sites": df=df[df.site==site_sel]
+search_query=utilitybar("Operations Manager")
+df=apply_search(df,search_query)
 
-    st.markdown("---")
-    st.markdown('<div class="ccard"><div class="ctitle"> Monthly Repair Costs vs Fuel Costs</div><div class="csub">See which months had the most incidents</div>', unsafe_allow_html=True)
-    mo = dff.groupby(dff["date"].dt.to_period("M")).agg(Repairs=("repair_cost_bwp","sum"),Fuel=("fuel_cost_bwp","sum")).reset_index()
-    mo["Month"] = mo["date"].astype(str)
-    fig = go.Figure()
-    fig.add_trace(go.Bar(name="Repair Costs",x=mo["Month"],y=mo["Repairs"],marker_color="#e74c3c",text=mo["Repairs"].apply(lambda x:f"P{x/1e3:.0f}K"),textposition="outside"))
-    fig.add_trace(go.Bar(name="Fuel Costs",  x=mo["Month"],y=mo["Fuel"],   marker_color="#f1c47f",text=mo["Fuel"].apply(lambda x:f"P{x/1e6:.1f}M"),  textposition="outside"))
-    fig.update_layout(barmode="group",xaxis_title="Month",yaxis_title="Cost (BWP)",legend=dict(orientation="h",y=1.1))
-    st.plotly_chart(wchart(fig, 245), use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+def money(x):
+    return f"P{x/1e6:.1f}M" if abs(x)>=1e6 else (f"P{x/1e3:.0f}K" if abs(x)>=1e3 else f"P{x:,.0f}")
 
-#  PAGE 2: COSTS 
-elif page == "  Costs & Repairs":
-    st.markdown('<div class="topbar"><h1> Repair Costs & Breakdown Report</h1><p>Which machines are breaking and what it is costing the company</p></div>', unsafe_allow_html=True)
-    bd = dff[dff["breakdown"]==1]
-    c1,c2,c3,c4 = st.columns(4)
-    c1.markdown(kcard("red",    f"{len(bd)}",                            "Total Breakdowns",    "Past 6 months"), unsafe_allow_html=True)
-    c2.markdown(kcard("red",    f"P{bd['repair_cost_bwp'].sum():,.0f}",  "Total Repair Bill",   "Jul to Dec 2025"), unsafe_allow_html=True)
-    c3.markdown(kcard("orange", f"P{bd['repair_cost_bwp'].mean():,.0f}", "Average Per Breakdown","Per incident"), unsafe_allow_html=True)
-    c4.markdown(kcard("blue",   "P80,000",                               "Cost if Planned",     "6× cheaper than emergency"), unsafe_allow_html=True)
-    st.markdown("---")
-    col1,col2 = st.columns(2)
-    with col1:
-        st.markdown('<div class="ccard"><div class="ctitle">Which Machines Break the Most?</div><div class="csub">Haul Trucks and Excavators cause the highest repair bills</div>', unsafe_allow_html=True)
-        bt = dff.groupby("machine_type").agg(Breakdowns=("breakdown","sum"),Cost=("repair_cost_bwp","sum")).sort_values("Cost",ascending=True).reset_index()
-        bt["Label"] = bt["Cost"].apply(lambda x:f"P{x/1e3:.0f}K")
-        fig = px.bar(bt,x="Cost",y="machine_type",orientation="h",color="Breakdowns",
-                     color_continuous_scale=["#ffd6d6","#e74c3c"],text="Label",labels={"Cost":"Total Repair Cost","machine_type":""})
-        fig.update_traces(textposition="outside")
-        st.plotly_chart(wchart(fig), use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="ccard"><div class="ctitle">Machine Readings: Healthy vs Just Before a Breakdown</div><div class="csub">Every breakdown was preceded by clear warning signs that went unnoticed</div>', unsafe_allow_html=True)
-        cdf = pd.DataFrame({
-            "Reading": ["Engine Temperature","Shaking (Vibration)","Oil Dirt Level"],
-            "Normal Machine": [78, 2.6, 1.6],
-            "Just Before Breakdown": [122, 5.6, 5.3],
-        })
-        fig2 = go.Figure()
-        fig2.add_trace(go.Bar(name="Normal Machine",        x=cdf["Reading"],y=cdf["Normal Machine"],       marker_color="#27ae60"))
-        fig2.add_trace(go.Bar(name="Just Before Breakdown", x=cdf["Reading"],y=cdf["Just Before Breakdown"],marker_color="#e74c3c"))
-        fig2.update_layout(barmode="group",legend=dict(orientation="h",y=1.1))
-        st.plotly_chart(wchart(fig2), use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("###  Every Breakdown: Full List")
-    show = bd[["date","machine_id","machine_type","site","repair_cost_bwp","days_since_maintenance","operator_id"]].copy()
-    show["date"]=""+show["date"].astype(str)
-    show["repair_cost_bwp"]=show["repair_cost_bwp"].apply(lambda x:f"P{x:,.0f}")
-    show["days_since_maintenance"]=show["days_since_maintenance"].apply(lambda x:f"{x} days")
-    show.columns=["Date","Machine","Type","Site","Repair Cost","Days Since Last Service","Operator"]
-    st.dataframe(show.sort_values("Date",ascending=False).reset_index(drop=True),use_container_width=True)
-    st.markdown('<div class="ar"><b> Key Takeaway:</b> Every machine that broke down had warning signs days beforehand. These breakdowns were preventable. Planned servicing costs <b>P80,000</b>. Emergency repairs cost <b>P450,000 to P600,000</b>.</div>', unsafe_allow_html=True)
+def mining_overview():
+    hero("Operational Overview","Key metrics across fleet cost, maintenance, safety and people. Filters default to the full operation.")
+    fuel=df.fuel_cost_bwp.sum(); repair=df.repair_cost_bwp.sum(); breakdowns=int(df.breakdown.sum())
+    waste=(df.fuel_cost_bwp*(df.idle_hours/df.hours_today.replace(0,np.nan))).fillna(0).sum()
+    machines=df.machine_id.nunique(); risky=set(risk.loc[risk.risk_level.isin(["High","Critical"]),"machine_id"]); healthy=max(machines-len(set(df.machine_id)&risky),0)
+    maint=int(df.groupby('machine_id').maintenance_due.max().sum()); safety=int((df.safety_risk.astype(str).str.lower()=="high").sum())
+    util=(df.active_hours.sum()/df.hours_today.sum()*100) if df.hours_today.sum() else 0
+    cols=st.columns(7)
+    vals=[("Fleet Fuel Cost",money(fuel),"Operating fuel spend"),("Repair Cost",money(repair),"Breakdown & repair spend"),("Fuel Waste",money(waste),"Estimated idle fuel cost"),("Breakdowns",f"{breakdowns:,}","Recorded events"),("Machines Healthy",f"{healthy}/{machines}",f"{machines-healthy} need attention"),("Maintenance Due",f"{maint}","Machines flagged"),("Fleet Utilization",f"{util:.0f}%","Active hours / total hours")]
+    for i,(c,v,s) in enumerate(vals): cols[i].markdown(kcard(c,v,s,i==0),unsafe_allow_html=True)
+    c1,c2,c3=st.columns([1.35,1,1])
+    monthly=df.assign(month=df.date.dt.to_period('M').astype(str)).groupby('month').agg(repair=('repair_cost_bwp','sum'),fuel=('fuel_cost_bwp','sum')).reset_index()
+    with c1:
+        panel_head("Monthly Repair Cost vs Fuel Cost","Cost movement across the selected fleet")
+        long=monthly.melt('month',var_name='metric',value_name='amount')
+        fig=px.bar(long,x='month',y='amount',color='metric',barmode='group',color_discrete_map={'repair':ACCENT,'fuel':ACCENT2},labels={'month':'','amount':'BWP','metric':''})
+        st.plotly_chart(chart_style(fig,255),use_container_width=True)
+    with c2:
+        panel_head("Breakdowns by Machine Type","Where failures are concentrated")
+        b=df[df.breakdown==1].groupby('machine_type').size().sort_values(ascending=True).reset_index(name='count')
+        fig=px.bar(b,x='count',y='machine_type',orientation='h',color_discrete_sequence=[ACCENT],labels={'machine_type':'','count':'Breakdowns'})
+        st.plotly_chart(chart_style(fig,255,False),use_container_width=True)
+    with c3:
+        panel_head("Safety Alerts by Site","High-risk operating records")
+        s=df.assign(high=df.safety_risk.astype(str).str.lower().eq('high').astype(int)).groupby('site').high.sum().sort_values(ascending=True).reset_index()
+        fig=px.bar(s,x='high',y='site',orientation='h',color_discrete_sequence=["#7da995"],labels={'site':'','high':'Alerts'})
+        st.plotly_chart(chart_style(fig,255,False),use_container_width=True)
+    st.markdown('<div class="section-title">Machine Risk & Service Status</div>',unsafe_allow_html=True)
+    table=risk[['machine_id','machine_type','site','cumulative_hours','days_since_maintenance','risk_level','safety_risk']].copy()
+    if machine_sel!="All Machine Types": table=table[table.machine_type==machine_sel]
+    if site_sel!="All Sites": table=table[table.site==site_sel]
+    table.columns=['Machine ID','Type','Site','Hours','Days Since Service','Risk Level','Safety Risk']
+    st.dataframe(table.sort_values(['Risk Level','Days Since Service'],ascending=[True,False]).head(12),use_container_width=True,hide_index=True,height=300)
 
-#  PAGE 3: FUEL 
-elif page == "  Fuel Usage":
-    st.markdown('<div class="topbar"><h1> Fuel Usage & Waste Report</h1><p>How much fuel is being used: and how much is being wasted</p></div>', unsafe_allow_html=True)
-    idle_waste = dff["idle_hours"].sum()*35*14.5*0.35
-    idle_pct   = dff["idle_hours"].sum()/dff["hours_today"].sum()*100
-    c1,c2,c3,c4 = st.columns(4)
-    c1.markdown(kcard("blue",   f"P{dff['fuel_cost_bwp'].sum()/1e6:.2f}M","Total Fuel Spend",          "Jul to Dec 2025"), unsafe_allow_html=True)
-    c2.markdown(kcard("red",    f"P{idle_waste:,.0f}",                     "Wasted on Idle Machines",   "Zero production"), unsafe_allow_html=True)
-    c3.markdown(kcard("orange", f"{idle_pct:.1f}%",                        "Of Machine Time Was Idle",  "Machines on, doing nothing"), unsafe_allow_html=True)
-    c4.markdown(kcard("orange", f"{dff['idle_hours'].sum():,.0f} hrs",     "Total Idle Hours",          "Across full fleet"), unsafe_allow_html=True)
-    st.markdown("---")
-    col1,col2 = st.columns(2)
-    with col1:
-        st.markdown('<div class="ccard"><div class="ctitle">Fuel Spend by Machine Type</div><div class="csub">Haul Trucks use the most: even small idle reductions on them save a lot</div>', unsafe_allow_html=True)
-        fc = dff.groupby("machine_type")["fuel_cost_bwp"].sum().sort_values(ascending=False).reset_index()
-        fc["Label"] = fc["fuel_cost_bwp"].apply(lambda x:f"P{x/1e6:.2f}M")
-        fig = px.bar(fc,x="machine_type",y="fuel_cost_bwp",color="fuel_cost_bwp",
-                     color_continuous_scale=["#ffd6a0","#e67e22"],text="Label",
-                     labels={"fuel_cost_bwp":"Fuel Cost","machine_type":""})
-        fig.update_traces(textposition="outside")
-        fig.update_layout(showlegend=False)
-        st.plotly_chart(wchart(fig), use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="ccard"><div class="ctitle">Working Time vs Idle Time by Site</div><div class="csub">Red portions = machines running but not producing anything</div>', unsafe_allow_html=True)
-        sh = dff.groupby("site").agg(Working=("active_hours","sum"),Idle=("idle_hours","sum")).reset_index()
-        fig2 = go.Figure()
-        fig2.add_trace(go.Bar(name="Working",x=sh["site"],y=sh["Working"],marker_color="#27ae60"))
-        fig2.add_trace(go.Bar(name="Idle",   x=sh["site"],y=sh["Idle"],   marker_color="#e74c3c"))
-        fig2.update_layout(barmode="stack",legend=dict(orientation="h",y=1.1))
-        st.plotly_chart(wchart(fig2), use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("###  Which Operators Leave Machines Running?")
-    st.caption("Ranked by total idle hours: these operators are responsible for the most wasted fuel")
-    op = dff.groupby("operator_id").agg(idle_hrs=("idle_hours","sum"),shifts=("record_id","count")).reset_index()
-    op["Fuel Wasted"]=( op["idle_hrs"]*35*14.5*0.35).round(0)
-    op = op.sort_values("idle_hrs",ascending=False)
-    top15 = op.head(15)
-    fig3 = px.bar(top15,x="operator_id",y="idle_hrs",color="Fuel Wasted",
-                  color_continuous_scale=["#fcd5a5","#c0392b"],
-                  text=top15["Fuel Wasted"].apply(lambda x:f"P{x:,.0f}"),
-                  labels={"idle_hrs":"Total Idle Hrs","operator_id":"Operator"})
-    fig3.update_traces(textposition="outside"); fig3.update_layout(showlegend=False)
-    st.plotly_chart(wchart(fig3,360), use_container_width=True)
-    op_s = op.head(10).copy()
-    op_s["Fuel Wasted"]=op_s["Fuel Wasted"].apply(lambda x:f"P{x:,.0f}")
-    op_s.columns=["Operator","Total Idle Hrs","Shifts","Fuel Wasted"]
-    st.dataframe(op_s.reset_index(drop=True), use_container_width=True)
-    st.markdown('<div class="ao"><b> Action Needed:</b> The top 5 operators account for the majority of idle hours. A policy enforcing machine switch-off when idle for more than 10 minutes would recover most of this cost.</div>', unsafe_allow_html=True)
+def costs_page():
+    hero("Costs & Repairs","Track maintenance spend, repair concentration and machines driving avoidable cost.")
+    c1,c2,c3,c4=st.columns(4)
+    repair=df.repair_cost_bwp.sum(); fuel=df.fuel_cost_bwp.sum(); costly=df.groupby('machine_id').repair_cost_bwp.sum().sort_values(ascending=False)
+    for i,(a,b,c) in enumerate([("Repair Spend",money(repair),"Selected view"),("Fuel Spend",money(fuel),"Selected view"),("Avg Repair / Machine",money(repair/max(df.machine_id.nunique(),1)),"Across fleet"),("Costliest Machine",costly.index[0] if len(costly) else '—',money(costly.iloc[0]) if len(costly) else 'No cost')]): [c1,c2,c3,c4][i].markdown(kcard(a,b,c,i==0),unsafe_allow_html=True)
+    c1,c2=st.columns(2)
+    with c1:
+        panel_head("Repair Cost by Machine Type")
+        x=df.groupby('machine_type').repair_cost_bwp.sum().sort_values().reset_index(); fig=px.bar(x,x='repair_cost_bwp',y='machine_type',orientation='h',color_discrete_sequence=[ACCENT]); st.plotly_chart(chart_style(fig,300,False),use_container_width=True)
+    with c2:
+        panel_head("Top Machines by Repair Cost")
+        x=df.groupby('machine_id').repair_cost_bwp.sum().nlargest(10).sort_values().reset_index(); fig=px.bar(x,x='repair_cost_bwp',y='machine_id',orientation='h',color_discrete_sequence=[ACCENT2]); st.plotly_chart(chart_style(fig,300,False),use_container_width=True)
 
-#  PAGE 4: SAFETY 
-elif page == "  Safety Alerts":
-    st.markdown('<div class="topbar"><h1> Machine Safety Status</h1><p>Machines recorded operating outside safe limits</p></div>', unsafe_allow_html=True)
-    rc = dff["safety_risk"].value_counts()
-    c1,c2,c3,c4 = st.columns(4)
-    c1.markdown(kcard("red",    f"{rc.get('Critical',0):,}","Critical Alerts",   "Must stop immediately"), unsafe_allow_html=True)
-    c2.markdown(kcard("orange", f"{rc.get('High',0):,}",    "High Risk",         "Service within 48 hours"), unsafe_allow_html=True)
-    c3.markdown(kcard("blue",   f"{rc.get('Medium',0):,}",  "Worth Monitoring",  "Keep an eye on these"), unsafe_allow_html=True)
-    c4.markdown(kcard("green",  f"{rc.get('Low',0):,}",     "Operating Safely",  "No action needed"), unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("###  What Do the Alert Levels Mean?")
-    e1,e2,e3 = st.columns(3)
-    with e1: st.markdown('<div class="ar"><b> CRITICAL</b><br>Temperature above 115C or severe shaking. <b>Stop this machine now.</b> Running it risks injury and a major breakdown.</div>', unsafe_allow_html=True)
-    with e2: st.markdown('<div class="ao"><b> HIGH RISK</b><br>Temperature above 105C or high shaking. <b>Book it for service within 48 hours.</b> It will deteriorate fast if ignored.</div>', unsafe_allow_html=True)
-    with e3: st.markdown('<div class="ag"><b> SAFE</b><br>All readings within normal range. <b>Continue normal operations.</b> Check again at next scheduled inspection.</div>', unsafe_allow_html=True)
-    st.markdown("---")
-    col1,col2 = st.columns(2)
-    with col1:
-        st.markdown('<div class="ccard"><div class="ctitle">Safety Incidents Per Week</div><div class="csub">Number of shifts where a machine was in Critical or High Risk condition</div>', unsafe_allow_html=True)
-        wk = dff[dff["safety_risk"].isin(["Critical","High"])].copy()
-        wk["week"] = wk["date"].dt.to_period("W").astype(str)
-        wk_c = wk.groupby("week").size().reset_index(name="Incidents")
-        fig = px.area(wk_c,x="week",y="Incidents",color_discrete_sequence=["#e74c3c"])
-        fig.update_traces(fill="tozeroy",fillcolor="rgba(231,76,60,.15)")
-        st.plotly_chart(wchart(fig), use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="ccard"><div class="ctitle">Safety Incidents by Site</div><div class="csub">Which locations have the most machines running outside safe limits</div>', unsafe_allow_html=True)
-        sr = dff[dff["safety_risk"].isin(["Critical","High"])].groupby(["site","safety_risk"]).size().reset_index(name="Count")
-        fig2 = px.bar(sr,x="site",y="Count",color="safety_risk",barmode="stack",
-                      color_discrete_map={"Critical":"#e74c3c","High":"#e67e22"},
-                      labels={"site":"Site","Count":"Incidents","safety_risk":"Risk Level"})
-        fig2.update_layout(legend=dict(orientation="h",y=1.1))
-        st.plotly_chart(wchart(fig2), use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("###  Machines Needing Immediate Attention")
-    latest_all = dff.sort_values("date").groupby("machine_id").last().reset_index()
-    danger = latest_all[latest_all["safety_risk"].isin(["Critical","High"])].copy()
-    if len(danger)==0:
-        st.success(" No machines currently in Critical or High state.")
-    else:
-        danger["Action"] = danger["safety_risk"].map({"Critical":" Stop & inspect NOW","High":" Service within 48 hrs"})
-        danger["engine_temp_c"] = danger["engine_temp_c"].apply(lambda x:f"{x:.1f}C")
-        danger["vibration"]     = danger["vibration"].apply(lambda x:f"{x:.2f}")
-        show = danger[["machine_id","machine_type","site","engine_temp_c","vibration","safety_risk","Action"]].copy()
-        show.columns=["Machine","Type","Site","Engine Temp","Vibration","Risk","Action Required"]
-        st.dataframe(show.reset_index(drop=True),use_container_width=True)
+def fuel_page():
+    hero("Fuel Usage","Monitor fuel consumption, idle waste and efficiency across sites and equipment classes.")
+    c1,c2,c3=st.columns(3); total=df.fuel_litres.sum(); idle=df.idle_hours.sum(); eff=df.fuel_litres.sum()/max(df.active_hours.sum(),1)
+    for i,(a,b,c) in enumerate([("Fuel Used",f"{total/1e3:.1f}K L","Selected view"),("Idle Hours",f"{idle:,.0f}","Operational idle time"),("Litres / Active Hour",f"{eff:.1f} L","Fuel intensity")]): [c1,c2,c3][i].markdown(kcard(a,b,c,i==0),unsafe_allow_html=True)
+    c1,c2=st.columns(2)
+    with c1:
+        x=df.groupby('site').fuel_cost_bwp.sum().sort_values().reset_index(); fig=px.bar(x,x='fuel_cost_bwp',y='site',orientation='h',color_discrete_sequence=[ACCENT]); st.plotly_chart(chart_style(fig,310,False),use_container_width=True)
+    with c2:
+        x=df.groupby('machine_type').agg(fuel=('fuel_litres','sum'),active=('active_hours','sum')).reset_index(); x['lph']=x.fuel/x.active.replace(0,np.nan); fig=px.bar(x.sort_values('lph'),x='lph',y='machine_type',orientation='h',color_discrete_sequence=[ACCENT2]); st.plotly_chart(chart_style(fig,310,False),use_container_width=True)
 
-#  PAGE 5: STAFF 
-elif page == "  Staff Report":
-    st.markdown('<div class="topbar"><h1> Staff & Operator Performance</h1><p>How operators are handling company equipment</p></div>', unsafe_allow_html=True)
-    op = dff.groupby("operator_id").agg(shifts=("record_id","count"),idle_hrs=("idle_hours","sum"),breakdowns=("breakdown","sum"),avg_temp=("engine_temp_c","mean")).reset_index()
-    op["fuel_wasted"]=(op["idle_hrs"]*35*14.5*0.35).round(0)
-    worst = op.sort_values("idle_hrs",ascending=False).iloc[0]
-    c1,c2,c3 = st.columns(3)
-    c1.markdown(kcard("blue",  f"{len(op)}",                 "Total Operators",       "Active Jul to Dec 2025"), unsafe_allow_html=True)
-    c2.markdown(kcard("red",   worst["operator_id"],          "Most Idle Hours",        f"{worst['idle_hrs']:.0f} hrs total"), unsafe_allow_html=True)
-    c3.markdown(kcard("red",   f"P{op['fuel_wasted'].sum():,.0f}","Fuel Wasted by Staff","Across all operators"), unsafe_allow_html=True)
-    st.markdown("---")
-    col1,col2 = st.columns(2)
-    with col1:
-        st.markdown('<div class="ccard"><div class="ctitle">Operators with the Most Idle Time</div><div class="csub">These operators leave machines running when not in use: each idle hour costs money</div>', unsafe_allow_html=True)
-        top = op.sort_values("idle_hrs",ascending=False).head(15)
-        fig = px.bar(top,x="operator_id",y="idle_hrs",color="fuel_wasted",
-                     color_continuous_scale=["#ffe5b4","#c0392b"],
-                     text=top["fuel_wasted"].apply(lambda x:f"P{x:,.0f}"),
-                     labels={"idle_hrs":"Total Idle Hrs","operator_id":"Operator"})
-        fig.update_traces(textposition="outside"); fig.update_layout(showlegend=False)
-        st.plotly_chart(wchart(fig), use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="ccard"><div class="ctitle">Breakdowns Recorded During Each Operator\'s Shift</div><div class="csub">Not always the operator\'s fault: but patterns help identify training needs</div>', unsafe_allow_html=True)
-        bd_op = op[op["breakdowns"]>0].sort_values("breakdowns",ascending=False)
-        if len(bd_op)==0: st.info("No breakdown data for selected filter.")
-        else:
-            fig2 = px.bar(bd_op,x="operator_id",y="breakdowns",color="breakdowns",
-                          color_continuous_scale=["#ffd6d6","#e74c3c"],text="breakdowns",
-                          labels={"breakdowns":"Breakdowns","operator_id":"Operator"})
-            fig2.update_traces(textposition="outside"); fig2.update_layout(showlegend=False)
-            st.plotly_chart(wchart(fig2), use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("###  Full Operator Summary Table")
-    op_s = op.sort_values("idle_hrs",ascending=False).reset_index(drop=True); op_s.index+=1
-    op_s["fuel_wasted"]=op_s["fuel_wasted"].apply(lambda x:f"P{x:,.0f}")
-    op_s["avg_temp"]=op_s["avg_temp"].apply(lambda x:f"{x:.1f}C")
-    op_s.columns=["Operator","Shifts","Idle Hrs","Breakdowns on Shift","Avg Engine Temp","Fuel Wasted"]
-    st.dataframe(op_s, use_container_width=True)
+def safety_page():
+    hero("Safety Alerts","Surface high-risk operating records, breakdown exposure and site-level safety signals.")
+    x=df.groupby(['site','safety_risk']).size().reset_index(name='records'); fig=px.bar(x,x='site',y='records',color='safety_risk',barmode='stack',color_discrete_map={'Low':'#9cc3b2','Medium':'#d4aa69','High':'#d05a4f'}); st.plotly_chart(chart_style(fig,320),use_container_width=True)
+    high=df[df.safety_risk.astype(str).str.lower().eq('high')][['date','machine_id','machine_type','site','operator_id','engine_temp_c','vibration','breakdown']].sort_values('date',ascending=False).head(20); st.dataframe(high,use_container_width=True,hide_index=True,height=310)
 
-st.markdown("---")
-st.markdown("<div style='text-align:center;color:#aaa;font-size:.78rem'>Kgosi Mining Solutions | Operations Dashboard | Prepared by Data Analytics Team | 2026</div>", unsafe_allow_html=True)
+def staff_page():
+    hero("Staff Report","Compare operator activity, utilisation and incident exposure across the selected operation.")
+    op=df.groupby('operator_id').agg(active_hours=('active_hours','sum'),total_hours=('hours_today','sum'),breakdowns=('breakdown','sum'),fuel=('fuel_litres','sum')).reset_index(); op['utilization_pct']=op.active_hours/op.total_hours.replace(0,np.nan)*100
+    st.dataframe(op.sort_values('utilization_pct',ascending=False).head(30),use_container_width=True,hide_index=True,height=520)
+
+{"Overview":mining_overview,"Costs & Repairs":costs_page,"Fuel Usage":fuel_page,"Safety Alerts":safety_page,"Staff Report":staff_page}[page]()

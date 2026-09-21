@@ -589,10 +589,7 @@
             overflow: hidden;
             border-radius: 0;
             box-shadow: none;
-            background:
-                linear-gradient(90deg, rgba(244,239,234,.95) 0%, rgba(244,239,234,.65) 31%, rgba(244,239,234,.05) 60%),
-                linear-gradient(0deg, rgba(35,29,25,.22), transparent 40%),
-                url("assets/valutrack-hero.png") center / cover no-repeat;
+            background:linear-gradient(135deg,#d8cec6,#806556);
         }
         .header::after {
             content: "BOTSWANA PROPERTY INTELLIGENCE  /  EST. 2026";
@@ -765,7 +762,7 @@
             .result-item, .recommendation-box { color: #222; background: #f4f1ed; border-color: #ddd; }
             .comparable-section { box-shadow: none; break-before: page; }
         }
-    </style>
+    .hero-slides{position:absolute;z-index:0;inset:0}.hero-slide{position:absolute;inset:0;background-position:center;background-size:cover;opacity:0;transform:scale(1.035);transition:opacity 1s ease,transform 7s ease}.hero-slide:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(244,239,234,.96) 0%,rgba(244,239,234,.72) 29%,rgba(244,239,234,.12) 58%),linear-gradient(0deg,rgba(35,29,25,.32),transparent 44%)}.hero-slide.active{opacity:1;transform:scale(1)}.header-content,.header-badge{position:relative;z-index:2}.hero-location{position:absolute;z-index:3;right:clamp(78px,8vw,128px);bottom:47px;color:#fff;text-align:right;text-shadow:0 1px 8px rgba(0,0,0,.4)}.hero-location small{display:block;margin-bottom:3px;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase}.hero-location strong{font:400 1.3rem Georgia,"Times New Roman",serif}.hero-controls{position:absolute;z-index:3;right:clamp(24px,3vw,48px);bottom:52px;display:flex;gap:7px}.hero-controls button{width:8px;height:8px;padding:0;border:1px solid #fff;border-radius:50%;background:transparent;cursor:pointer}.hero-controls button.active{background:#fff}@media(prefers-reduced-motion:reduce){.hero-slide{transition:none;transform:none}}</style>
 </head>
 <body>
     <!-- Sidebar -->
@@ -784,7 +781,7 @@
                     <span class="icon">02</span> History
                 </a>
             </li>
-        </ul>
+        <li><a href="dashboard.html"><span class="icon">03</span> Dashboard</a></li></ul>
         <div class="sidebar-divider"></div>
         <div class="sidebar-footer">
             <p>Pula Property Group</p>
@@ -794,13 +791,13 @@
     
     <!-- Main Content -->
     <main class="main-content">
-        <header class="header">
+        <header class="header"><div class="hero-slides" aria-hidden="true"><div class="hero-slide active" style="background-image:url('assets/valutrack-phakalane-home.png')"></div><div class="hero-slide" style="background-image:url('assets/valutrack-mokolodi-home.png')"></div><div class="hero-slide" style="background-image:url('assets/valutrack-block10-home.png')"></div></div>
             <div class="header-content">
                 <h1>The true<br>value of<br>home</h1>
                 <p>Data-led property valuation, made clear.</p>
             </div>
             <span class="header-badge">Start a valuation</span>
-        </header>
+        <div class="hero-location" aria-live="polite"><small>Featured neighbourhood</small><strong id="heroLocation">Phakalane</strong></div><div class="hero-controls" aria-label="Featured properties"><button class="active" type="button" aria-label="Show Phakalane property"></button><button type="button" aria-label="Show Mokolodi property"></button><button type="button" aria-label="Show Block 10 property"></button></div></header>
         
         <div class="container">
             <div id="loading" class="loading">
@@ -1385,5 +1382,17 @@
         // Load data on page load
         loadData();
     </script>
-</body>
+<script>
+(function(){
+ const slides=[...document.querySelectorAll('.hero-slide')];
+ const buttons=[...document.querySelectorAll('.hero-controls button')];
+ const label=document.getElementById('heroLocation');
+ const locations=['Phakalane','Mokolodi','Block 10'];
+ let current=0,timer;
+ function show(index){current=(index+slides.length)%slides.length;slides.forEach((slide,i)=>slide.classList.toggle('active',i===current));buttons.forEach((button,i)=>button.classList.toggle('active',i===current));if(label)label.textContent=locations[current];}
+ function play(){if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;clearInterval(timer);timer=setInterval(()=>show(current+1),5500);}
+ buttons.forEach((button,index)=>button.addEventListener('click',()=>{show(index);play()}));
+ show(0);play();
+})();
+</script></body>
 </html>

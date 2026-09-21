@@ -1,863 +1,186 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pula Property Group - Portfolio Intelligence Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            background: #f0f2f5; 
-            color: #1a1a2e;
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem 1.5rem;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 1000;
-            flex-shrink: 0;
-        }
-        
-        .sidebar-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .sidebar-logo span { font-size: 2rem; }
-        
-        .sidebar-nav {
-            list-style: none;
-        }
-        
-        .sidebar-nav li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .sidebar-nav a {
-            display: block;
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-        
-        .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: rgba(255,255,255,0.15);
-            color: white;
-        }
-        
-        .sidebar-nav a.active {
-            background: rgba(255,255,255,0.2);
-        }
-        
-        .sidebar-nav .icon {
-            margin-right: 0.75rem;
-        }
-        
-        .sidebar-divider {
-            height: 1px;
-            background: rgba(255,255,255,0.15);
-            margin: 1rem 0;
-        }
-        
-        .sidebar-footer {
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.15);
-            font-size: 0.75rem;
-            opacity: 0.7;
-        }
-        
-        /* Main Content */
-        .main-content {
-            margin-left: 260px;
-            flex: 1;
-            padding: 2rem;
-        }
-        
-        /* Header */
-        .header {
-            background: white;
-            padding: 1.5rem 2rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .header-content h1 { font-size: 1.75rem; font-weight: 600; color: #1a1a2e; }
-        .header-content p { color: #6c757d; margin-top: 0.25rem; }
-        .header-meta { text-align: right; color: #6c757d; font-size: 0.875rem; }
-        
-        .container { max-width: 1400px; }
-        
-        /* Section styling */
-        .section {
-            scroll-margin-top: 1rem;
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: #1a1a2e;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .section-title .badge {
-            font-size: 0.75rem;
-            background: #667eea;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-        
-        .metrics-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 1rem; 
-            margin-bottom: 2rem; 
-        }
-        
-        .metric-card { 
-            background: white; 
-            padding: 1.5rem; 
-            border-radius: 12px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
-        }
-        
-        .metric-card h3 { 
-            color: #6c757d; 
-            font-size: 0.875rem; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px; 
-        }
-        
-        .metric-card .value { 
-            font-size: 2rem; 
-            font-weight: 600; 
-            margin-top: 0.5rem; 
-        }
-        
-        .charts-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); 
-            gap: 1.5rem; 
-            margin-bottom: 2rem; 
-        }
-        
-        .chart-card { 
-            background: white; 
-            padding: 1.5rem; 
-            border-radius: 12px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
-        }
-        
-        .chart-card h3 { 
-            margin-bottom: 1rem; 
-            color: #1a1a2e; 
-            font-size: 1rem;
-        }
-        
-        .chart-container { 
-            position: relative; 
-            height: 300px; 
-        }
-        
-        .full-width-chart { 
-            grid-column: 1 / -1; 
-        }
-        
-        .table-container { 
-            overflow-x: auto; 
-        }
-        
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-        }
-        
-        th { 
-            background: #f8f9fa; 
-            padding: 0.75rem; 
-            text-align: left; 
-            font-weight: 600; 
-        }
-        
-        td { 
-            padding: 0.75rem; 
-            border-bottom: 1px solid #f0f0f0; 
-        }
-        
-        .badge { 
-            display: inline-block; 
-            padding: 0.25rem 0.5rem; 
-            border-radius: 4px; 
-            font-size: 0.75rem; 
-            font-weight: 500; 
-        }
-        
-        .badge-success { background: #d4edda; color: #155724; }
-        .badge-danger { background: #f8d7da; color: #721c24; }
-        .badge-warning { background: #fff3cd; color: #856404; }
-        
-        .loading { 
-            text-align: center; 
-            padding: 4rem; 
-            color: #6c757d; 
-        }
-        
-        /* Scroll to top button */
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: #667eea;
-            color: white;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s;
-            opacity: 0;
-            visibility: hidden;
-            z-index: 999;
-            border: none;
-        }
-        
-        .scroll-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .scroll-top:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
-        }
-        
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 220px;
-                padding: 1.5rem 1rem;
-            }
-            .main-content {
-                margin-left: 220px;
-                padding: 1.5rem;
-            }
-            .charts-grid {
-                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            }
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                padding: 1rem;
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            .sidebar-logo {
-                margin-bottom: 0;
-                font-size: 1.25rem;
-                margin-right: 1rem;
-            }
-            .sidebar-nav {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.25rem;
-            }
-            .sidebar-nav li {
-                margin-bottom: 0;
-            }
-            .sidebar-nav a {
-                padding: 0.4rem 0.75rem;
-                font-size: 0.875rem;
-            }
-            .sidebar-divider, .sidebar-footer {
-                display: none;
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-            }
-            .header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .header-meta {
-                text-align: center;
-            }
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-            .metrics-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Sidebar -->
-    <nav class="sidebar">
-        <div class="sidebar-logo">
-            <span>🏠</span> Pula Group
-        </div>
-        <ul class="sidebar-nav">
-            <li><a href="#overview" class="active"><span class="icon">📊</span> Overview</a></li>
-            <li><a href="#revenue"><span class="icon">💰</span> Revenue</a></li>
-            <li><a href="#agents"><span class="icon">👤</span> Agents</a></li>
-            <li><a href="#properties"><span class="icon">🏘️</span> Properties</a></li>
-            <li><a href="#cities"><span class="icon">📍</span> Cities</a></li>
-            <li><a href="#trends"><span class="icon">📈</span> Trends</a></li>
-            <li><a href="#referrals"><span class="icon">🔗</span> Referrals</a></li>
-            <li><a href="#scorecard"><span class="icon">📋</span> Scorecard</a></li>
-        </ul>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-footer">
-            <p>Pula Property Group</p>
-            <p>© 2026 • v2.0</p>
-        </div>
-    </nav>
-    
-    <!-- Main Content -->
-    <main class="main-content">
-        <header class="header">
-            <div class="header-content">
-                <h1>📊 Portfolio Intelligence Dashboard</h1>
-                <p>Data-driven insights for better business decisions</p>
-            </div>
-            <div class="header-meta">
-                <p><strong>Period:</strong> Jan 2024 – Present</p>
-                <p><strong>Updated:</strong> <span id="reportDate">Loading...</span></p>
-            </div>
-        </header>
-        
-        <div class="container">
-            <div id="loading" class="loading">
-                <h2>Loading dashboard data...</h2>
-                <p>Please wait while we prepare your insights.</p>
-            </div>
-            
-            <div id="dashboardContent" style="display: none;">
-                <!-- Section: Overview -->
-                <section id="overview" class="section">
-                    <div class="section-title">
-                        📈 Overview
-                        <span class="badge">Live</span>
-                    </div>
-                    <div class="metrics-grid" id="metricsGrid"></div>
-                </section>
-                
-                <!-- Section: Revenue -->
-                <section id="revenue" class="section">
-                    <div class="section-title">💰 Revenue Analysis</div>
-                    <div class="charts-grid">
-                        <div class="chart-card">
-                            <h3>Commission Earned vs Lost</h3>
-                            <div class="chart-container">
-                                <canvas id="revenueChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="chart-card">
-                            <h3>Commission Lost by Agent</h3>
-                            <div class="chart-container">
-                                <canvas id="lostCommissionChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Section: Agents -->
-                <section id="agents" class="section">
-                    <div class="section-title">👤 Agent Performance</div>
-                    <div class="charts-grid">
-                        <div class="chart-card">
-                            <h3>Commission Earned by Agent</h3>
-                            <div class="chart-container">
-                                <canvas id="agentChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Section: Properties -->
-                <section id="properties" class="section">
-                    <div class="section-title">🏘️ Property Types</div>
-                    <div class="charts-grid">
-                        <div class="chart-card">
-                            <h3>Distribution by Property Type</h3>
-                            <div class="chart-container">
-                                <canvas id="propertyTypeChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Section: Cities -->
-                <section id="cities" class="section">
-                    <div class="section-title">📍 City Performance</div>
-                    <div class="charts-grid">
-                        <div class="chart-card">
-                            <h3>Commission by City</h3>
-                            <div class="chart-container">
-                                <canvas id="cityChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Section: Trends -->
-                <section id="trends" class="section">
-                    <div class="section-title">📈 Monthly Trends</div>
-                    <div class="charts-grid">
-                        <div class="chart-card full-width-chart">
-                            <h3>Commission & Deals Over Time</h3>
-                            <div class="chart-container" style="height: 350px;">
-                                <canvas id="trendChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Section: Referrals -->
-                <section id="referrals" class="section">
-                    <div class="section-title">🔗 Referral Sources</div>
-                    <div class="charts-grid">
-                        <div class="chart-card">
-                            <h3>Deals by Referral Source</h3>
-                            <div class="chart-container">
-                                <canvas id="referralChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Section: Scorecard -->
-                <section id="scorecard" class="section">
-                    <div class="section-title">📋 Agent Scorecard</div>
-                    <div class="chart-card">
-                        <div class="table-container" style="max-height: 500px; overflow-y: auto;">
-                            <table id="agentScorecard">
-                                <thead>
-                                    <tr>
-                                        <th>Agent</th>
-                                        <th>Deals Closed</th>
-                                        <th>Commission Earned</th>
-                                        <th>Commission Lost</th>
-                                        <th>Avg Pricing Error</th>
-                                        <th>Rating</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-        
-        <!-- Scroll to top button -->
-        <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-            ↑
-        </button>
-    </main>
-    
-    <script>
-        let dashboardData = null;
-        
-        async function loadData() {
-            try {
-                const response = await fetch('dashboard_data.json');
-                dashboardData = await response.json();
-                
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('dashboardContent').style.display = 'block';
-                document.getElementById('reportDate').textContent = new Date().toLocaleDateString('en-ZA', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                
-                populateMetrics();
-                populateScorecard();
-                initCharts();
-                setupSidebarNavigation();
-                setupScrollTopButton();
-            } catch (error) {
-                document.getElementById('loading').innerHTML = `
-                    <h2 style="color: #f44336;">❌ Error loading data</h2>
-                    <p>Please make sure dashboard_data.json exists and is valid.</p>
-                    <p style="color: #6c757d; font-size: 0.875rem;">${error.message}</p>
-                `;
-            }
-        }
-        
-        function populateMetrics() {
-            const metrics = dashboardData.metrics;
-            const grid = document.getElementById('metricsGrid');
-            
-            const metricItems = [
-                { label: 'Total Properties', value: metrics.total_properties.toLocaleString(), change: '+12%' },
-                { label: 'Commission Earned', value: 'P' + metrics.total_commission.toLocaleString(), change: '+8%' },
-                { label: 'Commission Lost', value: 'P' + metrics.total_lost.toLocaleString(), change: '-15%' },
-                { label: 'Active Listings', value: metrics.active_listings, change: '+3%' },
-                { label: 'Avg Days on Market', value: metrics.avg_days_on_market.toFixed(0) + ' days', change: '-5%' },
-                { label: 'Avg Pricing Error', value: metrics.avg_pricing_error.toFixed(1) + '%', change: 'Improving' },
-                { label: 'Recovery Rate', value: metrics.recovery_rate.toFixed(1) + '%', change: '+10%' },
-                { label: 'Top Agent', value: metrics.top_agent, change: 'P' + metrics.top_agent_commission.toLocaleString() }
-            ];
-            
-            grid.innerHTML = metricItems.map(m => `
-                <div class="metric-card">
-                    <h3>${m.label}</h3>
-                    <div class="value">${m.value}</div>
-                    <span class="change">${m.change}</span>
-                </div>
-            `).join('');
-        }
-        
-        function populateScorecard() {
-            const tbody = document.querySelector('#agentScorecard tbody');
-            const agents = dashboardData.agents;
-            
-            tbody.innerHTML = Object.entries(agents).map(([name, data]) => {
-                let rating = 'Good';
-                if (data.pricing_error_pct > -1 && data.pricing_error_pct < 1) rating = 'Excellent';
-                else if (data.pricing_error_pct < -3) rating = 'Needs Improvement';
-                
-                return `
-                    <tr>
-                        <td><strong>${name}</strong></td>
-                        <td>${data.property_id}</td>
-                        <td>P${data.commission_earned_bwp.toLocaleString()}</td>
-                        <td style="color: #f44336;">P${data.commission_lost_bwp.toLocaleString()}</td>
-                        <td>${data.pricing_error_pct}%</td>
-                        <td>
-                            <span class="badge ${rating === 'Excellent' ? 'badge-success' : rating === 'Good' ? 'badge-warning' : 'badge-danger'}">
-                                ${rating}
-                            </span>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-        
-        function initCharts() {
-            const metrics = dashboardData.metrics;
-            const agents = dashboardData.agents;
-            const propertyTypes = dashboardData.property_types;
-            const cities = dashboardData.cities;
-            const referrals = dashboardData.referrals;
-            const monthly = dashboardData.monthly;
-            
-            // Revenue Chart
-            new Chart(document.getElementById('revenueChart'), {
-                type: 'bar',
-                data: {
-                    labels: ['Commission Earned', 'Commission Lost', 'Potential Revenue'],
-                    datasets: [{
-                        label: 'Amount (P)',
-                        data: [metrics.total_commission, metrics.total_lost, metrics.potential_revenue],
-                        backgroundColor: ['#4CAF50', '#f44336', '#667eea'],
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            formatter: (v) => 'P' + (v/1000000).toFixed(1) + 'M'
-                        }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { callback: (v) => 'P' + (v/1000000).toFixed(1) + 'M' } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Agent Chart
-            const agentNames = Object.keys(agents);
-            const agentEarned = agentNames.map(a => agents[a].commission_earned_bwp);
-            const agentLost = agentNames.map(a => agents[a].commission_lost_bwp);
-            
-            new Chart(document.getElementById('agentChart'), {
-                type: 'bar',
-                data: {
-                    labels: agentNames,
-                    datasets: [
-                        { label: 'Commission Earned', data: agentEarned, backgroundColor: '#4CAF50' },
-                        { label: 'Commission Lost', data: agentLost, backgroundColor: '#f44336' }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top' },
-                        datalabels: { anchor: 'end', align: 'end', formatter: (v) => 'P' + (v/1000).toFixed(0) + 'k' }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { callback: (v) => 'P' + (v/1000).toFixed(0) + 'k' } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Property Type Chart
-            const ptNames = Object.keys(propertyTypes);
-            const ptCounts = ptNames.map(p => propertyTypes[p].property_id);
-            
-            new Chart(document.getElementById('propertyTypeChart'), {
-                type: 'pie',
-                data: {
-                    labels: ptNames,
-                    datasets: [{
-                        data: ptCounts,
-                        backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#fa709a', '#fee140']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right' },
-                        datalabels: {
-                            formatter: (v, ctx) => {
-                                let sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                return (v/sum*100).toFixed(1) + '%';
-                            }
-                        }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // City Chart
-            const cityNames = Object.keys(cities);
-            const cityEarned = cityNames.map(c => cities[c].commission_earned_bwp);
-            const cityLost = cityNames.map(c => cities[c].commission_lost_bwp);
-            
-            new Chart(document.getElementById('cityChart'), {
-                type: 'bar',
-                data: {
-                    labels: cityNames,
-                    datasets: [
-                        { label: 'Commission Earned', data: cityEarned, backgroundColor: '#4CAF50' },
-                        { label: 'Commission Lost', data: cityLost, backgroundColor: '#f44336' }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top' },
-                        datalabels: { anchor: 'end', align: 'end', formatter: (v) => 'P' + (v/1000).toFixed(0) + 'k' }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { callback: (v) => 'P' + (v/1000).toFixed(0) + 'k' } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Trend Chart
-            const monthLabels = Object.keys(monthly);
-            const monthCommission = monthLabels.map(m => monthly[m].commission_earned_bwp);
-            const monthDeals = monthLabels.map(m => monthly[m].property_id);
-            
-            new Chart(document.getElementById('trendChart'), {
-                type: 'line',
-                data: {
-                    labels: monthLabels,
-                    datasets: [
-                        {
-                            label: 'Commission Earned',
-                            data: monthCommission,
-                            borderColor: '#4CAF50',
-                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                            fill: true,
-                            tension: 0.4
-                        },
-                        {
-                            label: 'Deals Closed',
-                            data: monthDeals,
-                            borderColor: '#667eea',
-                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            yAxisID: 'y1'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: {
-                        legend: { position: 'top' },
-                        datalabels: { display: false }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { callback: (v) => 'P' + (v/1000).toFixed(0) + 'k' } },
-                        y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Referral Chart
-            const refNames = Object.keys(referrals);
-            const refCounts = refNames.map(r => referrals[r].property_id);
-            
-            new Chart(document.getElementById('referralChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: refNames,
-                    datasets: [{
-                        data: refCounts,
-                        backgroundColor: ['#4CAF50', '#667eea', '#f093fb', '#ff6b6b', '#ffd93d']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right' },
-                        datalabels: {
-                            formatter: (v, ctx) => {
-                                let sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                return (v/sum*100).toFixed(1) + '%';
-                            }
-                        }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Lost Commission Chart
-            const lostData = agentNames.map(a => agents[a].commission_lost_bwp);
-            
-            new Chart(document.getElementById('lostCommissionChart'), {
-                type: 'bar',
-                data: {
-                    labels: agentNames,
-                    datasets: [{
-                        label: 'Commission Lost',
-                        data: lostData,
-                        backgroundColor: '#f44336',
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: { anchor: 'end', align: 'end', formatter: (v) => 'P' + v.toLocaleString() }
-                    },
-                    scales: {
-                        x: { beginAtZero: true, ticks: { callback: (v) => 'P' + v.toLocaleString() } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-        }
-        
-        function setupSidebarNavigation() {
-            const links = document.querySelectorAll('.sidebar-nav a');
-            const sections = document.querySelectorAll('.section');
-            
-            links.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remove active from all links
-                    links.forEach(l => l.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Scroll to section
-                    const targetId = this.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
-            
-            // Update active link on scroll
-            window.addEventListener('scroll', function() {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - 100;
-                    if (window.scrollY >= sectionTop) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                
-                links.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-        }
-        
-        function setupScrollTopButton() {
-            const btn = document.getElementById('scrollTopBtn');
-            
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 400) {
-                    btn.classList.add('visible');
-                } else {
-                    btn.classList.remove('visible');
-                }
-            });
-        }
-        
-        // Load data on page load
-        loadData();
-    </script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ValuTrack — Property Portfolio Dashboard</title><style>
+:root{--bg:#f5f1eb;--surface:#fffdfa;--ink:#171716;--muted:#78746f;--line:#e8e1d8;--grid:#eee8e1;--teal:#267f74;--teal-2:#527b76;--danger:#d87360;--warm:#9b6d52;--mint:#9bc6bd;--blue:#517985;--gold:#d7a548;--shadow:0 12px 30px rgba(74,57,43,.08)}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f7f4ef,#f1ece5);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:13px}.shell{max-width:1540px;margin:auto;padding:18px 24px 30px}.topbar{display:flex;align-items:center;gap:26px;background:rgba(255,255,255,.85);padding:10px 15px;border:1px solid rgba(232,225,216,.9);border-radius:12px;box-shadow:var(--shadow);position:sticky;top:14px;z-index:20;backdrop-filter:blur(16px)}.sidebar-logo{display:flex;align-items:center;gap:10px;min-width:max-content;font-size:1rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase}.sidebar-logo span{width:28px;height:28px;display:grid;place-items:center;border:1px solid currentColor;border-radius:50%;font-size:.72rem;font-weight:700;letter-spacing:0}.section-menu{position:relative;min-width:190px}.section-menu summary{display:flex;min-height:36px;align-items:center;gap:9px;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;cursor:pointer;list-style:none}.section-menu summary::-webkit-details-marker{display:none}.section-menu summary span{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.07em}.section-menu summary strong{font-size:11px}.section-menu summary i{width:7px;height:7px;margin-left:auto;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .18s ease}.section-menu[open] summary i{transform:rotate(225deg) translate(-1px,-1px)}.nav{position:absolute;top:calc(100% + 7px);left:0;z-index:40;display:grid;width:230px;padding:6px;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:var(--shadow)}.nav a{padding:9px 10px;border-radius:7px;color:#5f5a55;text-decoration:none;font-size:11px;white-space:nowrap}.nav a:hover{background:#f7f2ec}.nav a.active{background:#f0e7df;color:#2f2520;font-weight:700}
+.hero{position:relative;margin:22px 10px 12px;min-height:154px;display:flex;align-items:center;padding:16px 22px;overflow:hidden}.hero-copy{position:relative;z-index:2;max-width:56%}.kicker{font-family:Georgia,serif;color:#9b5e44;font-size:15px}.hero h1{font-family:Georgia,"Times New Roman",serif;font-size:38px;line-height:1.05;letter-spacing:-.035em;margin:4px 0}.hero p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.architecture{position:absolute;right:0;top:7px;width:41%;height:140px;background:#e8e0d7 url('assets/valutrack-phakalane-home.png') center/cover no-repeat;border:1px solid #e0d5c9;border-radius:12px;opacity:1}.quote{position:absolute;z-index:3;right:12px;bottom:14px;width:148px;padding:7px 9px;border:1px solid rgba(232,225,216,.92);border-radius:8px;background:rgba(255,253,250,.92);color:#634a3d;font-family:Georgia,serif;font-size:12px;font-style:italic;line-height:1.25;box-shadow:0 3px 12px rgba(61,45,34,.08)}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 10px 12px}.metric-card{display:flex;align-items:center;gap:12px;min-height:92px;background:rgba(255,255,255,.88);border:1px solid #ebe4dc;border-radius:12px;padding:14px 16px;box-shadow:0 8px 24px rgba(79,59,43,.05)}.metric-icon{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#f1f3f0;color:var(--teal);font-weight:900;font-size:17px}.danger-card .metric-icon{background:#f9e9e3;color:#b85f47}.metric-card span{display:block;font-size:10px;color:var(--muted)}.metric-card strong{display:block;font-size:23px;letter-spacing:-.025em;margin:1px 0}.metric-card small{font-size:9px;color:#8b8782}
+.dashboard-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;margin:0 10px}.chart-card{background:rgba(255,255,255,.9);border:1px solid #eae3db;border-radius:12px;padding:13px 15px;min-width:0;box-shadow:0 7px 22px rgba(70,52,38,.04)}.card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:6px}.card-head h2{margin:0;font-family:Georgia,serif;font-size:15px}.card-head p{margin:3px 0 0;color:var(--muted);font-size:9px}.card-head button,.card-menu{border:0;background:transparent;color:#786d65;font-size:9px}.card-head button{cursor:pointer}.card-trend.expanded{grid-column:1/-1}.card-trend.expanded .chart-wrap{height:360px}.card-table.expanded .table-wrap{height:auto;max-height:none}.chart-wrap{height:225px}.card-revenue,.card-lost,.card-agent{grid-column:span 4}.card-property,.card-city,.card-ref{grid-column:span 4}.card-trend{grid-column:span 6}.card-table{grid-column:span 6}.card-trend .chart-wrap{height:245px}.table-wrap{height:245px;overflow:auto}table{width:100%;border-collapse:collapse;font-size:9.5px}th{padding:7px 8px;background:#f0ebe5;color:#60564f;text-align:left;position:sticky;top:0;white-space:nowrap}td{padding:6px 8px;border-top:1px solid #efe9e3;white-space:nowrap}.danger-text{color:var(--danger)}.status{display:inline-block;padding:2px 7px;border-radius:4px;font-size:8px;font-weight:800}.good{background:#e0f0dd;color:#357239}.warn{background:#fff0bd;color:#7d6500}.bad{background:#f9dfdc;color:#943d35}section[id]{scroll-margin-top:88px}.footer-note{margin:12px 10px 0;padding:12px 16px;background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:12px;color:#6f6259;font-size:10px}
+@media(max-width:980px){.hero-copy{max-width:100%;padding-right:38%}.quote{display:none}.architecture{width:35%;opacity:.72}}@media(max-width:1180px){.metrics{grid-template-columns:repeat(2,1fr)}.card-revenue,.card-lost,.card-agent,.card-property,.card-city,.card-ref,.card-trend,.card-table{grid-column:span 6}}@media(max-width:760px){.shell{padding:10px}.topbar{position:relative;top:0;flex-wrap:wrap}.section-menu{order:3;width:100%}.section-menu summary{width:100%}.nav{position:absolute;width:100%}.hero{margin-inline:0}.architecture,.quote{display:none}.hero h1{font-size:31px}.metrics{grid-template-columns:1fr;margin-inline:0}.dashboard-grid{display:block;margin-inline:0}.chart-card{margin-bottom:10px}.footer-note{margin-inline:0}}
+</style></head><body><div class="shell"><header class="topbar"><div class="sidebar-logo"><span aria-hidden="true">V</span> ValuTrack</div><details class="section-menu"><summary><span>Sections</span><strong id="currentSection">Overview</strong><i aria-hidden="true"></i></summary><nav class="nav" aria-label="Dashboard sections"><a class="active" href="#overview">Overview</a><a href="#commission">Commission</a><a href="#agents">Agents</a><a href="#property-mix">Property mix</a><a href="#locations">Locations</a><a href="#monthly-activity">Monthly activity</a><a href="#lead-sources">Lead sources</a><a href="#agent-results">Agent results</a></nav></details></header><section class="hero" id="overview"><div class="hero-copy"><div class="kicker">Good to see you!</div><h1>Real insights. A more valuable tomorrow.</h1><p>Track performance, empower your agents, and turn property opportunities into lasting value.</p></div><div class="architecture"></div><div class="quote">&ldquo;Better data<br>builds stronger<br>communities.&rdquo;</div></section><section class="metrics">
+<div class="metric-card"><div class="metric-icon">P</div><div><span>Properties reviewed</span><strong id="metric-properties">—</strong><small>All records in this report</small></div></div>
+<div class="metric-card"><div class="metric-icon">C</div><div><span>Commission earned</span><strong id="metric-earned">—</strong><small>Income from completed deals</small></div></div>
+<div class="metric-card danger-card"><div class="metric-icon">!</div><div><span>Missed commission</span><strong id="metric-missed">—</strong><small>Income not realised</small></div></div>
+<div class="metric-card"><div class="metric-icon">L</div><div><span>Active listings</span><strong id="metric-active">—</strong><small>Properties currently available</small></div></div>
+<div class="metric-card"><div class="metric-icon">D</div><div><span>Average time to sell</span><strong id="metric-days">—</strong><small>For completed sales</small></div></div>
+<div class="metric-card"><div class="metric-icon">%</div><div><span>Average price difference</span><strong id="metric-diff">—</strong><small>Sale price vs asking price</small></div></div>
+<div class="metric-card"><div class="metric-icon">C</div><div><span>Commission captured</span><strong id="metric-captured">—</strong><small>Share of possible commission</small></div></div>
+<div class="metric-card"><div class="metric-icon">A</div><div><span>Leading agent</span><strong id="metric-agent">—</strong><small id="metric-agent-sub">—</small></div></div>
+</section><main class="dashboard-grid">
+<section class="chart-card card-revenue" id="commission"><div class="card-head"><div><h2>Commission overview</h2><p>Commission earned and missed</p></div><span class="card-menu" aria-hidden="true">&bull;&bull;&bull;</span></div><div class="chart-wrap"><canvas id="revenueChart"></canvas></div></section>
+<section class="chart-card card-lost" id="missed-commission"><div class="card-head"><div><h2>Missed commission by agent</h2><p>Income opportunity by agent</p></div><span class="card-menu" aria-hidden="true">&bull;&bull;&bull;</span></div><div class="chart-wrap"><canvas id="lostChart"></canvas></div></section>
+<section class="chart-card card-agent" id="agents"><div class="card-head"><div><h2>Agent results</h2><p>Earned versus missed commission</p></div><span class="card-menu" aria-hidden="true">&bull;&bull;&bull;</span></div><div class="chart-wrap"><canvas id="agentChart"></canvas></div></section>
+<section class="chart-card card-property" id="property-mix"><div class="card-head"><div><h2>Property mix</h2><p>Share of properties by type</p></div><span class="card-menu" aria-hidden="true">&bull;&bull;&bull;</span></div><div class="chart-wrap"><canvas id="propertyChart"></canvas></div></section>
+<section class="chart-card card-city" id="locations"><div class="card-head"><div><h2>Performance by location</h2><p>Commission earned and missed</p></div><span class="card-menu" aria-hidden="true">&bull;&bull;&bull;</span></div><div class="chart-wrap"><canvas id="cityChart"></canvas></div></section>
+<section class="chart-card card-ref" id="lead-sources"><div class="card-head"><div><h2>Lead sources</h2><p>Where completed deals came from</p></div><span class="card-menu" aria-hidden="true">&bull;&bull;&bull;</span></div><div class="chart-wrap"><canvas id="refChart"></canvas></div></section>
+<section class="chart-card card-trend" id="monthly-activity"><div class="card-head"><div><h2>Monthly performance</h2><p>Commission and completed deals by month</p></div><button type="button" data-action="toggle-trend" aria-expanded="false">View details &nearr;</button></div><div class="chart-wrap"><canvas id="trendChart"></canvas></div></section>
+<section class="chart-card card-table" id="agent-results"><div class="card-head"><div><h2>Agent results table</h2><p>Completed deals and sales quality</p></div><button type="button" data-action="toggle-agents" aria-expanded="false">View all agents &nearr;</button></div><div class="table-wrap"><table id="agentTable"><thead><tr><th>Agent</th><th>Completed deals</th><th>Commission earned</th><th>Missed commission</th><th>Diff. from asking price</th><th>Rating</th></tr></thead><tbody></tbody></table></div></section>
+</main><div class="footer-note"><strong>ValuTrack property report</strong> — property activity, commission performance and agent results for the selected reporting period.</div></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+<script>
+const fmt = new Intl.NumberFormat('en-US');
+const money = n => `P${fmt.format(Math.round(n))}`;
+const compactP = n => n >= 1e6 ? `P${(n/1e6).toFixed(1)}M` : `P${Math.round(n/1000)}k`;
+
+const palette = {
+  teal: getComputedStyle(document.documentElement).getPropertyValue('--teal').trim(),
+  teal2: getComputedStyle(document.documentElement).getPropertyValue('--teal-2').trim(),
+  danger: getComputedStyle(document.documentElement).getPropertyValue('--danger').trim(),
+  warm: getComputedStyle(document.documentElement).getPropertyValue('--warm').trim(),
+  mint: getComputedStyle(document.documentElement).getPropertyValue('--mint').trim(),
+  blue: getComputedStyle(document.documentElement).getPropertyValue('--blue').trim(),
+  gold: getComputedStyle(document.documentElement).getPropertyValue('--gold').trim(),
+  grid: getComputedStyle(document.documentElement).getPropertyValue('--grid').trim(),
+  muted: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim(),
+  ink: getComputedStyle(document.documentElement).getPropertyValue('--ink').trim(),
+};
+
+Chart.register(ChartDataLabels);
+Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
+Chart.defaults.color = palette.muted;
+Chart.defaults.borderColor = palette.grid;
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
+Chart.defaults.plugins.legend.labels.boxWidth = 8;
+Chart.defaults.plugins.legend.labels.boxHeight = 8;
+Chart.defaults.plugins.legend.labels.padding = 16;
+
+function setText(id, value) { const el = document.getElementById(id); if (el) el.textContent = value; }
+
+function rating(error) {
+  if (error > -1 && error < 1) return ['Excellent','good'];
+  if (error < -3) return ['Needs attention','bad'];
+  return ['Good','warn'];
+}
+
+function cardChart(id, config){
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  return new Chart(ctx, config);
+}
+
+async function boot(){
+  const data = await fetch('./dashboard_data.json').then(r => r.json());
+  const m = data.metrics;
+  setText('metric-properties', fmt.format(m.total_properties));
+  setText('metric-earned', money(m.total_commission));
+  setText('metric-missed', money(m.total_lost));
+  setText('metric-active', fmt.format(m.active_listings));
+  setText('metric-days', `${Math.round(m.avg_days_on_market)} days`);
+  setText('metric-diff', `${m.avg_pricing_error.toFixed(1)}%`);
+  setText('metric-captured', `${m.recovery_rate.toFixed(1)}%`);
+  setText('metric-agent', m.top_agent);
+  setText('metric-agent-sub', `${money(m.top_agent_commission)} earned`);
+
+  const agents = Object.keys(data.agents);
+  const earned = agents.map(a => data.agents[a].commission_earned_bwp);
+  const lost = agents.map(a => data.agents[a].commission_lost_bwp);
+  const doughnutPalette = [palette.teal, palette.warm, palette.mint, palette.blue, palette.teal2, palette.gold, '#D8E7E3'];
+
+  const common = {
+    responsive:true, maintainAspectRatio:false,
+    animation:{duration:650},
+    plugins:{
+      tooltip:{backgroundColor:'#10151d',padding:12,titleFont:{weight:'700'},cornerRadius:10},
+      datalabels:{display:false}
+    },
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:11}}},
+      y:{grid:{color:palette.grid},border:{display:false},ticks:{font:{size:11}}}
+    }
+  };
+
+  cardChart('revenueChart', {
+    type:'bar',
+    data:{labels:['Commission earned','Missed commission','Possible commission'],datasets:[{data:[m.total_commission,m.total_lost,m.potential_revenue],backgroundColor:[palette.teal,palette.danger,palette.warm],borderRadius:8,borderSkipped:false,maxBarThickness:58}]},
+    options:{...common,plugins:{...common.plugins,legend:{display:false},datalabels:{display:true,anchor:'end',align:'top',color:palette.muted,font:{size:10,weight:'600'},formatter:compactP}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{beginAtZero:true,grid:{color:palette.grid},ticks:{callback:compactP,font:{size:10}}}}},plugins:[ChartDataLabels]
+  });
+
+  cardChart('lostChart', {
+    type:'bar',data:{labels:agents,datasets:[{data:lost,backgroundColor:palette.danger,borderRadius:6,borderSkipped:false}]},
+    options:{...common,indexAxis:'y',plugins:{...common.plugins,legend:{display:false},datalabels:{display:true,anchor:'end',align:'right',color:palette.muted,font:{size:9,weight:'600'},formatter:money,clamp:true}},scales:{x:{beginAtZero:true,grid:{color:palette.grid},ticks:{callback:v=>`P${Math.round(v/1000)}k`,font:{size:9}}},y:{grid:{display:false},ticks:{font:{size:10}}}}},plugins:[ChartDataLabels]
+  });
+
+  cardChart('agentChart', {
+    type:'bar',data:{labels:agents,datasets:[{label:'Commission earned',data:earned,backgroundColor:palette.teal,borderRadius:6,borderSkipped:false},{label:'Missed commission',data:lost,backgroundColor:palette.danger,borderRadius:6,borderSkipped:false}]},
+    options:{...common,plugins:{...common.plugins,legend:{position:'top',align:'end'},datalabels:{display:false}},scales:{x:{grid:{display:false},ticks:{maxRotation:40,minRotation:40,font:{size:9}}},y:{beginAtZero:true,grid:{color:palette.grid},ticks:{callback:v=>`P${Math.round(v/1e6)}M`,font:{size:9}}}}}
+  });
+
+  const types = Object.keys(data.property_types); const typeCounts = types.map(k=>data.property_types[k].property_id);
+  cardChart('propertyChart', {
+    type:'doughnut',data:{labels:types,datasets:[{data:typeCounts,backgroundColor:doughnutPalette,borderColor:'#fff',borderWidth:3,hoverOffset:4}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'right',labels:{padding:12,font:{size:10}}},datalabels:{display:true,color:palette.ink,font:{size:9,weight:'700'},formatter:(v,ctx)=>`${(v/ctx.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(1)}%`}}},plugins:[ChartDataLabels]
+  });
+
+  const cities=Object.keys(data.cities); const cityEarned=cities.map(c=>data.cities[c].commission_earned_bwp); const cityLost=cities.map(c=>data.cities[c].commission_lost_bwp);
+  cardChart('cityChart',{type:'bar',data:{labels:cities,datasets:[{label:'Commission earned',data:cityEarned,backgroundColor:palette.teal,borderRadius:6,borderSkipped:false},{label:'Missed commission',data:cityLost,backgroundColor:palette.danger,borderRadius:6,borderSkipped:false}]},options:{...common,plugins:{...common.plugins,legend:{position:'top',align:'end'}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:palette.grid},ticks:{callback:v=>`P${Math.round(v/1e6)}M`,font:{size:9}}}}}});
+
+  const refs=Object.keys(data.referrals); const refCounts=refs.map(r=>data.referrals[r].property_id);
+  cardChart('refChart',{type:'doughnut',data:{labels:refs,datasets:[{data:refCounts,backgroundColor:[palette.teal,palette.warm,palette.mint,palette.danger,palette.gold],borderColor:'#fff',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'right',labels:{padding:12,font:{size:10}}},datalabels:{display:true,color:palette.ink,font:{size:9,weight:'700'},formatter:(v,ctx)=>`${(v/ctx.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(1)}%`}}},plugins:[ChartDataLabels]});
+
+  const months=Object.keys(data.monthly), monthlyEarned=months.map(k=>data.monthly[k].commission_earned_bwp), deals=months.map(k=>data.monthly[k].property_id);
+  cardChart('trendChart',{type:'line',data:{labels:months,datasets:[{label:'Commission earned',data:monthlyEarned,borderColor:palette.teal,backgroundColor:'transparent',tension:.28,borderWidth:2.2,pointRadius:3,pointHoverRadius:5,yAxisID:'y'},{label:'Completed deals',data:deals,borderColor:palette.warm,backgroundColor:'transparent',tension:.28,borderWidth:2,pointRadius:2.5,pointHoverRadius:5,yAxisID:'y1'}]},options:{...common,interaction:{mode:'index',intersect:false},plugins:{...common.plugins,legend:{position:'top',align:'end'}},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxRotation:0,autoSkip:true,maxTicksLimit:10}},y:{beginAtZero:true,grid:{color:palette.grid},ticks:{callback:v=>`P${Math.round(v/1e6)}M`,font:{size:9}}},y1:{beginAtZero:true,position:'right',grid:{display:false},ticks:{font:{size:9}}}}}});
+
+  const tbody=document.querySelector('#agentTable tbody');
+  tbody.innerHTML=agents.map(name=>{const a=data.agents[name]; const [label,cls]=rating(a.pricing_error_pct); return `<tr><td><strong>${name}</strong></td><td>${fmt.format(a.property_id)}</td><td>${money(a.commission_earned_bwp)}</td><td class="danger-text">${money(a.commission_lost_bwp)}</td><td>${a.pricing_error_pct}%</td><td><span class="status ${cls}">${label}</span></td></tr>`}).join('');
+}
+
+const sectionLinks = [...document.querySelectorAll('.nav a[href^="#"]')];
+const reportSections = sectionLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+function setActiveSection(id) {
+  let activeLabel = 'Overview';
+  sectionLinks.forEach(link => {
+    const active = link.getAttribute('href') === '#' + id;
+    link.classList.toggle('active', active);
+    if (active) activeLabel = link.textContent.trim();
+  });
+  const current = document.getElementById('currentSection');
+  if (current) current.textContent = activeLabel;
+}
+sectionLinks.forEach(link => link.addEventListener('click', event => {
+  event.preventDefault();
+  const target = document.querySelector(link.getAttribute('href'));
+  if (target) {
+    setActiveSection(target.id);
+    target.scrollIntoView({behavior:'smooth', block:'start'});
+    history.replaceState(null, '', link.getAttribute('href'));
+    link.closest('details')?.removeAttribute('open');
+  }
+}));
+document.querySelector('[data-action="toggle-trend"]')?.addEventListener('click', event => {
+  const card = document.querySelector('.card-trend');
+  const expanded = card.classList.toggle('expanded');
+  event.currentTarget.setAttribute('aria-expanded', String(expanded));
+  event.currentTarget.innerHTML = expanded ? 'Close details &searr;' : 'View details &nearr;';
+});
+document.querySelector('[data-action="toggle-agents"]')?.addEventListener('click', event => {
+  const card = document.querySelector('.card-table');
+  const expanded = card.classList.toggle('expanded');
+  event.currentTarget.setAttribute('aria-expanded', String(expanded));
+  event.currentTarget.innerHTML = expanded ? 'Show fewer &uarr;' : 'View all agents &nearr;';
+});
+document.addEventListener('click', event => {
+  const menu = document.querySelector('.section-menu');
+  if (menu?.open && !menu.contains(event.target)) menu.removeAttribute('open');
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') document.querySelector('.section-menu')?.removeAttribute('open');
+});if ('IntersectionObserver' in window) {
+  const sectionObserver = new IntersectionObserver(entries => {
+    const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (visible) setActiveSection(visible.target.id);
+  }, {rootMargin:'-80px 0px -55% 0px', threshold:[0.1,0.35,0.65]});
+  reportSections.forEach(section => sectionObserver.observe(section));
+}
+boot().catch(err=>{console.error(err);document.body.insertAdjacentHTML('beforeend',`<div style="position:fixed;bottom:16px;left:16px;background:#fee;padding:12px 16px;border-radius:10px;color:#811">Could not load dashboard_data.json</div>`)});
+</script>
+</body></html>

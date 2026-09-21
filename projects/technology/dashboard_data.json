@@ -1,359 +1,686 @@
 {
-  "metrics": {
-    "total_customers": 3000,
-    "active_customers": 1311,
-    "churned_customers": 1689,
-    "churn_rate": 56.3,
-    "active_mrr": 1017861.0,
-    "churned_mrr": 216323.0,
-    "total_mrr": 1234184.0,
-    "model_accuracy": 78.83333333333333,
-    "top_churn_industry": "Logistics",
-    "top_churn_channel": "Social Media"
-  },
-  "plans": {
-    "Enterprise": {
-      "customer_id": 224,
-      "mrr_bwp": 514976.0,
-      "churned": 10,
-      "churn_rate": 4.464285714285714
-    },
-    "Free": {
-      "customer_id": 1197,
-      "mrr_bwp": 0.0,
-      "churned": 1084,
-      "churn_rate": 90.55973266499582
-    },
-    "Professional": {
-      "customer_id": 601,
-      "mrr_bwp": 479598.0,
-      "churned": 86,
-      "churn_rate": 14.309484193011649
-    },
-    "Starter": {
-      "customer_id": 978,
-      "mrr_bwp": 239610.0,
-      "churned": 509,
-      "churn_rate": 52.04498977505112
-    }
-  },
-  "industries": {
-    "Logistics": {
-      "customer_id": 277,
-      "churned": 166,
-      "churn_rate": 59.92779783393502
-    },
-    "Hospitality": {
-      "customer_id": 328,
-      "churned": 193,
-      "churn_rate": 58.84146341463414
-    },
-    "Professional Services": {
-      "customer_id": 288,
-      "churned": 169,
-      "churn_rate": 58.68055555555556
-    },
-    "Retail": {
-      "customer_id": 286,
-      "churned": 163,
-      "churn_rate": 56.993006993006986
-    },
-    "Agriculture": {
-      "customer_id": 327,
-      "churned": 184,
-      "churn_rate": 56.269113149847094
-    },
-    "Healthcare": {
-      "customer_id": 306,
-      "churned": 169,
-      "churn_rate": 55.22875816993464
-    },
-    "Education": {
-      "customer_id": 318,
-      "churned": 174,
-      "churn_rate": 54.71698113207547
-    },
-    "Construction": {
-      "customer_id": 300,
-      "churned": 163,
-      "churn_rate": 54.333333333333336
-    },
-    "Finance": {
-      "customer_id": 295,
-      "churned": 160,
-      "churn_rate": 54.23728813559322
-    },
-    "NGO": {
-      "customer_id": 275,
-      "churned": 148,
-      "churn_rate": 53.81818181818182
-    }
-  },
-  "channels": {
-    "Social Media": {
-      "customer_id": 475,
-      "churned": 280,
-      "churn_rate": 58.94736842105262
-    },
-    "Event": {
-      "customer_id": 501,
-      "churned": 291,
-      "churn_rate": 58.08383233532935
-    },
-    "Direct Sales": {
-      "customer_id": 525,
-      "churned": 298,
-      "churn_rate": 56.76190476190476
-    },
-    "Referral": {
-      "customer_id": 490,
-      "churned": 273,
-      "churn_rate": 55.714285714285715
-    },
-    "Partnership": {
-      "customer_id": 508,
-      "churned": 276,
-      "churn_rate": 54.330708661417326
-    },
-    "Organic Search": {
-      "customer_id": 501,
-      "churned": 271,
-      "churn_rate": 54.091816367265466
-    }
-  },
-  "logins": {
-    "<1": {
-      "customer_id": 405,
-      "churned": 346,
-      "churn_rate": 85.4320987654321
-    },
-    "1-2": {
-      "customer_id": 587,
-      "churned": 486,
-      "churn_rate": 82.793867120954
-    },
-    "2-5": {
-      "customer_id": 1383,
-      "churned": 660,
-      "churn_rate": 47.722342733188725
-    },
-    "5+": {
-      "customer_id": 454,
-      "churned": 48,
-      "churn_rate": 10.572687224669604
-    }
-  },
-  "features": {
-    "0-2": {
-      "customer_id": 1356,
-      "churned": 1138,
-      "churn_rate": 83.92330383480827
-    },
-    "3-4": {
-      "customer_id": 886,
-      "churned": 456,
-      "churn_rate": 51.46726862302483
-    },
-    "5-6": {
-      "customer_id": 420,
-      "churned": 71,
-      "churn_rate": 16.904761904761905
-    },
-    "7+": {
-      "customer_id": 338,
-      "churned": 24,
-      "churn_rate": 7.100591715976331
-    }
-  },
-  "onboarding": {
-    "0": {
-      "customer_id": 1589,
-      "churned": 1154,
-      "churn_rate": 72.62429200755192
-    },
-    "1": {
-      "customer_id": 1411,
-      "churned": 535,
-      "churn_rate": 37.91637136782423
-    }
-  },
-  "nps": {
-    "Detractors": {
-      "customer_id": 259,
-      "churned": 189,
-      "churn_rate": 72.97297297297297
-    },
-    "Passives": {
-      "customer_id": 1024,
-      "churned": 603,
-      "churn_rate": 58.88671875
-    },
-    "Promoters": {
-      "customer_id": 287,
-      "churned": 109,
-      "churn_rate": 37.97909407665505
-    }
-  },
-  "risk_customers": [
-    {
-      "customer_id": "TP-00284",
-      "plan": "Free",
-      "industry": "Professional Services",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.989430476495292,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-02030",
-      "plan": "Free",
-      "industry": "Healthcare",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.9875313291860625,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-02628",
-      "plan": "Free",
-      "industry": "Construction",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.9848346680548569,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-00232",
-      "plan": "Starter",
-      "industry": "Healthcare",
-      "mrr_bwp": 245.0,
-      "churn_probability": 0.9734160528608551,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-01191",
-      "plan": "Free",
-      "industry": "Education",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.9695644070315418,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-01178",
-      "plan": "Free",
-      "industry": "Finance",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.9612902825626178,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-00782",
-      "plan": "Starter",
-      "industry": "Retail",
-      "mrr_bwp": 245.0,
-      "churn_probability": 0.9569224804191867,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-01570",
-      "plan": "Free",
-      "industry": "Education",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.9507909121338326,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-00908",
-      "plan": "Starter",
-      "industry": "Agriculture",
-      "mrr_bwp": 245.0,
-      "churn_probability": 0.9486855246661644,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-01274",
-      "plan": "Starter",
-      "industry": "Professional Services",
-      "mrr_bwp": 245.0,
-      "churn_probability": 0.9474218324472518,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-00679",
-      "plan": "Professional",
-      "industry": "Retail",
-      "mrr_bwp": 798.0,
-      "churn_probability": 0.9468935612231977,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-00175",
-      "plan": "Free",
-      "industry": "Agriculture",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.9426079631497288,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-02418",
-      "plan": "Starter",
-      "industry": "Professional Services",
-      "mrr_bwp": 245.0,
-      "churn_probability": 0.9416156538745296,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-01346",
-      "plan": "Free",
-      "industry": "Education",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.9400022866845824,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-00702",
-      "plan": "Free",
-      "industry": "Hospitality",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.9365886659938365,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-01601",
-      "plan": "Starter",
-      "industry": "NGO",
-      "mrr_bwp": 245.0,
-      "churn_probability": 0.9142257823401652,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-00178",
-      "plan": "Free",
-      "industry": "Finance",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.9115171314369064,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-01877",
-      "plan": "Free",
-      "industry": "Logistics",
-      "mrr_bwp": 0.0,
-      "churn_probability": 0.8948338912402501,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-00089",
-      "plan": "Starter",
-      "industry": "Agriculture",
-      "mrr_bwp": 245.0,
-      "churn_probability": 0.8946492248871667,
-      "risk_level": "Critical"
-    },
-    {
-      "customer_id": "TP-00860",
-      "plan": "Starter",
-      "industry": "Construction",
-      "mrr_bwp": 245.0,
-      "churn_probability": 0.8890605443016016,
-      "risk_level": "Critical"
-    }
-  ]
+    "pageTitle":  "RetainIQ Customer Retention Report",
+    "theme":  {
+                  "primary":  "#0d58bd",
+                  "primary2":  "#26a6de",
+                  "accent":  "#18b37b",
+                  "danger":  "#e65b57",
+                  "warning":  "#e6b340"
+              },
+    "brand":  {
+                  "name":  "RetainIQ",
+                  "tag":  "Customer retention report",
+                  "icon":  "cloud"
+              },
+    "hero":  {
+                 "eyebrow":  "Customers, product use and recurring revenue",
+                 "title":  "Customer Retention Overview",
+                 "subtitle":  "Review customer activity, recurring revenue and the accounts that may need follow-up.",
+                 "image":  "assets/retainiq-cloud-hero.png",
+                 "motto":  "Retain\u003cbr\u003eexpand\u003cbr\u003egrow",
+                 "date":  "",
+                 "tabs":  [
+                              "Overview",
+                              "Customers to follow up"
+                          ]
+             },
+    "promo":  {
+                  "image":  "assets/retainiq-tech-hero.png",
+                  "title":  "Smarter products.\u003cbr\u003eLonger relationships.",
+                  "sub":  "Retention signals for customer and revenue teams."
+              },
+    "filters":  [
+                    {
+                        "label":  "Customer segment",
+                        "column":  0,
+                        "value":  "All segments",
+                        "options":  [
+                                        "All segments",
+                                        "Enterprise",
+                                        "Mid-market",
+                                        "Small business",
+                                        "Startup",
+                                        "Public sector",
+                                        "Total"
+                                    ]
+                    },
+                    {
+                        "label":  "Status",
+                        "column":  7,
+                        "value":  "All statuses",
+                        "options":  [
+                                        "All statuses",
+                                        "Healthy",
+                                        "Watch",
+                                        "Needs follow-up",
+                                        "—"
+                                    ]
+                    }
+                ],
+    "kpis":  [
+                 {
+                     "icon":  "people",
+                     "label":  "Active customers",
+                     "value":  "2,482",
+                     "delta":  "12%",
+                     "note":  "from the previous month"
+                 },
+                 {
+                     "icon":  "coins",
+                     "label":  "Monthly recurring revenue",
+                     "value":  "P742K",
+                     "delta":  "8%",
+                     "note":  "from the previous month"
+                 },
+                 {
+                     "icon":  "trenddown",
+                     "label":  "Customers leaving",
+                     "value":  "2.8%",
+                     "delta":  "0.6 pp",
+                     "note":  "from the previous month"
+                 },
+                 {
+                     "icon":  "trendup",
+                     "label":  "Revenue retained",
+                     "value":  "112%",
+                     "delta":  "5 pp",
+                     "note":  "vs. prior quarter"
+                 },
+                 {
+                     "icon":  "sparkle",
+                     "label":  "Product use score",
+                     "value":  "78",
+                     "delta":  "6%",
+                     "note":  "from the previous month"
+                 },
+                 {
+                     "icon":  "headset",
+                     "label":  "Support requests per account",
+                     "value":  "1.4",
+                     "delta":  "18%",
+                     "note":  "from the previous month"
+                 },
+                 {
+                     "icon":  "coins",
+                     "label":  "Expansion revenue",
+                     "value":  "P128K",
+                     "delta":  "22%",
+                     "note":  "from the previous month"
+                 },
+                 {
+                     "icon":  "heart",
+                     "label":  "Customer recommendation score",
+                     "value":  "42",
+                     "delta":  "8",
+                     "note":  "vs. prior quarter"
+                 }
+             ],
+    "insights":  [
+                     {
+                         "icon":  "trophy",
+                         "label":  "Highest-retention plan",
+                         "title":  "Enterprise",
+                         "meta":  "96% 12-month retention",
+                         "bg":  "#e8f8f1",
+                         "color":  "#18b37b",
+                         "badge":  "96%",
+                         "badgeBg":  "#e2f7ee",
+                         "badgeColor":  "#12845b"
+                     },
+                     {
+                         "icon":  "bars",
+                         "label":  "Top expansion segment",
+                         "title":  "Mid-market",
+                         "meta":  "Expansion monthly revenue",
+                         "bg":  "#ecf4ff",
+                         "color":  "#0d58bd",
+                         "badge":  "P74K",
+                         "badgeBg":  "#e5f0ff",
+                         "badgeColor":  "#155cb5"
+                     },
+                     {
+                         "icon":  "alert",
+                         "label":  "Needs follow-up accounts",
+                         "title":  "186",
+                         "meta":  "7.5% of accounts",
+                         "bg":  "#fff0ee",
+                         "color":  "#e65b57",
+                         "badge":  "7.5%",
+                         "badgeBg":  "#fee6e4",
+                         "badgeColor":  "#c74d49"
+                     }
+                 ],
+    "charts":  {
+                   "a":  {
+                             "title":  "Customer Count by Segment",
+                             "type":  "bar",
+                             "data":  {
+                                          "labels":  [
+                                                         "Enterprise",
+                                                         "Mid-market",
+                                                         "Small business",
+                                                         "Startup",
+                                                         "Public sector"
+                                                     ],
+                                          "datasets":  [
+                                                           {
+                                                               "data":  [
+                                                                            892,
+                                                                            684,
+                                                                            502,
+                                                                            312,
+                                                                            92
+                                                                        ],
+                                                               "backgroundColor":  [
+                                                                                       "#1456b6",
+                                                                                       "#1d74d1",
+                                                                                       "#4a9de4",
+                                                                                       "#84bff0",
+                                                                                       "#c0def6"
+                                                                                   ],
+                                                               "borderRadius":  5,
+                                                               "barThickness":  14
+                                                           }
+                                                       ]
+                                      },
+                             "options":  {
+                                             "indexAxis":  "y",
+                                             "plugins":  {
+                                                             "legend":  {
+                                                                            "display":  false
+                                                                        },
+                                                             "datalabels":  {
+                                                                                "anchor":  "end",
+                                                                                "align":  "right",
+                                                                                "font":  {
+                                                                                             "size":  8,
+                                                                                             "weight":  "600"
+                                                                                         },
+                                                                                "color":  "#41526d"
+                                                                            }
+                                                         },
+                                             "scales":  {
+                                                            "y":  {
+                                                                      "grid":  {
+                                                                                   "display":  false
+                                                                               }
+                                                                  }
+                                                        }
+                                         }
+                         },
+                   "b":  {
+                             "title":  "Customers by Tenure Band",
+                             "type":  "bar",
+                             "data":  {
+                                          "labels":  [
+                                                         "\u003c 6 months",
+                                                         "6–12 months",
+                                                         "1–2 years",
+                                                         "2–3 years",
+                                                         "3–5 years",
+                                                         "5+ years"
+                                                     ],
+                                          "datasets":  [
+                                                           {
+                                                               "data":  [
+                                                                            648,
+                                                                            612,
+                                                                            520,
+                                                                            418,
+                                                                            284,
+                                                                            140
+                                                                        ],
+                                                               "backgroundColor":  [
+                                                                                       "#164ba3",
+                                                                                       "#166fe0",
+                                                                                       "#2994e7",
+                                                                                       "#60b0eb",
+                                                                                       "#5fceb8",
+                                                                                       "#7ad7c1"
+                                                                                   ],
+                                                               "borderRadius":  7
+                                                           }
+                                                       ]
+                                      },
+                             "options":  {
+                                             "plugins":  {
+                                                             "legend":  {
+                                                                            "display":  false
+                                                                        },
+                                                             "datalabels":  {
+                                                                                "anchor":  "end",
+                                                                                "align":  "top",
+                                                                                "font":  {
+                                                                                             "size":  8,
+                                                                                             "weight":  "600"
+                                                                                         },
+                                                                                "color":  "#41526d"
+                                                                            }
+                                                         },
+                                             "scales":  {
+                                                            "x":  {
+                                                                      "grid":  {
+                                                                                   "display":  false
+                                                                               }
+                                                                  },
+                                                            "y":  {
+                                                                      "beginAtZero":  true
+                                                                  }
+                                                        }
+                                         }
+                         },
+                   "c":  {
+                             "title":  "Monthly revenue and product use",
+                             "type":  "scatter",
+                             "data":  {
+                                          "datasets":  [
+                                                           {
+                                                               "label":  "Stable",
+                                                               "data":  [
+                                                                            {
+                                                                                "x":  12,
+                                                                                "y":  1300
+                                                                            },
+                                                                            {
+                                                                                "x":  18,
+                                                                                "y":  1500
+                                                                            },
+                                                                            {
+                                                                                "x":  25,
+                                                                                "y":  2300
+                                                                            },
+                                                                            {
+                                                                                "x":  32,
+                                                                                "y":  3400
+                                                                            },
+                                                                            {
+                                                                                "x":  41,
+                                                                                "y":  5100
+                                                                            },
+                                                                            {
+                                                                                "x":  55,
+                                                                                "y":  9200
+                                                                            },
+                                                                            {
+                                                                                "x":  62,
+                                                                                "y":  14000
+                                                                            },
+                                                                            {
+                                                                                "x":  70,
+                                                                                "y":  22000
+                                                                            },
+                                                                            {
+                                                                                "x":  78,
+                                                                                "y":  34000
+                                                                            },
+                                                                            {
+                                                                                "x":  85,
+                                                                                "y":  47000
+                                                                            },
+                                                                            {
+                                                                                "x":  92,
+                                                                                "y":  72000
+                                                                            }
+                                                                        ],
+                                                               "backgroundColor":  "#155ec4",
+                                                               "pointRadius":  2.5
+                                                           },
+                                                           {
+                                                               "label":  "Moderate",
+                                                               "data":  [
+                                                                            {
+                                                                                "x":  22,
+                                                                                "y":  900
+                                                                            },
+                                                                            {
+                                                                                "x":  35,
+                                                                                "y":  1500
+                                                                            },
+                                                                            {
+                                                                                "x":  48,
+                                                                                "y":  2600
+                                                                            },
+                                                                            {
+                                                                                "x":  60,
+                                                                                "y":  4800
+                                                                            },
+                                                                            {
+                                                                                "x":  73,
+                                                                                "y":  8500
+                                                                            },
+                                                                            {
+                                                                                "x":  88,
+                                                                                "y":  19000
+                                                                            }
+                                                                        ],
+                                                               "backgroundColor":  "#58a9e8",
+                                                               "pointRadius":  2.5
+                                                           },
+                                                           {
+                                                               "label":  "Urgent follow-up",
+                                                               "data":  [
+                                                                            {
+                                                                                "x":  38,
+                                                                                "y":  700
+                                                                            },
+                                                                            {
+                                                                                "x":  52,
+                                                                                "y":  1300
+                                                                            },
+                                                                            {
+                                                                                "x":  66,
+                                                                                "y":  2400
+                                                                            },
+                                                                            {
+                                                                                "x":  82,
+                                                                                "y":  5000
+                                                                            },
+                                                                            {
+                                                                                "x":  95,
+                                                                                "y":  9300
+                                                                            }
+                                                                        ],
+                                                               "backgroundColor":  "#63cfb7",
+                                                               "pointRadius":  2.5
+                                                           },
+                                                           {
+                                                               "type":  "line",
+                                                               "label":  "Trend",
+                                                               "data":  [
+                                                                            {
+                                                                                "x":  0,
+                                                                                "y":  300
+                                                                            },
+                                                                            {
+                                                                                "x":  100,
+                                                                                "y":  40000
+                                                                            }
+                                                                        ],
+                                                               "borderColor":  "#8ab8e4",
+                                                               "borderDash":  [
+                                                                                  4,
+                                                                                  4
+                                                                              ],
+                                                               "pointRadius":  0,
+                                                               "borderWidth":  1.5
+                                                           }
+                                                       ]
+                                      },
+                             "options":  {
+                                             "plugins":  {
+                                                             "datalabels":  {
+                                                                                "display":  false
+                                                                            }
+                                                         },
+                                             "scales":  {
+                                                            "x":  {
+                                                                      "type":  "linear",
+                                                                      "min":  0,
+                                                                      "max":  100,
+                                                                      "title":  {
+                                                                                    "display":  true,
+                                                                                    "text":  "Product usage score",
+                                                                                    "font":  {
+                                                                                                 "size":  8
+                                                                                             }
+                                                                                }
+                                                                  },
+                                                            "y":  {
+                                                                      "type":  "logarithmic",
+                                                                      "min":  100,
+                                                                      "max":  100000,
+                                                                      "title":  {
+                                                                                    "display":  true,
+                                                                                    "text":  "Monthly recurring revenue (P)",
+                                                                                    "font":  {
+                                                                                                 "size":  8
+                                                                                             }
+                                                                                }
+                                                                  }
+                                                        }
+                                         }
+                         },
+                   "d":  {
+                             "title":  "Monthly revenue and customers leaving",
+                             "type":  "line",
+                             "data":  {
+                                          "labels":  [
+                                                         "Jan",
+                                                         "Feb",
+                                                         "Mar",
+                                                         "Apr",
+                                                         "May",
+                                                         "Jun",
+                                                         "Jul",
+                                                         "Aug",
+                                                         "Sep",
+                                                         "Oct",
+                                                         "Nov",
+                                                         "Dec"
+                                                     ],
+                                          "datasets":  [
+                                                           {
+                                                               "label":  "monthly revenue (P000s)",
+                                                               "data":  [
+                                                                            480,
+                                                                            512,
+                                                                            520,
+                                                                            538,
+                                                                            602,
+                                                                            694,
+                                                                            722,
+                                                                            718,
+                                                                            764,
+                                                                            759,
+                                                                            804,
+                                                                            872
+                                                                        ],
+                                                               "borderColor":  "#126bd1",
+                                                               "backgroundColor":  "rgba(18,107,209,.08)",
+                                                               "fill":  true,
+                                                               "tension":  0.3,
+                                                               "pointRadius":  2
+                                                           },
+                                                           {
+                                                               "label":  "Customers leaving",
+                                                               "data":  [
+                                                                            6.8,
+                                                                            6.3,
+                                                                            6.4,
+                                                                            5.2,
+                                                                            4.1,
+                                                                            3.5,
+                                                                            2.8,
+                                                                            3.0,
+                                                                            2.6,
+                                                                            2.1,
+                                                                            2.1,
+                                                                            1.8
+                                                                        ],
+                                                               "borderColor":  "#46c4b2",
+                                                               "backgroundColor":  "#46c4b2",
+                                                               "yAxisID":  "y1",
+                                                               "tension":  0.3,
+                                                               "pointRadius":  2
+                                                           }
+                                                       ]
+                                      },
+                             "options":  {
+                                             "plugins":  {
+                                                             "legend":  {
+                                                                            "position":  "top"
+                                                                        },
+                                                             "datalabels":  {
+                                                                                "display":  false
+                                                                            }
+                                                         },
+                                             "scales":  {
+                                                            "x":  {
+                                                                      "grid":  {
+                                                                                   "display":  false
+                                                                               }
+                                                                  },
+                                                            "y1":  {
+                                                                       "position":  "right",
+                                                                       "min":  0,
+                                                                       "max":  8,
+                                                                       "grid":  {
+                                                                                    "drawOnChartArea":  false
+                                                                                }
+                                                                   }
+                                                        }
+                                         }
+                         },
+                   "e":  {
+                             "title":  "Subscription Plan Mix",
+                             "type":  "doughnut",
+                             "data":  {
+                                          "labels":  [
+                                                         "Enterprise",
+                                                         "Pro",
+                                                         "Team",
+                                                         "Starter",
+                                                         "Other"
+                                                     ],
+                                          "datasets":  [
+                                                           {
+                                                               "data":  [
+                                                                            36,
+                                                                            28,
+                                                                            22,
+                                                                            12,
+                                                                            2
+                                                                        ],
+                                                               "backgroundColor":  [
+                                                                                       "#164ba3",
+                                                                                       "#1679e6",
+                                                                                       "#63afe9",
+                                                                                       "#65d5bc",
+                                                                                       "#a8bdd2"
+                                                                                   ],
+                                                               "borderWidth":  2,
+                                                               "borderColor":  "#fff"
+                                                           }
+                                                       ]
+                                      },
+                             "options":  {
+                                             "cutout":  "64%",
+                                             "plugins":  {
+                                                             "legend":  {
+                                                                            "position":  "right"
+                                                                        },
+                                                             "datalabels":  {
+                                                                                "display":  false
+                                                                            },
+                                                             "centerText":  {
+                                                                                "text":  "2,482",
+                                                                                "sub":  "Customers"
+                                                                            }
+                                                         },
+                                             "scales":  {
+
+                                                        }
+                                         }
+                         }
+               },
+    "table":  {
+                  "title":  "Segment Performance",
+                  "date":  "",
+                  "columns":  [
+                                  "Segment",
+                                  "Accounts",
+                                  "Average monthly revenue",
+                                  "Leaving %",
+                                  "Product use",
+                                  "Recommendation score",
+                                  "Ticket volume",
+                                  "Status"
+                              ],
+                  "rows":  [
+                               [
+                                   "Enterprise",
+                                   "892",
+                                   "P1,240",
+                                   "1.2%",
+                                   "86",
+                                   "56",
+                                   "0.8",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Healthy",
+                                       "color":  "#18b37b"
+                                   }
+                               ],
+                               [
+                                   "Mid-market",
+                                   "684",
+                                   "P620",
+                                   "2.4%",
+                                   "78",
+                                   "42",
+                                   "1.2",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Healthy",
+                                       "color":  "#18b37b"
+                                   }
+                               ],
+                               [
+                                   "Small business",
+                                   "502",
+                                   "P210",
+                                   "4.1%",
+                                   "71",
+                                   "28",
+                                   "2.1",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Watch",
+                                       "color":  "#e6b340"
+                                   }
+                               ],
+                               [
+                                   "Startup",
+                                   "312",
+                                   "P98",
+                                   "6.8%",
+                                   "62",
+                                   "12",
+                                   "3.4",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Needs follow-up",
+                                       "color":  "#e65b57"
+                                   }
+                               ],
+                               [
+                                   "Public sector",
+                                   "92",
+                                   "P430",
+                                   "2.1%",
+                                   "74",
+                                   "38",
+                                   "1.6",
+                                   {
+                                       "type":  "status",
+                                       "label":  "Healthy",
+                                       "color":  "#18b37b"
+                                   }
+                               ],
+                               [
+                                   "Total",
+                                   "2,482",
+                                   "P742",
+                                   "2.8%",
+                                   "78",
+                                   "42",
+                                   "1.4",
+                                   {
+                                       "type":  "status",
+                                       "label":  "—",
+                                       "color":  "#9babbc"
+                                   }
+                               ]
+                           ]
+              }
 }

@@ -1,6 +1,6 @@
 # Portfolio Monorepo
 
-This repository contains the portfolio site, seven static HTML projects, and five Streamlit projects.
+This repository contains the portfolio site, five static HTML projects, and five Streamlit projects.
 
 ## Structure
 
@@ -20,10 +20,8 @@ Deploy each industry from `streamlit/<industry>/app.py`. This produces five Stre
 
 ## Static projects
 
-- Construction
 - Education
 - Government
-- Law
 - Logistics
 - Real Estate
 - Technology
@@ -38,4 +36,4 @@ Deploy each industry from `streamlit/<industry>/app.py`. This produces five Stre
 
 ## Important
 
-The original source folders outside this repository remain unchanged. This folder is the clean deployment copy.
+This folder is the clean deployment copy used for the portfolio and its project pages.

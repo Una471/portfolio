@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 72" role="img" aria-labelledby="title desc">
+<title id="title">RouteIQ transport crest</title><desc id="desc">A shield containing a forward road and route point</desc>
+<path fill="#171717" d="M32 2 58 11v22c0 17-10.5 29.4-26 37C16.5 62.4 6 50 6 33V11L32 2Z"/>
+<path fill="#f36b21" d="M32 7.5 53 14v18.5c0 13.5-7.7 24-21 31-13.3-7-21-17.5-21-31V14l21-6.5Z"/>
+<path fill="#fff" d="M25.6 56.5c1.5-9.2 2.2-17.7 2-25.6-.1-5.2 1.8-10.4 5.6-15.6l6.1 2.6c-4.4 5.7-6.5 11-6.3 16 .2 7.1 1.6 14.7 4.3 22.6L32 60l-6.4-3.5Z"/>
+<path fill="#171717" d="M31 49h3v6h-3zm-.7-11h3.4v6h-3.4zm.3-11h3.8v6h-3.8z"/>
+<circle cx="39.5" cy="18.5" r="7.5" fill="#171717"/>
+<circle cx="39.5" cy="18.5" r="3.2" fill="#fff"/>
+<path fill="#171717" d="m13 27 8-5v3h7v4h-7v3l-8-5Z"/>
+</svg>

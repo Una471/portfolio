@@ -1,483 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800&family=Stack+Sans+Text:wght@400;500;600;700&display=swap">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Botswana Public Service - Service Delivery Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            background: #f0f2f5; 
-            color: #1a1a2e;
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: linear-gradient(180deg, #1a1a2e 0%, #2d3436 100%);
-            color: white;
-            padding: 2rem 1.5rem;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 1000;
-            flex-shrink: 0;
-        }
-        
-        .sidebar-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .sidebar-nav {
-            list-style: none;
-        }
-        
-        .sidebar-nav li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .sidebar-nav a {
-            display: flex;
-            align-items: center;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s;
-            font-weight: 500;
-            gap: 0.75rem;
-        }
-        
-        .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-        
-        .sidebar-nav a.active {
-            background: rgba(255,255,255,0.2);
-        }
-        
-        .sidebar-nav .icon {
-            font-size: 1.25rem;
-            width: 28px;
-            text-align: center;
-        }
-        
-        .sidebar-divider {
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-            margin: 1rem 0;
-        }
-        
-        .sidebar-footer {
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.75rem;
-            opacity: 0.5;
-        }
-        
-        /* Main Content */
-        .main-content {
-            margin-left: 260px;
-            flex: 1;
-            padding: 2rem;
-        }
-        
-        .header {
-            background: white;
-            padding: 1.5rem 2rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .header-content h1 { font-size: 1.75rem; font-weight: 600; color: #1a1a2e; }
-        .header-content p { color: #6c757d; margin-top: 0.25rem; }
-        .header-meta { text-align: right; color: #6c757d; font-size: 0.875rem; }
-        
-        .container { max-width: 1400px; }
-        
-        .section {
-            scroll-margin-top: 1rem;
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: #1a1a2e;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .section-title .badge {
-            font-size: 0.75rem;
-            background: #667eea;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-        
-        .metrics-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 1rem; 
-            margin-bottom: 2rem; 
-        }
-        
-        .metric-card { 
-            background: white; 
-            padding: 1.5rem; 
-            border-radius: 12px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
-        }
-        
-        .metric-card h3 { 
-            color: #6c757d; 
-            font-size: 0.875rem; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px; 
-        }
-        
-        .metric-card .value { 
-            font-size: 2rem; 
-            font-weight: 600; 
-            margin-top: 0.5rem; 
-        }
-        
-        .metric-card .change {
-            display: inline-block;
-            margin-top: 0.25rem;
-            font-size: 0.875rem;
-        }
-        
-        .metric-card .change.danger { color: #f44336; }
-        .metric-card .change.success { color: #4CAF50; }
-        
-        .charts-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); 
-            gap: 1.5rem; 
-            margin-bottom: 2rem; 
-        }
-        
-        .chart-card { 
-            background: white; 
-            padding: 1.5rem; 
-            border-radius: 12px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
-        }
-        
-        .chart-card h3 { 
-            margin-bottom: 1rem; 
-            color: #1a1a2e; 
-            font-size: 1rem;
-        }
-        
-        .chart-container { 
-            position: relative; 
-            height: 300px; 
-        }
-        
-        .full-width-chart { 
-            grid-column: 1 / -1; 
-        }
-        
-        .table-container { 
-            overflow-x: auto; 
-        }
-        
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-        }
-        
-        th { 
-            background: #f8f9fa; 
-            padding: 0.75rem; 
-            text-align: left; 
-            font-weight: 600; 
-        }
-        
-        td { 
-            padding: 0.75rem; 
-            border-bottom: 1px solid #f0f0f0; 
-        }
-        
-        .badge { 
-            display: inline-block; 
-            padding: 0.25rem 0.5rem; 
-            border-radius: 4px; 
-            font-size: 0.75rem; 
-            font-weight: 500; 
-        }
-        
-        .badge-critical { background: #f8d7da; color: #721c24; }
-        .badge-high { background: #fff3cd; color: #856404; }
-        .badge-medium { background: #cce5ff; color: #004085; }
-        .badge-low { background: #d4edda; color: #155724; }
-        
-        .loading { 
-            text-align: center; 
-            padding: 4rem; 
-            color: #6c757d; 
-        }
-        
-        /* Scroll to top */
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: #667eea;
-            color: white;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s;
-            opacity: 0;
-            visibility: hidden;
-            z-index: 999;
-            border: none;
-        }
-        
-        .scroll-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .scroll-top:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
-        }
-        
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 220px;
-                padding: 1.5rem 1rem;
-            }
-            .main-content {
-                margin-left: 220px;
-                padding: 1.5rem;
-            }
-            .charts-grid {
-                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            }
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                padding: 1rem;
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            .sidebar-logo {
-                margin-bottom: 0;
-                font-size: 1.25rem;
-                margin-right: 1rem;
-            }
-            .sidebar-nav {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.25rem;
-            }
-            .sidebar-nav li {
-                margin-bottom: 0;
-            }
-            .sidebar-nav a {
-                padding: 0.4rem 0.75rem;
-                font-size: 0.875rem;
-            }
-            .sidebar-divider, .sidebar-footer {
-                display: none;
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-            }
-            .header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .header-meta {
-                text-align: center;
-            }
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-            .metrics-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
     <!-- Sidebar -->
-    <nav class="sidebar">
-        <div class="sidebar-logo">
-            <span>📊</span> Service Monitor
-        </div>
-        <ul class="sidebar-nav">
-            <li><a href="#overview" class="active"><span class="icon">📈</span> Overview</a></li>
-            <li><a href="#departments"><span class="icon">🏛️</span> Departments</a></li>
-            <li><a href="#channels"><span class="icon">📱</span> Channels</a></li>
-            <li><a href="#escalations"><span class="icon">⚠️</span> Escalations</a></li>
-            <li><a href="#trends"><span class="icon">📅</span> Trends</a></li>
-            <li><a href="#risk"><span class="icon">🔴</span> Risk</a></li>
-        </ul>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-footer">
-            <p>Service Delivery Monitoring Unit</p>
-            <p>© 2026 • v2.0</p>
-        </div>
-    </nav>
-    
+    <nav class="sidebar"><a class="sidebar-logo" href="#overview"><img src="assets/civictrack-wordmark-white.svg" alt="CivicTrack, Public Service Routing"></a><div class="nav-label">Report sections</div><ul class="sidebar-nav"><li><a href="#overview" class="active"><i data-lucide="layout-dashboard" aria-hidden="true"></i><span>Overview</span></a></li><li><a href="#departments"><i data-lucide="building-2" aria-hidden="true"></i><span>Departments</span></a></li><li><a href="#channels"><i data-lucide="inbox" aria-hidden="true"></i><span>Submission channels</span></a></li><li><a href="#escalations"><i data-lucide="triangle-alert" aria-hidden="true"></i><span>Escalated requests</span></a></li><li><a href="#trends"><i data-lucide="chart-no-axes-column-increasing" aria-hidden="true"></i><span>Monthly activity</span></a></li><li><a href="#risk"><i data-lucide="clipboard-list" aria-hidden="true"></i><span>Needs attention</span></a></li></ul><div class="sidebar-divider"></div><a class="software-link" href="software.html">Open request desk</a><div class="sidebar-footer"><p>Service Delivery Monitoring Unit</p><p>Reporting period: 2022 to 2025</p></div></nav>
+
     <!-- Main Content -->
     <main class="main-content">
-        <header class="header">
-            <div class="header-content">
-                <h1>📊 Service Delivery Analytics Dashboard</h1>
-                <p>Monitoring service request performance across all departments</p>
-            </div>
-            <div class="header-meta">
-                <p><strong>Period:</strong> 2022 – 2025</p>
-                <p><strong>Updated:</strong> <span id="reportDate">Loading...</span></p>
-            </div>
-        </header>
-        
+        <header class="header"><div class="header-toolbar"><div class="period-control">Calendar&nbsp;&nbsp; 2022 to 2025</div><div class="admin-control">Account&nbsp;&nbsp; Admin</div></div><div class="header-main"><div class="header-content"><div class="eyebrow">Public service performance</div><h1>Service Delivery Overview</h1><p>Requests received by public departments between 2022 and 2025.</p></div><a class="header-software" href="software.html">Open request desk</a></div></header>
+
         <div class="container">
             <div id="loading" class="loading">
-                <h2>Loading dashboard data...</h2>
-                <p>Please wait while we prepare your insights.</p>
+                <h2>Preparing the service report</h2>
+                <p>Please wait a moment.</p>
             </div>
-            
-            <div id="dashboardContent" style="display: none;">
+
+            <div id="dashboardContent" hidden>
                 <!-- Section: Overview -->
                 <section id="overview" class="section">
-                    <div class="section-title">
-                        📈 Overview
-                        <span class="badge">Live</span>
-                    </div>
                     <div class="metrics-grid" id="metricsGrid"></div>
+                    <h2 class="section-title">Overview</h2>
+                    <div class="overview-note"><div><span class="note-icon" aria-hidden="true">i</span><div><strong>What this report covers</strong><p>This dashboard summarises public service requests, how quickly departments completed them, which requests were escalated and which pending cases need attention.</p></div></div><div><span class="note-icon" aria-hidden="true">â—Ž</span><div><strong>What &quot;completed on time&quot; means</strong><p>Every service has an agreed number of days for completion. A request is on time when it is resolved within that target.</p></div></div></div>
                 </section>
-                
+
                 <!-- Section: Departments -->
                 <section id="departments" class="section">
-                    <div class="section-title">🏛️ Department Performance</div>
+                    <div class="section-title">Department performance</div>
                     <div class="charts-grid">
                         <div class="chart-card">
-                            <h3>SLA Compliance by Department</h3>
+                            <h3>Requests completed on time by department</h3>
                             <div class="chart-container">
                                 <canvas id="deptChart"></canvas>
                             </div>
                         </div>
                         <div class="chart-card">
-                            <h3>Escalation Rate by Department</h3>
+                            <h3>Share of requests escalated by department</h3>
                             <div class="chart-container">
                                 <canvas id="deptEscalationChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Section: Channels -->
                 <section id="channels" class="section">
-                    <div class="section-title">📱 Channel Performance</div>
+                    <div class="section-title">Submission channel performance</div>
                     <div class="charts-grid">
                         <div class="chart-card">
-                            <h3>SLA Compliance by Channel</h3>
+                            <h3>Requests completed on time by channel</h3>
                             <div class="chart-container">
                                 <canvas id="channelChart"></canvas>
                             </div>
                         </div>
                         <div class="chart-card">
-                            <h3>Average Resolution Time by Channel</h3>
+                            <h3>Average completion time by channel</h3>
                             <div class="chart-container">
                                 <canvas id="channelTimeChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Section: Escalations -->
                 <section id="escalations" class="section">
-                    <div class="section-title">⚠️ Escalation Analysis</div>
+                    <div class="section-title">Escalated requests</div>
                     <div class="charts-grid">
                         <div class="chart-card">
-                            <h3>Escalations by Department</h3>
+                            <h3>Escalated requests by department</h3>
                             <div class="chart-container">
                                 <canvas id="escalationChart"></canvas>
                             </div>
                         </div>
                         <div class="chart-card">
-                            <h3>Escalation Rate by Service Type</h3>
+                            <h3>Requests missing their target by service type</h3>
                             <div class="chart-container">
                                 <canvas id="serviceChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Section: Trends -->
                 <section id="trends" class="section">
-                    <div class="section-title">📅 Monthly Trends</div>
+                    <div class="section-title">Monthly activity</div>
                     <div class="charts-grid">
                         <div class="chart-card full-width-chart">
-                            <h3>Request Volume & SLA Compliance Over Time</h3>
-                            <div class="chart-container" style="height: 350px;">
-                                <canvas id="trendChart"></canvas>
+                            <h3>Monthly requests and on-time completion</h3>
+                            <div class="chart-container trend-chart">
+                                <canvas id="monthlyChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Section: Risk -->
                 <section id="risk" class="section">
-                    <div class="section-title">🔴 At-Risk Requests</div>
+                    <div class="section-title">Requests needing attention</div>
                     <div class="charts-grid">
                         <div class="chart-card full-width-chart">
-                            <h3>Top 20 Pending Requests at Risk of Escalation</h3>
-                            <div class="table-container" style="max-height: 500px; overflow-y: auto;">
+                            <h3>20 pending requests most likely to need escalation</h3>
+                            <div class="table-container">
                                 <table id="riskTable">
                                     <thead>
                                         <tr>
                                             <th>Request ID</th>
                                             <th>Department</th>
-                                            <th>Service Type</th>
+                                            <th>Service</th>
                                             <th>Channel</th>
                                             <th>Submitted</th>
-                                            <th>Risk Level</th>
-                                            <th>Probability</th>
+                                            <th>Priority</th>
+                                            <th>Estimated risk</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -488,399 +129,7 @@
                 </section>
             </div>
         </div>
-        
-        <!-- Scroll to top -->
-        <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-            ↑
-        </button>
     </main>
-    
-    <script>
-        let dashboardData = null;
-        
-        async function loadData() {
-            try {
-                const response = await fetch('dashboard_data.json');
-                dashboardData = await response.json();
-                
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('dashboardContent').style.display = 'block';
-                document.getElementById('reportDate').textContent = new Date().toLocaleDateString('en-ZA', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                
-                populateMetrics();
-                populateRiskTable();
-                initCharts();
-                setupSidebarNavigation();
-                setupScrollTopButton();
-            } catch (error) {
-                document.getElementById('loading').innerHTML = `
-                    <h2 style="color: #f44336;">❌ Error loading data</h2>
-                    <p>Please make sure dashboard_data.json exists and is valid.</p>
-                    <p style="color: #6c757d; font-size: 0.875rem;">${error.message}</p>
-                `;
-            }
-        }
-        
-        function populateMetrics() {
-            const metrics = dashboardData.metrics;
-            const grid = document.getElementById('metricsGrid');
-            
-            const metricItems = [
-                { label: 'Total Requests', value: metrics.total_requests.toLocaleString(), change: '', class: '' },
-                { label: 'Resolved', value: metrics.resolved_requests.toLocaleString(), change: '', class: '' },
-                { label: 'Pending', value: metrics.pending_requests.toLocaleString(), change: '', class: '' },
-                { label: 'SLA Compliance', value: metrics.sla_compliance_rate.toFixed(1) + '%', change: '🎯 Target: 80%', class: metrics.sla_compliance_rate < 80 ? 'danger' : 'success' },
-                { label: 'Escalation Rate', value: metrics.escalation_rate.toFixed(1) + '%', change: '⚠️ Needs attention', class: 'danger' },
-                { label: 'Avg Resolution', value: metrics.avg_resolution_days.toFixed(1) + ' days', change: '', class: '' },
-                { label: 'Avg SLA Breach', value: metrics.avg_sla_breach.toFixed(1) + ' days', change: '', class: '' },
-                { label: 'Worst Department', value: metrics.worst_department, change: '🔴 ' + metrics.worst_department + ' has 6% SLA', class: 'danger' }
-            ];
-            
-            grid.innerHTML = metricItems.map(m => `
-                <div class="metric-card">
-                    <h3>${m.label}</h3>
-                    <div class="value">${m.value}</div>
-                    ${m.change ? `<span class="change ${m.class}">${m.change}</span>` : ''}
-                </div>
-            `).join('');
-        }
-        
-        function populateRiskTable() {
-            const tbody = document.querySelector('#riskTable tbody');
-            const requests = dashboardData.high_risk;
-            
-            if (!requests || requests.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #6c757d;">No high-risk pending requests.</td></tr>`;
-                return;
-            }
-            
-            tbody.innerHTML = requests.map(r => `
-                <tr>
-                    <td><strong>${r.request_id}</strong></td>
-                    <td>${r.department}</td>
-                    <td>${r.service_type}</td>
-                    <td>${r.channel}</td>
-                    <td>${r.submitted}</td>
-                    <td>
-                        <span class="badge ${r.risk_level === 'Critical' ? 'badge-critical' : r.risk_level === 'High' ? 'badge-high' : r.risk_level === 'Medium' ? 'badge-medium' : 'badge-low'}">
-                            ${r.risk_level}
-                        </span>
-                    </td>
-                    <td>${(r.escalation_probability * 100).toFixed(0)}%</td>
-                </tr>
-            `).join('');
-        }
-        
-        function initCharts() {
-            const departments = dashboardData.departments;
-            const channels = dashboardData.channels;
-            const services = dashboardData.services;
-            const escalations = dashboardData.escalations;
-            const monthly = dashboardData.monthly;
-            
-            // Department Chart
-            const deptNames = Object.keys(departments);
-            const deptSLA = deptNames.map(d => departments[d].sla_rate);
-            const deptColors = deptSLA.map(s => s >= 80 ? '#4CAF50' : s >= 50 ? '#ff9800' : '#f44336');
-            
-            new Chart(document.getElementById('deptChart'), {
-                type: 'bar',
-                data: {
-                    labels: deptNames,
-                    datasets: [{
-                        label: 'SLA Compliance (%)',
-                        data: deptSLA,
-                        backgroundColor: deptColors,
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            formatter: (v) => v.toFixed(1) + '%'
-                        }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, max: 100, ticks: { callback: (v) => v + '%' } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Department Escalation Chart
-            const deptEsc = deptNames.map(d => departments[d].escalation_rate);
-            
-            new Chart(document.getElementById('deptEscalationChart'), {
-                type: 'bar',
-                data: {
-                    labels: deptNames,
-                    datasets: [{
-                        label: 'Escalation Rate (%)',
-                        data: deptEsc,
-                        backgroundColor: deptEsc.map(e => e > 20 ? '#f44336' : e > 10 ? '#ff9800' : '#4CAF50'),
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            formatter: (v) => v.toFixed(1) + '%'
-                        }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { callback: (v) => v + '%' } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Channel Chart
-            const channelNames = Object.keys(channels);
-            const channelSLA = channelNames.map(c => channels[c].sla_rate);
-            
-            new Chart(document.getElementById('channelChart'), {
-                type: 'bar',
-                data: {
-                    labels: channelNames,
-                    datasets: [{
-                        label: 'SLA Compliance (%)',
-                        data: channelSLA,
-                        backgroundColor: channelSLA.map(s => s >= 80 ? '#4CAF50' : s >= 50 ? '#ff9800' : '#f44336'),
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            formatter: (v) => v.toFixed(1) + '%'
-                        }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, max: 100, ticks: { callback: (v) => v + '%' } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Channel Time Chart
-            const channelTimes = channelNames.map(c => channels[c].actual_days);
-            
-            new Chart(document.getElementById('channelTimeChart'), {
-                type: 'bar',
-                data: {
-                    labels: channelNames,
-                    datasets: [{
-                        label: 'Avg Resolution (days)',
-                        data: channelTimes,
-                        backgroundColor: '#667eea',
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            formatter: (v) => v.toFixed(1) + ' days'
-                        }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Escalation Chart
-            const escNames = Object.keys(escalations);
-            const escCounts = escNames.map(e => escalations[e].request_id);
-            
-            new Chart(document.getElementById('escalationChart'), {
-                type: 'bar',
-                data: {
-                    labels: escNames,
-                    datasets: [{
-                        label: 'Number of Escalations',
-                        data: escCounts,
-                        backgroundColor: '#f44336',
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            formatter: (v) => v
-                        }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Service Chart
-            const serviceNames = Object.keys(services);
-            const serviceEsc = serviceNames.map(s => {
-                const total = services[s].request_id;
-                const within = services[s].within_sla;
-                return ((total - within) / total) * 100;
-            });
-            
-            new Chart(document.getElementById('serviceChart'), {
-                type: 'bar',
-                data: {
-                    labels: serviceNames,
-                    datasets: [{
-                        label: 'Escalation Rate (%)',
-                        data: serviceEsc,
-                        backgroundColor: serviceEsc.map(e => e > 20 ? '#f44336' : e > 10 ? '#ff9800' : '#4CAF50'),
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            formatter: (v) => v.toFixed(1) + '%'
-                        }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { callback: (v) => v + '%' } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-            
-            // Trend Chart
-            const monthLabels = Object.keys(monthly);
-            const monthCounts = monthLabels.map(m => monthly[m].request_id);
-            const monthSLA = monthLabels.map(m => monthly[m].sla_rate);
-            
-            new Chart(document.getElementById('trendChart'), {
-                type: 'line',
-                data: {
-                    labels: monthLabels,
-                    datasets: [
-                        {
-                            label: 'Request Volume',
-                            data: monthCounts,
-                            borderColor: '#667eea',
-                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            yAxisID: 'y'
-                        },
-                        {
-                            label: 'SLA Compliance %',
-                            data: monthSLA,
-                            borderColor: '#4CAF50',
-                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            yAxisID: 'y1'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: {
-                        legend: { position: 'top' },
-                        datalabels: { display: false }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, position: 'left' },
-                        y1: { beginAtZero: true, position: 'right', max: 100, grid: { drawOnChartArea: false } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-        }
-        
-        function setupSidebarNavigation() {
-            const links = document.querySelectorAll('.sidebar-nav a');
-            const sections = document.querySelectorAll('.section');
-            
-            links.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    links.forEach(l => l.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
-            
-            window.addEventListener('scroll', function() {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - 100;
-                    if (window.scrollY >= sectionTop) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                
-                links.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-        }
-        
-        function setupScrollTopButton() {
-            const btn = document.getElementById('scrollTopBtn');
-            
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 400) {
-                    btn.classList.add('visible');
-                } else {
-                    btn.classList.remove('visible');
-                }
-            });
-        }
-        
-        // Load data on page load
-        loadData();
-    </script>
+    <script src="dashboard.js" defer></script>
 </body>
 </html>

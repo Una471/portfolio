@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 72" role="img" aria-labelledby="title desc">
+<title id="title">Transdelta RouteIQ</title><desc id="desc">Transdelta RouteIQ logistics wordmark</desc>
+<g transform="translate(2 7)">
+<path fill="#1b1b1b" d="M0 0h22c17.7 0 32 14.3 32 32v22H32C14.3 54 0 39.7 0 22V0Z"/>
+<path fill="#f36b21" d="M34 0h20v9c0 11-9 20-20 20h-9V20C25 9 34 0 45 0Z"/>
+<path fill="#1b1b1b" d="M34 33h7c7.2 0 13 5.8 13 13v8H34V33Z"/>
+</g>
+<text x="72" y="46" fill="#1b1b1b" font-family="Stack Sans Text, Segoe UI, Arial, sans-serif" font-size="29" font-weight="750" letter-spacing="-.8">TRANSDELTA</text>
+<text x="259" y="46" fill="#f36b21" font-family="Stack Sans Text, Segoe UI, Arial, sans-serif" font-size="29" font-weight="750" letter-spacing="-.8">ROUTEIQ</text>
+</svg>

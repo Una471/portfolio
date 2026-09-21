@@ -1,4 +1,58 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GTC Success Dashboard</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"><link rel="stylesheet" href="styles.css"><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script></head><body>
-<nav class="navbar"><div class="wrap"><div class="brand"><div class="brand-mark"><span>🎓</span></div> GTC Success Dashboard</div><div class="dashboard-title">Management reporting · 2023–2025</div></div></nav>
-<div class="shell"><aside class="sidebar"><div class="side-nav"><button class="active" data-page="overview">Enrollment overview</button><button data-page="risk">At-risk students</button><button data-page="retention">Graduation & retention</button><button data-page="growth">Enrollment growth</button><button data-page="campus">Campus performance</button></div><div class="side-stats"><label>Program</label><select id="programFilter"></select><br><label>Campus</label><select id="campusFilter"></select><p>Data: 2023–2025</p></div></aside><main class="main" id="dashboard"></main></div>
-<script src="dashboard.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard-v2.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-row"><a class="brand-custom education-logo" href="software.html" aria-label="Open Student Records"><strong>Student Records</strong></a></div><div class="sidebar-heading-row"><div><h2>Filters</h2><span class="filter-count" id="filterCount"></span></div><button class="reset" id="resetFilters" type="button">Reset all</button></div>
+      <div id="filters" class="filters"></div>
+      <div id="promo" class="promo"><div class="promo-overlay"></div><div class="promo-copy"><div class="promo-title" id="promoTitle"></div><div class="promo-sub" id="promoSub"></div></div></div>
+    </aside>
+
+    <main class="workspace">
+      <header class="hero">
+        <div class="hero-image" id="heroImage"></div>
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <div class="hero-copy">
+            <div class="eyebrow" id="eyebrow"></div>
+            <h1 id="title"></h1>
+            <p id="subtitle"></p>
+          </div>
+          <div class="hero-actions">
+            <div class="segmented" id="tabs"></div>
+            <div class="hero-motto" id="motto"></div><a class="software-link" href="software.html">Open software</a>
+          </div>
+        </div>
+      </header>
+
+      <section id="kpis" class="kpi-grid"></section>
+
+      <section class="grid grid-top">
+        <article class="card chart-card"><div class="card-head"><h3 id="chartATitle"></h3><button class="text-button" type="button" data-expand>View details <span>&rarr;</span></button></div><div class="chart-area"><canvas id="chartA"></canvas></div></article>
+        <article class="card chart-card"><div class="card-head"><h3 id="chartBTitle"></h3></div><div class="chart-area"><canvas id="chartB"></canvas></div></article>
+        <article class="card chart-card"><div class="card-head"><h3 id="chartCTitle"></h3><button class="text-button" type="button" data-expand>View details <span>&rarr;</span></button></div><div class="chart-area"><canvas id="chartC"></canvas></div></article>
+      </section>
+
+      <section class="grid grid-middle">
+        <article class="card chart-card wide"><div class="card-head"><h3 id="chartDTitle"></h3><select class="mini-select" id="rangeSelect" aria-label="Monthly chart range"><option value="all">All months</option><option value="recent">Recent 6 months</option></select></div><div class="chart-area mid"><canvas id="chartD"></canvas></div></article>
+        <article class="card chart-card donut-card"><div class="card-head"><h3 id="chartETitle"></h3></div><div class="chart-area mid"><canvas id="chartE"></canvas></div></article>
+        <div id="insights" class="insights"></div>
+      </section>
+
+      <section class="card table-card">
+        <div class="card-head table-head"><h3 id="tableTitle"></h3><div class="table-tools"><button class="export" id="exportBtn"><span id="exportIcon"></span>Export</button></div></div>
+        <div class="table-wrap"><table><thead><tr id="tableHeader"></tr></thead><tbody id="tableBody"></tbody></table></div>
+      </section>
+    </main>
+  </div>
+  <script src="dashboard-v2.js"></script>
+</body>
+</html>
