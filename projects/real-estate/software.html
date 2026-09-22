@@ -726,6 +726,19 @@
         .report-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
         .btn-report { padding: 12px 20px; border: 1px solid var(--ink); border-radius: 999px; color: var(--ink); background: transparent; cursor: pointer; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
 
+        @media screen {
+            .header-badge { text-decoration: none; cursor: pointer; }
+            .header-badge:hover { background: #4b3d35; }
+            .header-badge:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+            .results-card .market-value-label,
+            .results-card .result-item .label { color: rgba(255,255,255,.88); }
+            .results-card .valuation-range,
+            .results-card .confidence-label,
+            .results-card .breakdown-row { color: rgba(255,255,255,.9); }
+            .results-card .recommendation-box p,
+            .results-card .recommendation-box strong { color: #fff8f3; }
+            .results-card .results-content button { color: #fff !important; }
+        }
         @media (max-width: 900px) {
             .sidebar { height: 72px; padding: 0 20px; }
             .sidebar-nav { gap: 18px; }
@@ -796,7 +809,7 @@
                 <h1>The true<br>value of<br>home</h1>
                 <p>Data-led property valuation, made clear.</p>
             </div>
-            <span class="header-badge">Start a valuation</span>
+            <a class="header-badge" href="#valuationForm" onclick="startValuation(event)">Start a valuation</a>
         <div class="hero-location" aria-live="polite"><small>Featured neighbourhood</small><strong id="heroLocation">Phakalane</strong></div><div class="hero-controls" aria-label="Featured properties"><button class="active" type="button" aria-label="Show Phakalane property"></button><button type="button" aria-label="Show Mokolodi property"></button><button type="button" aria-label="Show Block 10 property"></button></div></header>
         
         <div class="container">
@@ -1357,6 +1370,13 @@
             }
         }
         
+        function startValuation(event) {
+            event.preventDefault();
+            switchSection('valuation');
+            const form = document.getElementById('valuationForm');
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.getElementById('city').focus({ preventScroll: true });
+        }
         function switchSection(sectionId) {
             // Hide all sections
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
