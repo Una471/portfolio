@@ -7,6 +7,13 @@ Run: streamlit run 04_software.py --server.port 8502
 """
 
 import streamlit as st
+
+# Respect report links even when Streamlit Cloud starts this file directly.
+if st.query_params.get("view") == "dashboard":
+    import runpy
+    from pathlib import Path
+    runpy.run_path(str(Path(__file__).resolve().parent / "03_dashboard.py"), run_name="__main__")
+    st.stop()
 from pathlib import Path
 import pandas as pd
 import numpy as np
@@ -271,7 +278,7 @@ if nav == "Screen application":
                     return f'<div style="background:#f7f7f9;border-radius:16px;padding:1rem;margin:.3rem 0;border-left:5px solid {color};color:#0b0b14;"><b style="color:{color}">{label}</b><br><span style="font-size:1.1rem;font-weight:800;color:#0b0b14;">{value}</span></div>'
             else:
                 numeric_value = value
-            
+
             if higher_is_better:
                 color = "#22c55e" if numeric_value >= good else "#f97316" if numeric_value >= warning else "#ef4444"
             else:
